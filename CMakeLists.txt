@@ -186,4 +186,14 @@ add_executable(smart_car_dev
         "balance car/project/user/inc/isr.h"
         "balance car/project/user/src/isr.c"
         "balance car/project/user/src/main.c"
-        "balance car/project/code/detect_line.c")
+        "balance car/project/user/src/common_data.c"
+        "balance car/project/user/inc/common_data.h"
+        "balance car/project/code/detect_line.c"
+        "balance car/project/code/detect_line.h"
+        "balance car/project/code/direction.c"
+        "balance car/project/code/direction.h"
+        "balance car/project/code/line.c"
+        "balance car/project/code/line.h"
+        "balance car/project/code/point.c"
+        "balance car/project/code/point.h"
+        "balance car/project/code/utils.h")
