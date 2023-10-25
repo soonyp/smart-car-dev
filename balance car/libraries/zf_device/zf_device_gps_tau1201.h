@@ -60,61 +60,59 @@
 #define RAD_TO_ANGLE(x)     ((x) * 180.0 / PI)                                  // 弧度转换为角度
 #define PI                  (3.1415926535898)
 
-typedef struct
-{
-    uint16      year;  
-    uint8       month; 
-    uint8       day;
-    uint8       hour;
-    uint8       minute;
-    uint8       second;
-}gps_time_struct;
+typedef struct {
+    uint16 year;
+    uint8 month;
+    uint8 day;
+    uint8 hour;
+    uint8 minute;
+    uint8 second;
+} gps_time_struct;
 
-typedef struct
-{
-    gps_time_struct    time;                                                    // 时间
-    
-    uint8       state;                                                          // 有效状态  1：定位有效  0：定位无效
-    
-    uint16      latitude_degree;                                                // 度
-    uint16      latitude_cent;                                                  // 分
-    uint16      latitude_second;                                                // 秒
-    uint16      longitude_degree;                                               // 度
-    uint16      longitude_cent;                                                 // 分
-    uint16      longitude_second;                                               // 秒
-    
-    double      latitude;                                                       // 经度
-    double      longitude;                                                      // 纬度
-    
-    int8        ns;                                                             // 纬度半球 N（北半球）或 S（南半球）
-    int8        ew;                                                             // 经度半球 E（东经）或 W（西经）
-    
-    float       speed;                                                          // 速度（公里/每小时）
-    float       direction;                                                      // 地面航向（000.0~359.9 度，以真北方为参考基准）
-    
+typedef struct {
+    gps_time_struct time;                                                    // 时间
+
+    uint8 state;                                                          // 有效状态  1：定位有效  0：定位无效
+
+    uint16 latitude_degree;                                                // 度
+    uint16 latitude_cent;                                                  // 分
+    uint16 latitude_second;                                                // 秒
+    uint16 longitude_degree;                                               // 度
+    uint16 longitude_cent;                                                 // 分
+    uint16 longitude_second;                                               // 秒
+
+    double latitude;                                                       // 经度
+    double longitude;                                                      // 纬度
+
+    int8 ns;                                                             // 纬度半球 N（北半球）或 S（南半球）
+    int8 ew;                                                             // 经度半球 E（东经）或 W（西经）
+
+    float speed;                                                          // 速度（公里/每小时）
+    float direction;                                                      // 地面航向（000.0~359.9 度，以真北方为参考基准）
+
     // 下面两个个信息从GNGGA语句中获取
-    uint8       satellite_used;                                                 // 用于定位的卫星数量
-    float       height;                                                         // 高度
-}gps_info_struct;
+    uint8 satellite_used;                                                 // 用于定位的卫星数量
+    float height;                                                         // 高度
+} gps_info_struct;
 
-typedef enum
-{
+typedef enum {
     GPS_STATE_RECEIVING,    // 正在接收数据
     GPS_STATE_RECEIVED,     // 数据接收完成
     GPS_STATE_PARSING,      // 正在解析
-}gps_state_enum;
+} gps_state_enum;
 
-extern gps_info_struct  gps_tau1201;
-extern uint8            gps_tau1201_flag;
+extern gps_info_struct gps_tau1201;
+extern uint8 gps_tau1201_flag;
 
 
-double      get_two_points_distance     (double lat1, double lng1, double lat2, double lng2);
-double      get_two_points_azimuth      (double lat1, double lon1, double lat2, double lon2);
+double get_two_points_distance(double lat1, double lng1, double lat2, double lng2);
 
-uint8       gps_data_parse              (void);
+double get_two_points_azimuth(double lat1, double lon1, double lat2, double lon2);
 
-void        gps_uart_callback           (void);
+uint8 gps_data_parse(void);
 
-void        gps_init                    (void);
+void gps_uart_callback(void);
+
+void gps_init(void);
 
 #endif

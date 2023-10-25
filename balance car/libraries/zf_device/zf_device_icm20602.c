@@ -97,6 +97,7 @@ static soft_iic_info_struct icm20602_iic_struct;
 //-------------------------------------------------------------------------------------------------------------------
 #define icm20602_read_registers(reg, data, len) (soft_iic_read_8bit_registers(&icm20602_iic_struct, (reg), (data), (len)))
 #else
+
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     ICM20602 写寄存器
 // 参数说明     reg             寄存器地址
@@ -105,8 +106,7 @@ static soft_iic_info_struct icm20602_iic_struct;
 // 使用示例     icm20602_write_register(ICM20602_PWR_MGMT_1, 0x80);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static void icm20602_write_register (uint8 reg, uint8 data)
-{
+static void icm20602_write_register(uint8 reg, uint8 data) {
     ICM20602_CS(0);
     spi_write_8bit_register(ICM20602_SPI, reg | ICM20602_SPI_W, data);
     ICM20602_CS(1);
@@ -119,8 +119,7 @@ static void icm20602_write_register (uint8 reg, uint8 data)
 // 使用示例     icm20602_read_register(ICM20602_WHO_AM_I);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 icm20602_read_register (uint8 reg)
-{
+static uint8 icm20602_read_register(uint8 reg) {
     uint8 data = 0;
     ICM20602_CS(0);
     data = spi_read_8bit_register(ICM20602_SPI, reg | ICM20602_SPI_R);
@@ -137,12 +136,12 @@ static uint8 icm20602_read_register (uint8 reg)
 // 使用示例     icm20602_read_registers(ICM20602_ACCEL_XOUT_H, dat, 6);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static void icm20602_read_registers (uint8 reg, uint8 *data, uint32 len)
-{
+static void icm20602_read_registers(uint8 reg, uint8 *data, uint32 len) {
     ICM20602_CS(0);
     spi_read_8bit_registers(ICM20602_SPI, reg | ICM20602_SPI_R, data, len);
     ICM20602_CS(1);
 }
+
 #endif
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -152,16 +151,14 @@ static void icm20602_read_registers (uint8 reg, uint8 *data, uint32 len)
 // 使用示例     icm20602_self_check();
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 icm20602_self_check (void)
-{
+static uint8 icm20602_self_check(void) {
     uint8 dat = 0, return_state = 0;
     uint16 timeout_count = 0;
 
-    while(0x12 != dat)                                                          // 判断 ID 是否正确
+    while (0x12 != dat)                                                          // 判断 ID 是否正确
     {
-        if(ICM20602_TIMEOUT_COUNT < timeout_count ++)
-        {
-            return_state =  1;
+        if (ICM20602_TIMEOUT_COUNT < timeout_count++) {
+            return_state = 1;
             break;
         }
         dat = icm20602_read_register(ICM20602_WHO_AM_I);
@@ -177,14 +174,13 @@ static uint8 icm20602_self_check (void)
 // 使用示例     icm20602_get_acc();                                             // 执行该函数后，直接查看对应的变量即可
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void icm20602_get_acc (void)
-{
+void icm20602_get_acc(void) {
     uint8 dat[6];
 
     icm20602_read_registers(ICM20602_ACCEL_XOUT_H, dat, 6);
-    icm20602_acc_x = (int16)(((uint16)dat[0] << 8 | dat[1]));
-    icm20602_acc_y = (int16)(((uint16)dat[2] << 8 | dat[3]));
-    icm20602_acc_z = (int16)(((uint16)dat[4] << 8 | dat[5]));
+    icm20602_acc_x = (int16) (((uint16) dat[0] << 8 | dat[1]));
+    icm20602_acc_y = (int16) (((uint16) dat[2] << 8 | dat[3]));
+    icm20602_acc_z = (int16) (((uint16) dat[4] << 8 | dat[5]));
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -194,14 +190,13 @@ void icm20602_get_acc (void)
 // 使用示例     icm20602_get_gyro();                                            // 执行该函数后，直接查看对应的变量即可
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void icm20602_get_gyro (void)
-{
+void icm20602_get_gyro(void) {
     uint8 dat[6];
 
     icm20602_read_registers(ICM20602_GYRO_XOUT_H, dat, 6);
-    icm20602_gyro_x = (int16)(((uint16)dat[0] << 8 | dat[1]));
-    icm20602_gyro_y = (int16)(((uint16)dat[2] << 8 | dat[3]));
-    icm20602_gyro_z = (int16)(((uint16)dat[4] << 8 | dat[5]));
+    icm20602_gyro_x = (int16) (((uint16) dat[0] << 8 | dat[1]));
+    icm20602_gyro_y = (int16) (((uint16) dat[2] << 8 | dat[3]));
+    icm20602_gyro_z = (int16) (((uint16) dat[4] << 8 | dat[5]));
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -211,8 +206,7 @@ void icm20602_get_gyro (void)
 // 使用示例     icm20602_init();
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 icm20602_init (void)
-{
+uint8 icm20602_init(void) {
     uint8 val = 0x0, return_state = 0;
     uint16 timeout_count = 0;
 
@@ -221,14 +215,13 @@ uint8 icm20602_init (void)
 #if ICM20602_USE_SOFT_IIC
     soft_iic_init(&icm20602_iic_struct, ICM20602_DEV_ADDR, ICM20602_SOFT_IIC_DELAY, ICM20602_SCL_PIN, ICM20602_SDA_PIN);
 #else
-    spi_init(ICM20602_SPI, SPI_MODE0, ICM20602_SPI_SPEED, ICM20602_SPC_PIN, ICM20602_SDI_PIN, ICM20602_SDO_PIN, SPI_CS_NULL);
+    spi_init(ICM20602_SPI, SPI_MODE0, ICM20602_SPI_SPEED, ICM20602_SPC_PIN, ICM20602_SDI_PIN, ICM20602_SDO_PIN,
+             SPI_CS_NULL);
     gpio_init(ICM20602_CS_PIN, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 #endif
 
-    do
-    {
-        if(icm20602_self_check())
-        {
+    do {
+        if (icm20602_self_check()) {
             // 如果程序在输出了断言信息 并且提示出错位置在这里
             // 那么就是 ICM20602 自检出错并超时退出了
             // 检查一下接线有没有问题 如果没问题可能就是坏了
@@ -240,11 +233,9 @@ uint8 icm20602_init (void)
         icm20602_write_register(ICM20602_PWR_MGMT_1, 0x80);                     // 复位设备
         system_delay_ms(2);
 
-        do
-        {                                                                       // 等待复位成功
+        do {                                                                       // 等待复位成功
             val = icm20602_read_register(ICM20602_PWR_MGMT_1);
-            if(ICM20602_TIMEOUT_COUNT < timeout_count ++)
-            {
+            if (ICM20602_TIMEOUT_COUNT < timeout_count++) {
                 // 如果程序在输出了断言信息 并且提示出错位置在这里
                 // 那么就是 ICM20602 自检出错并超时退出了
                 // 检查一下接线有没有问题 如果没问题可能就是坏了
@@ -252,52 +243,50 @@ uint8 icm20602_init (void)
                 return_state = 1;
                 break;
             }
-        }while(0x41 != val);
-        if(1 == return_state)
-        {
+        } while (0x41 != val);
+        if (1 == return_state) {
             break;
         }
 
-        icm20602_write_register(ICM20602_PWR_MGMT_1,     0x01);                 // 时钟设置
-        icm20602_write_register(ICM20602_PWR_MGMT_2,     0x00);                 // 开启陀螺仪和加速度计
-        icm20602_write_register(ICM20602_CONFIG,         0x01);                 // 176HZ 1KHZ
-        icm20602_write_register(ICM20602_SMPLRT_DIV,     0x07);                 // 采样速率 SAMPLE_RATE = INTERNAL_SAMPLE_RATE / (1 + SMPLRT_DIV)
+        icm20602_write_register(ICM20602_PWR_MGMT_1, 0x01);                 // 时钟设置
+        icm20602_write_register(ICM20602_PWR_MGMT_2, 0x00);                 // 开启陀螺仪和加速度计
+        icm20602_write_register(ICM20602_CONFIG, 0x01);                 // 176HZ 1KHZ
+        icm20602_write_register(ICM20602_SMPLRT_DIV,
+                                0x07);                 // 采样速率 SAMPLE_RATE = INTERNAL_SAMPLE_RATE / (1 + SMPLRT_DIV)
 
         // ICM20602_ACCEL_CONFIG 寄存器
         // 设置为 0x00 加速度计量程为 ±2  g   获取到的加速度计数据除以 16384  可以转化为带物理单位的数据 单位 g(m/s^2)
         // 设置为 0x08 加速度计量程为 ±4  g   获取到的加速度计数据除以 8192   可以转化为带物理单位的数据 单位 g(m/s^2)
         // 设置为 0x10 加速度计量程为 ±8  g   获取到的加速度计数据除以 4096   可以转化为带物理单位的数据 单位 g(m/s^2)
         // 设置为 0x18 加速度计量程为 ±16 g   获取到的加速度计数据除以 2048   可以转化为带物理单位的数据 单位 g(m/s^2)
-        switch(ICM20602_ACC_SAMPLE_DEFAULT)
-        {
-            default:
-            {
+        switch (ICM20602_ACC_SAMPLE_DEFAULT) {
+            default: {
                 zf_log(0, "ICM20602_ACC_SAMPLE_DEFAULT set error.");
                 return_state = 1;
-            }break;
-            case ICM20602_ACC_SAMPLE_SGN_2G:
-            {
+            }
+                break;
+            case ICM20602_ACC_SAMPLE_SGN_2G: {
                 icm20602_write_register(ICM20602_ACCEL_CONFIG, 0x00);
                 icm20602_transition_factor[0] = 16384;
-            }break;
-            case ICM20602_ACC_SAMPLE_SGN_4G:
-            {
+            }
+                break;
+            case ICM20602_ACC_SAMPLE_SGN_4G: {
                 icm20602_write_register(ICM20602_ACCEL_CONFIG, 0x08);
                 icm20602_transition_factor[0] = 8192;
-            }break;
-            case ICM20602_ACC_SAMPLE_SGN_8G:
-            {
+            }
+                break;
+            case ICM20602_ACC_SAMPLE_SGN_8G: {
                 icm20602_write_register(ICM20602_ACCEL_CONFIG, 0x10);
                 icm20602_transition_factor[0] = 4096;
-            }break;
-            case ICM20602_ACC_SAMPLE_SGN_16G:
-            {
+            }
+                break;
+            case ICM20602_ACC_SAMPLE_SGN_16G: {
                 icm20602_write_register(ICM20602_ACCEL_CONFIG, 0x18);
                 icm20602_transition_factor[0] = 2048;
-            }break;
+            }
+                break;
         }
-        if(1 == return_state)
-        {
+        if (1 == return_state) {
             break;
         }
 
@@ -306,40 +295,39 @@ uint8 icm20602_init (void)
         // 设置为 0x08 陀螺仪量程为 ±500  dps    获取到的陀螺仪数据除以 65.5    可以转化为带物理单位的数据 单位为 °/s
         // 设置为 0x10 陀螺仪量程为 ±1000 dps    获取到的陀螺仪数据除以 32.8    可以转化为带物理单位的数据 单位为 °/s
         // 设置为 0x18 陀螺仪量程为 ±2000 dps    获取到的陀螺仪数据除以 16.4    可以转化为带物理单位的数据 单位为 °/s
-        switch(ICM20602_GYRO_SAMPLE_DEFAULT)
-        {
-            default:
-            {
+        switch (ICM20602_GYRO_SAMPLE_DEFAULT) {
+            default: {
                 zf_log(0, "ICM20602_GYRO_SAMPLE_DEFAULT set error.");
                 return_state = 1;
-            }break;
-            case ICM20602_GYRO_SAMPLE_SGN_250DPS:
-            {
+            }
+                break;
+            case ICM20602_GYRO_SAMPLE_SGN_250DPS: {
                 icm20602_write_register(ICM20602_GYRO_CONFIG, 0x00);
                 icm20602_transition_factor[1] = 131.0;
-            }break;
-            case ICM20602_GYRO_SAMPLE_SGN_500DPS:
-            {
+            }
+                break;
+            case ICM20602_GYRO_SAMPLE_SGN_500DPS: {
                 icm20602_write_register(ICM20602_GYRO_CONFIG, 0x08);
                 icm20602_transition_factor[1] = 65.5;
-            }break;
-            case ICM20602_GYRO_SAMPLE_SGN_1000DPS:
-            {
+            }
+                break;
+            case ICM20602_GYRO_SAMPLE_SGN_1000DPS: {
                 icm20602_write_register(ICM20602_GYRO_CONFIG, 0x10);
                 icm20602_transition_factor[1] = 32.8;
-            }break;
-            case ICM20602_GYRO_SAMPLE_SGN_2000DPS:
-            {
+            }
+                break;
+            case ICM20602_GYRO_SAMPLE_SGN_2000DPS: {
                 icm20602_write_register(ICM20602_GYRO_CONFIG, 0x18);
                 icm20602_transition_factor[1] = 16.4;
-            }break;
+            }
+                break;
         }
-        if(1 == return_state)
-        {
+        if (1 == return_state) {
             break;
         }
 
-        icm20602_write_register(ICM20602_ACCEL_CONFIG_2, 0x03);                 // Average 4 samples   44.8HZ   //0x23 Average 16 samples
-    }while(0);
+        icm20602_write_register(ICM20602_ACCEL_CONFIG_2,
+                                0x03);                 // Average 4 samples   44.8HZ   //0x23 Average 16 samples
+    } while (0);
     return return_state;
 }

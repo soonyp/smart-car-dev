@@ -38,8 +38,8 @@
 #include "zf_driver_encoder.h"
 
 
-static volatile uint8 encoder_dir_pin[10] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                                            0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+static volatile uint8 encoder_dir_pin[10] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                                             0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     定时器编码器解码取值
@@ -48,36 +48,46 @@ static volatile uint8 encoder_dir_pin[10] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 // 备注信息
 // 使用示例    encoder_get_count(TIM2_ENCOEDER)  // 获取定时器2的采集到的编码器数据
 //-------------------------------------------------------------------------------------------------------------------
-int16 encoder_get_count(encoder_index_enum encoder_n)
-{
+int16 encoder_get_count(encoder_index_enum encoder_n) {
     int16 result = 0;
     int16 return_value = 0;
-    switch(encoder_n)
-    {
-        case TIM1_ENCOEDER:  result = TIM1->CNT;   break;
-        case TIM2_ENCOEDER:  result = TIM2->CNT;   break;
-        case TIM3_ENCOEDER:  result = TIM3->CNT;   break;
-        case TIM4_ENCOEDER:  result = TIM4->CNT;   break;
-        case TIM5_ENCOEDER:  result = TIM5->CNT;   break;
-        case TIM8_ENCOEDER:  result = TIM8->CNT;   break;
-        case TIM9_ENCOEDER:  result = TIM9->CNT;   break;
-        case TIM10_ENCOEDER: result = TIM10->CNT;  break;
-        default:             result = 0;                 break;
+    switch (encoder_n) {
+        case TIM1_ENCOEDER:
+            result = TIM1->CNT;
+            break;
+        case TIM2_ENCOEDER:
+            result = TIM2->CNT;
+            break;
+        case TIM3_ENCOEDER:
+            result = TIM3->CNT;
+            break;
+        case TIM4_ENCOEDER:
+            result = TIM4->CNT;
+            break;
+        case TIM5_ENCOEDER:
+            result = TIM5->CNT;
+            break;
+        case TIM8_ENCOEDER:
+            result = TIM8->CNT;
+            break;
+        case TIM9_ENCOEDER:
+            result = TIM9->CNT;
+            break;
+        case TIM10_ENCOEDER:
+            result = TIM10->CNT;
+            break;
+        default:
+            result = 0;
+            break;
     }
-    if(0xFF == encoder_dir_pin[encoder_n])
-    {
+    if (0xFF == encoder_dir_pin[encoder_n]) {
         return_value = result;
-    }
-    else
-    {
-        if(!gpio_get_level((gpio_pin_enum)encoder_dir_pin[encoder_n]))
-        {
+    } else {
+        if (!gpio_get_level((gpio_pin_enum) encoder_dir_pin[encoder_n])) {
             return_value = -result;
+        } else {
+            return_value = result;
         }
-		else
-		{
-			return_value = result;
-		}
     }
 
     return return_value;
@@ -90,19 +100,34 @@ int16 encoder_get_count(encoder_index_enum encoder_n)
 // 备注信息
 // 使用示例    encoder_clear_count(TIM1_ENCOEDER)  //清除定时器1采集到的编码器数据
 //-------------------------------------------------------------------------------------------------------------------
-void encoder_clear_count(encoder_index_enum encoder_n)
-{
-    switch(encoder_n)
-    {
-        case TIM1_ENCOEDER:  TIM1->CNT  = 0;  break;
-        case TIM2_ENCOEDER:  TIM2->CNT  = 0;  break;
-        case TIM3_ENCOEDER:  TIM3->CNT  = 0;  break;
-        case TIM4_ENCOEDER:  TIM4->CNT  = 0;  break;
-        case TIM5_ENCOEDER:  TIM5->CNT  = 0;  break;
-        case TIM8_ENCOEDER:  TIM8->CNT  = 0;  break;
-        case TIM9_ENCOEDER:  TIM9->CNT  = 0;  break;
-        case TIM10_ENCOEDER: TIM10->CNT = 0;  break;
-        default:  break;
+void encoder_clear_count(encoder_index_enum encoder_n) {
+    switch (encoder_n) {
+        case TIM1_ENCOEDER:
+            TIM1->CNT = 0;
+            break;
+        case TIM2_ENCOEDER:
+            TIM2->CNT = 0;
+            break;
+        case TIM3_ENCOEDER:
+            TIM3->CNT = 0;
+            break;
+        case TIM4_ENCOEDER:
+            TIM4->CNT = 0;
+            break;
+        case TIM5_ENCOEDER:
+            TIM5->CNT = 0;
+            break;
+        case TIM8_ENCOEDER:
+            TIM8->CNT = 0;
+            break;
+        case TIM9_ENCOEDER:
+            TIM9->CNT = 0;
+            break;
+        case TIM10_ENCOEDER:
+            TIM10->CNT = 0;
+            break;
+        default:
+            break;
     }
 }
 
@@ -116,8 +141,7 @@ void encoder_clear_count(encoder_index_enum encoder_n)
 // 使用示例    encoder_init_quad(TIM1_ENCOEDER, TIM1_CH1_ENCOEDER_E9, TIM1_CH2_ENCOEDER_E11)
 //          // 使用定时器1 做正交编码器解码， 通道1引脚号E9，通道2引脚号E11
 //-------------------------------------------------------------------------------------------------------------------
-void encoder_quad_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin, encoder_channel_enum ch2_pin)
-{
+void encoder_quad_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin, encoder_channel_enum ch2_pin) {
     uint32 register_temp = 0;
     TIM_TypeDef *tim_index;
 
@@ -125,43 +149,58 @@ void encoder_quad_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pi
     // 就去查看你在什么地方调用这个函数 检查你的传入参数
     // 这里是检查是否有重复使用定时器
     // 比如初始化了 TIM1_PWM 然后又初始化成 TIM1_ENCODER 这种用法是不允许的
-    zf_assert(timer_funciton_check((timer_index_enum)encoder_n, TIMER_FUNCTION_ENCODER));
+    zf_assert(timer_funciton_check((timer_index_enum) encoder_n, TIMER_FUNCTION_ENCODER));
     zf_assert((ch1_pin >> 12) == (encoder_n));                                  // ch1_pin 与 ch2_pin 必须与 encoder_n 匹配
     zf_assert((ch2_pin >> 12) == (encoder_n));                                  // ch1_pin 与 ch2_pin 必须与 encoder_n 匹配
 
     timer_clock_enable(encoder_n);                                              // 定时器时钟使能
 
-    gpio_init((gpio_pin_enum)(ch1_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
-    gpio_init((gpio_pin_enum)(ch2_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
+    gpio_init((gpio_pin_enum) (ch1_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
+    gpio_init((gpio_pin_enum) (ch2_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
 
     //encoder_dir_pin[encoder_n] = (ch1_pin &0xFF);                               // 将方向引脚号存入数组中
 
-    switch(encoder_n)
-    {
-        case TIM1_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM1_BASE);   break;
-        case TIM2_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM2_BASE);   break;
-        case TIM3_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM3_BASE);   break;
-        case TIM4_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM4_BASE);   break;
-        case TIM5_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM5_BASE);   break;
-        case TIM8_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM8_BASE);   break;
-        case TIM9_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM9_BASE);   break;
-        case TIM10_ENCOEDER: tim_index = ((TIM_TypeDef *)TIM10_BASE);  break;
-        default: register_temp = 1;
+    switch (encoder_n) {
+        case TIM1_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM2_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM3_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM4_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM5_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM8_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM9_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM10_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
+        default:
+            register_temp = 1;
     }
 
     // 开启复用功能
-    if((ch1_pin >> 8) == 0x03)      GPIO_PinRemapConfig(GPIO_FullRemap_TIM1,        ENABLE);
-    else if((ch1_pin >> 8) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2,    ENABLE);
-    else if((ch1_pin >> 8) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3,     ENABLE);
-    else if((ch1_pin >> 8) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3,        ENABLE);
-    else if((ch1_pin >> 8) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4,            ENABLE);
-    else if((ch1_pin >> 8) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8,            ENABLE);
-    else if((ch1_pin >> 8) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9,        ENABLE);
-    else if((ch1_pin >> 8) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10,    ENABLE);
-    else if((ch1_pin >> 8) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10,       ENABLE);
+    if ((ch1_pin >> 8) == 0x03) GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
+    else if ((ch1_pin >> 8) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
+    else if ((ch1_pin >> 8) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+    else if ((ch1_pin >> 8) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE);
+    else if ((ch1_pin >> 8) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
+    else if ((ch1_pin >> 8) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8, ENABLE);
+    else if ((ch1_pin >> 8) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9, ENABLE);
+    else if ((ch1_pin >> 8) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10, ENABLE);
+    else if ((ch1_pin >> 8) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10, ENABLE);
 
-    if(!register_temp)
-    {
+    if (!register_temp) {
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);                // 使能AFIO复用功能模块时钟
         TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
         TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
@@ -176,7 +215,7 @@ void encoder_quad_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pi
 
         TIM_EncoderInterfaceConfig(
                 tim_index,
-                TIM_EncoderMode_TI2 ,
+                TIM_EncoderMode_TI2,
                 TIM_ICPolarity_Rising,
                 TIM_ICPolarity_Rising);                                     // 使用编码器模式, T2计数 ,T1判断方向, 上升沿计数
 
@@ -197,8 +236,7 @@ void encoder_quad_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pi
 // 使用示例      encoder_init_dir(TIM1_ENCOEDER, TIM1_CH1_ENCOEDER_E9, TIM1_CH2_ENCOEDER_E11)
 //                              // 使用定时器1 做带方向的编码器解码， 通道1方向信号引脚E9，通道2脉冲信号引脚E11
 //-------------------------------------------------------------------------------------------------------------------
-void encoder_dir_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin, encoder_channel_enum ch2_pin)
-{
+void encoder_dir_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin, encoder_channel_enum ch2_pin) {
     uint32 register_temp = 0;
     TIM_TypeDef *tim_index;
 
@@ -206,45 +244,60 @@ void encoder_dir_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin
     // 就去查看你在什么地方调用这个函数 检查你的传入参数
     // 这里是检查是否有重复使用定时器
     // 比如初始化了 TIM1_PWM 然后又初始化成 TIM1_ENCODER 这种用法是不允许的
-    zf_assert(timer_funciton_check((timer_index_enum)encoder_n, TIMER_FUNCTION_ENCODER));
+    zf_assert(timer_funciton_check((timer_index_enum) encoder_n, TIMER_FUNCTION_ENCODER));
     zf_assert((ch1_pin & (encoder_n << 12)) == (encoder_n << 12));              // ch1_pin 与 ch2_pin 必须与 encoder_n 匹配
     zf_assert((ch2_pin & (encoder_n << 12)) == (encoder_n << 12));              // ch1_pin 与 ch2_pin 必须与 encoder_n 匹配
 
     timer_clock_enable(encoder_n);                                              // 定时器时钟使能
 
-    gpio_init((gpio_pin_enum)(ch1_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
-    gpio_init((gpio_pin_enum)(ch2_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
+    gpio_init((gpio_pin_enum) (ch1_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
+    gpio_init((gpio_pin_enum) (ch2_pin & 0xFF), GPI, 0, GPI_PULL_UP);            // 初始化引脚
 
-    encoder_dir_pin[encoder_n] = (ch1_pin &0xFF);                               // 将方向引脚号存入数组中
+    encoder_dir_pin[encoder_n] = (ch1_pin & 0xFF);                               // 将方向引脚号存入数组中
 
-    switch(encoder_n)
-    {
-        case TIM1_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM1_BASE);   break;
-        case TIM2_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM2_BASE);   break;
-        case TIM3_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM3_BASE);   break;
-        case TIM4_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM4_BASE);   break;
-        case TIM5_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM5_BASE);   break;
-        case TIM8_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM8_BASE);   break;
-        case TIM9_ENCOEDER:  tim_index = ((TIM_TypeDef *)TIM9_BASE);   break;
-        case TIM10_ENCOEDER: tim_index = ((TIM_TypeDef *)TIM10_BASE);  break;
-        default: register_temp = 1;
+    switch (encoder_n) {
+        case TIM1_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM2_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM3_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM4_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM5_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM8_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM9_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM10_ENCOEDER:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
+        default:
+            register_temp = 1;
     }
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);                // 使能AFIO复用功能模块时钟
 
     // 开启复用功能
-    if((ch1_pin >> 8) == 0x03)      GPIO_PinRemapConfig(GPIO_FullRemap_TIM1,        ENABLE);
-    else if((ch1_pin >> 8) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2,    ENABLE);
-    else if((ch1_pin >> 8) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3,     ENABLE);
-    else if((ch1_pin >> 8) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3,        ENABLE);
-    else if((ch1_pin >> 8) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4,            ENABLE);
-    else if((ch1_pin >> 8) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8,            ENABLE);
-    else if((ch1_pin >> 8) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9,        ENABLE);
-    else if((ch1_pin >> 8) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10,    ENABLE);
-    else if((ch1_pin >> 8) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10,       ENABLE);
+    if ((ch1_pin >> 8) == 0x03) GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
+    else if ((ch1_pin >> 8) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
+    else if ((ch1_pin >> 8) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+    else if ((ch1_pin >> 8) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE);
+    else if ((ch1_pin >> 8) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
+    else if ((ch1_pin >> 8) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8, ENABLE);
+    else if ((ch1_pin >> 8) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9, ENABLE);
+    else if ((ch1_pin >> 8) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10, ENABLE);
+    else if ((ch1_pin >> 8) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10, ENABLE);
 
-    if(!register_temp)
-    {
+    if (!register_temp) {
         TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
         TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
         TIM_TimeBaseStructure.TIM_Prescaler = 0;                            // 预分频器
@@ -254,8 +307,8 @@ void encoder_dir_init(encoder_index_enum encoder_n, encoder_channel_enum ch1_pin
         TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;                    // 重复计数器
         TIM_TimeBaseInit(tim_index, &TIM_TimeBaseStructure);                // 初始化结构体
         TIM_ITRxExternalClockConfig(tim_index, TIM_TS_TI2FP2);              // 配置外部触发，否则不会计数
-		TIM_ETRConfig(tim_index, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 7);	// 采样频率Fsampling=Fdts/4，N=8；
-		TIM_Cmd(tim_index, ENABLE);                                         // 定时器使能
+        TIM_ETRConfig(tim_index, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 7);    // 采样频率Fsampling=Fdts/4，N=8；
+        TIM_Cmd(tim_index, ENABLE);                                         // 定时器使能
     }
 }
 

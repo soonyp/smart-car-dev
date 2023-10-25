@@ -36,114 +36,130 @@
 #include "zf_common_headfile.h"
 
 
-uint8 cntt=0;
+uint8 cntt = 0;
 
 void NMI_Handler(void)       __attribute__((interrupt()));
+
 void HardFault_Handler(void) __attribute__((interrupt()));
 
 void USART1_IRQHandler(void) __attribute__((interrupt()));
+
 void USART2_IRQHandler(void) __attribute__((interrupt()));
+
 void USART3_IRQHandler(void) __attribute__((interrupt()));
-void UART4_IRQHandler (void) __attribute__((interrupt()));
-void UART5_IRQHandler (void) __attribute__((interrupt()));
-void UART6_IRQHandler (void) __attribute__((interrupt()));
-void UART7_IRQHandler (void) __attribute__((interrupt()));
-void UART8_IRQHandler (void) __attribute__((interrupt()));
-void DVP_IRQHandler (void) __attribute__((interrupt()));
+
+void UART4_IRQHandler(void) __attribute__((interrupt()));
+
+void UART5_IRQHandler(void) __attribute__((interrupt()));
+
+void UART6_IRQHandler(void) __attribute__((interrupt()));
+
+void UART7_IRQHandler(void) __attribute__((interrupt()));
+
+void UART8_IRQHandler(void) __attribute__((interrupt()));
+
+void DVP_IRQHandler(void) __attribute__((interrupt()));
+
 //void TIM1_BRK_IRQHandler        (void)  __attribute__((interrupt()));
-void TIM1_UP_IRQHandler         (void)  __attribute__((interrupt()));
+void TIM1_UP_IRQHandler(void)  __attribute__((interrupt()));
+
 //void TIM1_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
 //void TIM1_CC_IRQHandler         (void)  __attribute__((interrupt()));
-void TIM2_IRQHandler            (void)  __attribute__((interrupt()));
-void TIM3_IRQHandler            (void)  __attribute__((interrupt()));
-void TIM4_IRQHandler            (void)  __attribute__((interrupt()));
-void TIM5_IRQHandler            (void)  __attribute__((interrupt()));
-void TIM6_IRQHandler            (void)  __attribute__((interrupt()));
-void TIM7_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM2_IRQHandler(void)  __attribute__((interrupt()));
+
+void TIM3_IRQHandler(void)  __attribute__((interrupt()));
+
+void TIM4_IRQHandler(void)  __attribute__((interrupt()));
+
+void TIM5_IRQHandler(void)  __attribute__((interrupt()));
+
+void TIM6_IRQHandler(void)  __attribute__((interrupt()));
+
+void TIM7_IRQHandler(void)  __attribute__((interrupt()));
+
 //void TIM8_BRK_IRQHandler        (void)  __attribute__((interrupt()));
-void TIM8_UP_IRQHandler         (void)  __attribute__((interrupt()));
+void TIM8_UP_IRQHandler(void)  __attribute__((interrupt()));
+
 //void TIM8_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
 //void TIM8_CC_IRQHandler         (void)  __attribute__((interrupt()));
 //void TIM9_BRK_IRQHandler        (void)  __attribute__((interrupt()));
-void TIM9_UP_IRQHandler         (void)  __attribute__((interrupt()));
+void TIM9_UP_IRQHandler(void)  __attribute__((interrupt()));
+
 //void TIM9_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
 //void TIM9_CC_IRQHandler         (void)  __attribute__((interrupt()));
 //void TIM10_BRK_IRQHandler       (void)  __attribute__((interrupt()));
-void TIM10_UP_IRQHandler        (void)  __attribute__((interrupt()));
+void TIM10_UP_IRQHandler(void)  __attribute__((interrupt()));
 //void TIM10_TRG_COM_IRQHandler   (void)  __attribute__((interrupt()));
 //void TIM10_CC_IRQHandler        (void)  __attribute__((interrupt()));
 
 void EXTI0_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI1_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI2_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI3_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI4_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI9_5_IRQHandler(void) __attribute__((interrupt()));
+
 void EXTI15_10_IRQHandler(void) __attribute__((interrupt()));
 
-void USART1_IRQHandler(void)
-{
-    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
-    {
+void USART1_IRQHandler(void) {
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
 
         USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
 }
-void USART2_IRQHandler(void)
-{
-    if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
-    {
+
+void USART2_IRQHandler(void) {
+    if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
 
 
         USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
 }
-void USART3_IRQHandler(void)
-{
-    if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
-    {
+
+void USART3_IRQHandler(void) {
+    if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
 #if DEBUG_UART_USE_INTERRUPT                                                    // 如果开启 debug 串口中断
         debug_interrupr_handler();                                              // 调用 debug 串口接收处理函数 数据会被 debug 环形缓冲区读取
 #endif                                                                          // 如果修改了 DEBUG_UART_INDEX 那这段代码需要放到对应的串口中断去
         USART_ClearITPendingBit(USART3, USART_IT_RXNE);
     }
 }
-void UART4_IRQHandler (void)
-{
-    if(USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
-    {
+
+void UART4_IRQHandler(void) {
+    if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) {
 
         USART_ClearITPendingBit(UART4, USART_IT_RXNE);
     }
 }
-void UART5_IRQHandler (void)
-{
-    if(USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
-    {
+
+void UART5_IRQHandler(void) {
+    if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) {
         camera_uart_handler();
         USART_ClearITPendingBit(UART5, USART_IT_RXNE);
     }
 }
-void UART6_IRQHandler (void)
-{
-    if(USART_GetITStatus(UART6, USART_IT_RXNE) != RESET)
-    {
+
+void UART6_IRQHandler(void) {
+    if (USART_GetITStatus(UART6, USART_IT_RXNE) != RESET) {
 
         USART_ClearITPendingBit(UART6, USART_IT_RXNE);
     }
 }
-void UART7_IRQHandler (void)
-{
-    if(USART_GetITStatus(UART7, USART_IT_RXNE) != RESET)
-    {
+
+void UART7_IRQHandler(void) {
+    if (USART_GetITStatus(UART7, USART_IT_RXNE) != RESET) {
         wireless_module_uart_handler();
         USART_ClearITPendingBit(UART7, USART_IT_RXNE);
     }
 }
-void UART8_IRQHandler (void)
-{
-    if(USART_GetITStatus(UART8, USART_IT_RXNE) != RESET)
-    {
+
+void UART8_IRQHandler(void) {
+    if (USART_GetITStatus(UART8, USART_IT_RXNE) != RESET) {
         gps_uart_callback();
         USART_ClearITPendingBit(UART8, USART_IT_RXNE);
     }
@@ -151,94 +167,74 @@ void UART8_IRQHandler (void)
 }
 
 
-
-void DVP_IRQHandler(void)
-{
-    if (DVP->IFR & RB_DVP_IF_FRM_DONE)
-    {
+void DVP_IRQHandler(void) {
+    if (DVP->IFR & RB_DVP_IF_FRM_DONE) {
         camera_dvp_handler();
         DVP->IFR &= ~RB_DVP_IF_FRM_DONE;
     }
 }
-void EXTI0_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line0))
-    {
+
+void EXTI0_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line0)) {
         EXTI_ClearITPendingBit(EXTI_Line0);
 
     }
 }
 
-void EXTI1_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line1))
-    {
+void EXTI1_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line1)) {
         EXTI_ClearITPendingBit(EXTI_Line1);
 
     }
 }
 
-void EXTI2_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line2))
-    {
+void EXTI2_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line2)) {
         EXTI_ClearITPendingBit(EXTI_Line2);
 
     }
 }
 
-void EXTI3_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line3))
-    {
+void EXTI3_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line3)) {
         EXTI_ClearITPendingBit(EXTI_Line3);
 
     }
 }
 
-void EXTI4_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line4))
-    {
+void EXTI4_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line4)) {
         EXTI_ClearITPendingBit(EXTI_Line4);
 
     }
 }
 
-void EXTI9_5_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line5))
-    {
+void EXTI9_5_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line5)) {
         EXTI_ClearITPendingBit(EXTI_Line5);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line6))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line6)) {
         EXTI_ClearITPendingBit(EXTI_Line6);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line7))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line7)) {
         EXTI_ClearITPendingBit(EXTI_Line7);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line8))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line8)) {
         EXTI_ClearITPendingBit(EXTI_Line8);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line9))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line9)) {
         EXTI_ClearITPendingBit(EXTI_Line9);
 
     }
 
 }
 
-void EXTI15_10_IRQHandler(void)
-{
-    if(SET == EXTI_GetITStatus(EXTI_Line10))
-    {
+void EXTI15_10_IRQHandler(void) {
+    if (SET == EXTI_GetITStatus(EXTI_Line10)) {
 
         // 此处编写用户代码 (A10/B10..E10) 引脚触发
 //        startflag=1;
@@ -246,18 +242,15 @@ void EXTI15_10_IRQHandler(void)
 
         EXTI_ClearITPendingBit(EXTI_Line10);
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line11))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line11)) {
         EXTI_ClearITPendingBit(EXTI_Line11);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line12))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line12)) {
         EXTI_ClearITPendingBit(EXTI_Line12);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line13))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line13)) {
         // -----------------* ToF INT 更新中断 预置中断处理函数 *-----------------
         tof_module_exti_handler();
         // -----------------* ToF INT 更新中断 预置中断处理函数 *-----------------
@@ -268,15 +261,13 @@ void EXTI15_10_IRQHandler(void)
         EXTI_ClearITPendingBit(EXTI_Line13);
 
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line14))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line14)) {
         // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
         dm1xa_light_callback();
         // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
         EXTI_ClearITPendingBit(EXTI_Line14);
     }
-    if(SET == EXTI_GetITStatus(EXTI_Line15))
-    {
+    if (SET == EXTI_GetITStatus(EXTI_Line15)) {
         // -----------------* DM1XA 声/反馈信号 预置中断处理函数 *-----------------
         dm1xa_sound_callback();
         // -----------------* DM1XA 声/反馈信号 预置中断处理函数 *-----------------
@@ -285,137 +276,114 @@ void EXTI15_10_IRQHandler(void)
 }
 
 
-void TIM1_UP_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)
-    {
+void TIM1_UP_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) {
         TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 
     }
 }
 
 
-void TIM2_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM2, TIM_IT_Update );
+void TIM2_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 
 
     }
 }
 
-void TIM3_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM3, TIM_IT_Update );
+void TIM3_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
 
     }
 }
 
-void TIM4_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM4, TIM_IT_Update );
+void TIM4_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 
 
     }
 }
 
-void TIM5_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM5, TIM_IT_Update );
-       cntt++;
-                    if(cntt==25)
-                    {
+void TIM5_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+        cntt++;
+        if (cntt == 25) {
 
-                        while(1)
-                       {
-                            Motor_Set(0,0);
-                            pit_disable(TIM6_PIT);
-             //               Motor_Set(0,0);
-                       }
-                        cntt=0;
-                    }
+            while (1) {
+                Motor_Set(0, 0);
+                pit_disable(TIM6_PIT);
+                //               Motor_Set(0,0);
+            }
+            cntt = 0;
+        }
 
     }
 }
 
-void TIM6_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM6, TIM_IT_Update );
-       ServoPidSetAngle();
-       if(garage_flag==1)
-                  {
-                   Motor_Set(200,600);
-                   pit_ms_init(TIM5_PIT,10);
-                  }
+void TIM6_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+        ServoPidSetAngle();
+        if (garage_flag == 1) {
+            Motor_Set(200, 600);
+            pit_ms_init(TIM5_PIT, 10);
+        }
 
-      //         else if(obstacles_flag==1)
-      //            {
-      //
-      //                 if(stoppp==1)
-      //                 {
-      //                  Motor_Set(1000,4000);
-      //
-      //                 }
-      //                 else
-      //                 {
-      //                     Motor_Set(5000,300);
-      //                     pit_ms_init(TIM3_PIT,15);
-      //                 }
-      //            }
+            //         else if(obstacles_flag==1)
+            //            {
+            //
+            //                 if(stoppp==1)
+            //                 {
+            //                  Motor_Set(1000,4000);
+            //
+            //                 }
+            //                 else
+            //                 {
+            //                     Motor_Set(5000,300);
+            //                     pit_ms_init(TIM3_PIT,15);
+            //                 }
+            //            }
 
 
-               else if(Straight_Flag==1)
-                   Motor_Set(2500,2500);
-               else if(Straight_Flag==2)//加了一个else
-                   Motor_Set(1600,1600);
-               else Motor_Set(2500,2500);
-     }
+        else if (Straight_Flag == 1)
+            Motor_Set(2500, 2500);
+        else if (Straight_Flag == 2)//加了一个else
+            Motor_Set(1600, 1600);
+        else Motor_Set(2500, 2500);
+    }
 }
 
-void TIM7_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)
-    {
-       TIM_ClearITPendingBit(TIM7, TIM_IT_Update );
+void TIM7_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET) {
+        TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 
     }
 }
 
 
-void TIM8_UP_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM8, TIM_IT_Update) != RESET)
-    {
+void TIM8_UP_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM8, TIM_IT_Update) != RESET) {
         TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
 
     }
 }
 
 
-void TIM9_UP_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM9, TIM_IT_Update) != RESET)
-    {
+void TIM9_UP_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM9, TIM_IT_Update) != RESET) {
         TIM_ClearITPendingBit(TIM9, TIM_IT_Update);
 
     }
 }
 
 
-void TIM10_UP_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM10, TIM_IT_Update) != RESET)
-    {
+void TIM10_UP_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM10, TIM_IT_Update) != RESET) {
         TIM_ClearITPendingBit(TIM10, TIM_IT_Update);
 
     }
@@ -514,8 +482,7 @@ void TIM10_UP_IRQHandler(void)
 * Input          : None
 * Return         : None
 *******************************************************************************/
-void NMI_Handler(void)
-{
+void NMI_Handler(void) {
 }
 
 /*******************************************************************************
@@ -524,11 +491,9 @@ void NMI_Handler(void)
 * Input          : None
 * Return         : None
 *******************************************************************************/
-void HardFault_Handler(void)
-{
-  while (1)
-  {
-  }
+void HardFault_Handler(void) {
+    while (1) {
+    }
 }
 
 

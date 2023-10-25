@@ -76,22 +76,19 @@ static soft_iic_info_struct aht20_iic_struct;
 // 返回参数     uint8           0 - 初始化成功 1 - 初始化失败
 // 使用示例     调用该函数前，请先调用模拟IIC的初始化
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 aht20_self1_check(void)
-{
+static uint8 aht20_self1_check(void) {
     uint8 return_state = 0;
     uint16 timeout_count = 0;
     uint8 send_data[2] = {0x08, 0x00};
-    while((AHT20_CAL_ENABLE & aht20_read_register(AHT20_READ_STATE)) != AHT20_CAL_ENABLE)
-    {
+    while ((AHT20_CAL_ENABLE & aht20_read_register(AHT20_READ_STATE)) != AHT20_CAL_ENABLE) {
         //卡在这里原因有以下几点
         //1 AHT20 坏了，如果是新的这样的概率极低
         //2 接线错误或者没有接好
         //3 可能你需要外接上拉电阻，上拉到3.3V
         aht20_write_registers(AHT20_SELF_INIT, send_data, 2);
         system_delay_ms(10);
-        if(timeout_count ++ > AHT20_TIMEOUT_COUNT)
-        {
-            return_state =  1;
+        if (timeout_count++ > AHT20_TIMEOUT_COUNT) {
+            return_state = 1;
             break;
         }
     }
@@ -104,29 +101,27 @@ static uint8 aht20_self1_check(void)
 // 返回参数     void
 // 使用示例     aht20_read_data();                              // 执行该函数后，直接查看对应的变量即可
 //-------------------------------------------------------------------------------------------------------------------
-void aht20_read_data (void)
-{
+void aht20_read_data(void) {
     uint32 temp_data;
     uint8 data_buffer[6] = {0x33, 0x00, 0x00, 0x00, 0x00, 0x00};
 
     aht20_write_registers(AHT20_MEASURE_CMD, data_buffer, 2);
     system_delay_ms(75);
     data_buffer[0] = AHT20_STATE_BUSY;
-    while(data_buffer[0] & aht20_read_register(AHT20_READ_STATE))
-    {
+    while (data_buffer[0] & aht20_read_register(AHT20_READ_STATE)) {
         system_delay_ms(1);
     }
     aht20_read_registers(AHT20_READ_STATE, data_buffer, 6);
 
     temp_data = data_buffer[1];
     temp_data = (temp_data << 8) + data_buffer[2];
-    temp_data = (temp_data << 4) + (data_buffer[3]>>4 & 0x0f);
-    aht_humidity = ((double)temp_data/0x100000)*100;
+    temp_data = (temp_data << 4) + (data_buffer[3] >> 4 & 0x0f);
+    aht_humidity = ((double) temp_data / 0x100000) * 100;
 
     temp_data = (data_buffer[3] & 0x0f);
     temp_data = (temp_data << 8) + data_buffer[4];
     temp_data = (temp_data << 8) + data_buffer[5];
-    aht_temperature = ((double)temp_data/0x100000)*200-50;
+    aht_temperature = ((double) temp_data / 0x100000) * 200 - 50;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -135,8 +130,7 @@ void aht20_read_data (void)
 // 返回参数     uint8           0 - 初始化成功 1 - 初始化失败
 // 使用示例     调用该函数前，请先调用模拟IIC的初始化
 //-------------------------------------------------------------------------------------------------------------------
-uint8 aht20_init (void)
-{
+uint8 aht20_init(void) {
     uint8 return_state = 0;
 #if AHT20_USE_SOFT_IIC
     soft_iic_init(&aht20_iic_struct, AHT20_DEV_ADDR, AHT20_SOFT_IIC_DELAY, AHT20_SCL_PIN, AHT20_SDA_PIN);

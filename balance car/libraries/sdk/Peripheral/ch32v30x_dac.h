@@ -12,28 +12,27 @@
 #define __CH32V30x_DAC_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
 
 /* DAC Init structure definition */
-typedef struct
-{
-  uint32_t DAC_Trigger;                      /* Specifies the external trigger for the selected DAC channel.
+typedef struct {
+    uint32_t DAC_Trigger;                      /* Specifies the external trigger for the selected DAC channel.
                                                 This parameter can be a value of @ref DAC_trigger_selection */
 
-  uint32_t DAC_WaveGeneration;               /* Specifies whether DAC channel noise waves or triangle waves
+    uint32_t DAC_WaveGeneration;               /* Specifies whether DAC channel noise waves or triangle waves
                                                 are generated, or whether no wave is generated.
                                                 This parameter can be a value of @ref DAC_wave_generation */
 
-  uint32_t DAC_LFSRUnmask_TriangleAmplitude; /* Specifies the LFSR mask for noise wave generation or
+    uint32_t DAC_LFSRUnmask_TriangleAmplitude; /* Specifies the LFSR mask for noise wave generation or
                                                 the maximum amplitude triangle generation for the DAC channel. 
                                                 This parameter can be a value of @ref DAC_lfsrunmask_triangleamplitude */
 
-  uint32_t DAC_OutputBuffer;                 /* Specifies whether the DAC channel output buffer is enabled or disabled.
+    uint32_t DAC_OutputBuffer;                 /* Specifies whether the DAC channel output buffer is enabled or disabled.
                                                 This parameter can be a value of @ref DAC_output_buffer */
-}DAC_InitTypeDef;
+} DAC_InitTypeDef;
 
 
 /* DAC_trigger_selection */
@@ -88,7 +87,7 @@ typedef struct
 /* DAC_Channel_selection */
 #define DAC_Channel_1                      ((uint32_t)0x00000000)
 #define DAC_Channel_2                      ((uint32_t)0x00000010)
-																 
+
 /* DAC_data_alignment */
 #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
 #define DAC_Align_12b_L                    ((uint32_t)0x00000004)
@@ -100,16 +99,27 @@ typedef struct
 
 
 void DAC_DeInit(void);
-void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct);
-void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct);
+
+void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef *DAC_InitStruct);
+
+void DAC_StructInit(DAC_InitTypeDef *DAC_InitStruct);
+
 void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState);
+
 void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState);
+
 void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState);
+
 void DAC_DualSoftwareTriggerCmd(FunctionalState NewState);
+
 void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState);
+
 void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data);
+
 void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data);
+
 void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1);
+
 uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel);
 
 #ifdef __cplusplus

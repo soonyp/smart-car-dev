@@ -78,35 +78,37 @@
 
 typedef enum                                                                    // 枚举 K24C02 页索引 此枚举定义不允许用户修改
 {
-    K24C02_PAGE_0 , K24C02_PAGE_1 , K24C02_PAGE_2 , K24C02_PAGE_3 ,
-    K24C02_PAGE_4 , K24C02_PAGE_5 , K24C02_PAGE_6 , K24C02_PAGE_7 ,
-    K24C02_PAGE_8 , K24C02_PAGE_9 , K24C02_PAGE_10, K24C02_PAGE_11,
+    K24C02_PAGE_0, K24C02_PAGE_1, K24C02_PAGE_2, K24C02_PAGE_3,
+    K24C02_PAGE_4, K24C02_PAGE_5, K24C02_PAGE_6, K24C02_PAGE_7,
+    K24C02_PAGE_8, K24C02_PAGE_9, K24C02_PAGE_10, K24C02_PAGE_11,
     K24C02_PAGE_12, K24C02_PAGE_13, K24C02_PAGE_14, K24C02_PAGE_15,
     K24C02_PAGE_16, K24C02_PAGE_17, K24C02_PAGE_18, K24C02_PAGE_19,
     K24C02_PAGE_20, K24C02_PAGE_21, K24C02_PAGE_22, K24C02_PAGE_23,
     K24C02_PAGE_24, K24C02_PAGE_25, K24C02_PAGE_26, K24C02_PAGE_27,
     K24C02_PAGE_28, K24C02_PAGE_29, K24C02_PAGE_30, K24C02_PAGE_31,
-}k24c02_page_enum;
+} k24c02_page_enum;
 
 typedef union                                                                   // 固定的数据缓冲单元格式
 {
-    float   float_type;                                                         // float  类型
-    uint32  uint32_type;                                                        // uint32 类型
-    int32   int32_type;                                                         // int32  类型
-    uint16  uint16_type;                                                        // uint16 类型
-    int16   int16_type;                                                         // int16  类型
-    uint8   uint8_type;                                                         // uint8  类型
-    int8    int8_type;                                                          // int8   类型
-}k24c02_data_union;                                                             // 所有类型数据共用同一个 32bit 地址
+    float float_type;                                                         // float  类型
+    uint32 uint32_type;                                                        // uint32 类型
+    int32 int32_type;                                                         // int32  类型
+    uint16 uint16_type;                                                        // uint16 类型
+    int16 int16_type;                                                         // int16  类型
+    uint8 uint8_type;                                                         // uint8  类型
+    int8 int8_type;                                                          // int8   类型
+} k24c02_data_union;                                                             // 所有类型数据共用同一个 32bit 地址
 
 extern k24c02_data_union k24c02_union_buffer[K24C02_DATA_BUFFER_SIZE];
 
-void    k24c02_read_page                (k24c02_page_enum page_num, uint8 *buf, uint8 len);
-uint8   k24c02_write_page               (k24c02_page_enum page_num, const uint8 *buf, uint8 len);
+void k24c02_read_page(k24c02_page_enum page_num, uint8 *buf, uint8 len);
 
-void    k24c02_read_page_to_buffer      (k24c02_page_enum page_num);
-uint8   k24c02_write_page_from_buffer   (k24c02_page_enum page_num);
+uint8 k24c02_write_page(k24c02_page_enum page_num, const uint8 *buf, uint8 len);
 
-uint8   k24c02_init                     (void);
+void k24c02_read_page_to_buffer(k24c02_page_enum page_num);
+
+uint8 k24c02_write_page_from_buffer(k24c02_page_enum page_num);
+
+uint8 k24c02_init(void);
 
 #endif

@@ -51,31 +51,27 @@
 #include "zf_device_w25q32.h"
 
 
-static uint8 w25q32_read_dat()
-{
+static uint8 w25q32_read_dat() {
     //    W25Q32_CS(0);
     uint8 dat = spi_read_8bit(W25Q32_SPI);
     //    W25Q32_CS(1);
     return dat;
 }
 
-static void w25q32_read_dats(uint8 *dat, uint32 len)
-{
+static void w25q32_read_dats(uint8 *dat, uint32 len) {
     //    W25Q32_CS(0);
     spi_read_8bit_array(W25Q32_SPI, dat, len);
     //    W25Q32_CS(1);
 }
 
-static void w25q32_write_dat(uint8 dat)
-{
+static void w25q32_write_dat(uint8 dat) {
     //    W25Q32_CS(0);
     spi_write_8bit(W25Q32_SPI, dat);
     //    W25Q32_CS(1);
 }
 
 
-static void w25q32_write_dats(uint8 *dat, uint32 len)
-{
+static void w25q32_write_dats(uint8 *dat, uint32 len) {
     //    W25Q32_CS(0);
     spi_write_8bit_array(W25Q32_SPI, dat, len);
     //    W25Q32_CS(1);
@@ -86,8 +82,7 @@ static void w25q32_write_dats(uint8 *dat, uint32 len)
 // 参数说明     void
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-static void w25q32_write_enable(void)
-{
+static void w25q32_write_enable(void) {
     W25Q32_CS(0);
     w25q32_write_dat(W25Q32_WRITE_ENABLE);   //发送写使能
     W25Q32_CS(1);
@@ -115,9 +110,8 @@ static void w25q32_write_enable(void)
 //              SPR   RV  TB BP2 BP1 BP0 WEL BUSY
 // Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 w25q32_read_state(void)
-{
-    uint8 byte=0;
+static uint8 w25q32_read_state(void) {
+    uint8 byte = 0;
     W25Q32_CS(0);
     //发送读取状态寄存器命令
     //读取一个字节
@@ -133,9 +127,8 @@ static uint8 w25q32_read_state(void)
 // 参数说明     void
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-static void w25q32_wait_busy(void)
-{
-    while ((w25q32_read_state()&0x01)==0x01);   // 等待BUSY复位
+static void w25q32_wait_busy(void) {
+    while ((w25q32_read_state() & 0x01) == 0x01);   // 等待BUSY复位
 }
 
 
@@ -145,8 +138,7 @@ static void w25q32_wait_busy(void)
 // 返回参数     uint16   ID值
 // Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-static uint16 w25q32_read_device_id(void)
-{
+static uint16 w25q32_read_device_id(void) {
     uint8 send_dat[4] = {W25Q32_DEVICE_ID, 0x00, 0x00, 0x00};
     uint8 read_dat[2] = {0};
     W25Q32_CS(0);
@@ -162,8 +154,7 @@ static uint16 w25q32_read_device_id(void)
 // 参数说明     void
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-void w25q32_erase_chip(void)
-{
+void w25q32_erase_chip(void) {
     w25q32_wait_busy();
     W25Q32_CS(0);                               //使能器件
     w25q32_write_dat(W25Q32_CHIP_ERASE);        //发送片擦除命令
@@ -179,15 +170,14 @@ void w25q32_erase_chip(void)
 //  @since      v1.0
 // 使用示例     w25q32_read_byte(0x000001);
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 w25q32_read_byte(uint32 addr)
-{
+static uint8 w25q32_read_byte(uint32 addr) {
     uint8 temp;
     W25Q32_CS(0);
 
     w25q32_write_dat(W25Q32_READ_DATA);       // 发送读取命令
-    w25q32_write_dat((uint8)((addr)>>16));    // 发送24bit地址
-    w25q32_write_dat((uint8)((addr)>>8));
-    w25q32_write_dat((uint8)addr);
+    w25q32_write_dat((uint8) ((addr) >> 16));    // 发送24bit地址
+    w25q32_write_dat((uint8) ((addr) >> 8));
+    w25q32_write_dat((uint8) addr);
     temp = w25q32_read_dat();                 // 读取一个字节
 
     W25Q32_CS(1);
@@ -203,17 +193,16 @@ static uint8 w25q32_read_byte(uint32 addr)
 //  @since      v1.0
 // 使用示例     w25q32_check(W25Q32_BLOCK_63, W25Q32_SECTION_15, W25Q32_PAGE_00);
 //-------------------------------------------------------------------------------------------------------------------
-uint8 w25q32_check (w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num)
-{
+uint8 w25q32_check(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num) {
     uint16 temp_loop;
-    uint32 addr = (W25Q32_BASE_ADDR         +
-            W25Q32_BLOCK_SIZE*block_num     +
-            W25Q32_SECTION_SIZE*sector_num  +
-            W25Q32_PAGE_SIZE*page_num);     // 提取当前地址
+    uint32 addr = (W25Q32_BASE_ADDR +
+                   W25Q32_BLOCK_SIZE * block_num +
+                   W25Q32_SECTION_SIZE * sector_num +
+                   W25Q32_PAGE_SIZE * page_num);     // 提取当前地址
 
-    for(temp_loop = 0; temp_loop < W25Q32_PAGE_SIZE; temp_loop++)       // 循环读取 Flash 的值
+    for (temp_loop = 0; temp_loop < W25Q32_PAGE_SIZE; temp_loop++)       // 循环读取 Flash 的值
     {
-        if( w25q32_read_byte(addr + temp_loop) != 0xff )                // 如果不是 0xff 那就是有值
+        if (w25q32_read_byte(addr + temp_loop) != 0xff)                // 如果不是 0xff 那就是有值
             return 1;
     }
     return 0;
@@ -228,26 +217,23 @@ uint8 w25q32_check (w25q32_block_enum block_num, w25q32_section_enum sector_num,
 //  @since      v1.0
 // 使用示例     w25q32_erase_sector(W25Q32_BLOCK_63, W25Q32_SECTION_15);
 //-------------------------------------------------------------------------------------------------------------------
-uint8 w25q32_erase_sector(w25q32_block_enum block_num, w25q32_section_enum sector_num)
-{
-    uint32 addr = (W25Q32_BASE_ADDR  +
-            W25Q32_BLOCK_SIZE*block_num    +
-            W25Q32_SECTION_SIZE*sector_num +
-            W25Q32_PAGE_SIZE*0);                    // 提取当前地址
+uint8 w25q32_erase_sector(w25q32_block_enum block_num, w25q32_section_enum sector_num) {
+    uint32 addr = (W25Q32_BASE_ADDR +
+                   W25Q32_BLOCK_SIZE * block_num +
+                   W25Q32_SECTION_SIZE * sector_num +
+                   W25Q32_PAGE_SIZE * 0);                    // 提取当前地址
 
     W25Q32_CS(0);
 
     w25q32_write_dat(W25Q32_SECTOR_ERASE);          // 发送擦除扇区命令
-    w25q32_write_dat((uint8)((addr)>>16));          // 发送24bit地址
-    w25q32_write_dat((uint8)((addr)>>8));
-    w25q32_write_dat((uint8)addr);
+    w25q32_write_dat((uint8) ((addr) >> 16));          // 发送24bit地址
+    w25q32_write_dat((uint8) ((addr) >> 8));
+    w25q32_write_dat((uint8) addr);
 
     W25Q32_CS(1);
     w25q32_wait_busy();                             // 等待擦除完成
     return 0;
 }
-
-
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -259,13 +245,12 @@ uint8 w25q32_erase_sector(w25q32_block_enum block_num, w25q32_section_enum secto
 //  @since      v1.0
 // 使用示例     w25q32_erase_sector(0x000001, buf, 16);
 //-------------------------------------------------------------------------------------------------------------------
-static void w25q32_read_addr_dats(uint32 addr, uint8 *buff, uint16 len)
-{
+static void w25q32_read_addr_dats(uint32 addr, uint8 *buff, uint16 len) {
     W25Q32_CS(0);
     w25q32_write_dat(W25Q32_FAST_READ);             // 发送读取命令
-    w25q32_write_dat((uint8)((addr)>>16));          // 发送24bit地址
-    w25q32_write_dat((uint8)((addr)>>8));
-    w25q32_write_dat((uint8)addr);
+    w25q32_write_dat((uint8) ((addr) >> 16));          // 发送24bit地址
+    w25q32_write_dat((uint8) ((addr) >> 8));
+    w25q32_write_dat((uint8) addr);
     w25q32_read_dat();                              // 快速读取要求第一个字节为空字节。
     w25q32_read_dats(buff, len);
 
@@ -282,15 +267,14 @@ static void w25q32_read_addr_dats(uint32 addr, uint8 *buff, uint16 len)
 //  @since      v1.0
 // 使用示例     w25q32_write_addr_dats(0x000001, buf, 16);
 //-------------------------------------------------------------------------------------------------------------------
-static void w25q32_write_addr_dats(uint32 addr, uint8 *buff, uint16 len)
-{
+static void w25q32_write_addr_dats(uint32 addr, uint8 *buff, uint16 len) {
 
     W25Q32_CS(0);
 
     w25q32_write_dat(W25Q32_PAGE_PROGRAM);          // 发送写页命令
-    w25q32_write_dat((uint8)((addr)>>16));          // 发送24bit地址
-    w25q32_write_dat((uint8)((addr)>>8));
-    w25q32_write_dat((uint8)addr);
+    w25q32_write_dat((uint8) ((addr) >> 16));          // 发送24bit地址
+    w25q32_write_dat((uint8) ((addr) >> 8));
+    w25q32_write_dat((uint8) addr);
     w25q32_write_dats(buff, len);
     W25Q32_CS(1);
     w25q32_wait_busy();                             // 等待写入结束
@@ -308,12 +292,11 @@ static void w25q32_write_addr_dats(uint32 addr, uint8 *buff, uint16 len)
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void w25q32_read_page(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
-        uint8 *buf, uint16 len)
-{
-    uint32  addr = (W25Q32_BASE_ADDR  +
-            W25Q32_BLOCK_SIZE*block_num    +
-            W25Q32_SECTION_SIZE*sector_num +
-            W25Q32_PAGE_SIZE*page_num);     // 提取当前 Flash 地址
+                      uint8 *buf, uint16 len) {
+    uint32 addr = (W25Q32_BASE_ADDR +
+                   W25Q32_BLOCK_SIZE * block_num +
+                   W25Q32_SECTION_SIZE * sector_num +
+                   W25Q32_PAGE_SIZE * page_num);     // 提取当前 Flash 地址
 
     w25q32_read_addr_dats(addr, buf, len);
 }
@@ -330,12 +313,11 @@ void w25q32_read_page(w25q32_block_enum block_num, w25q32_section_enum sector_nu
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void w25q32_write_page(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
-        uint8 *buf, uint16 len)
-{
-    uint32 flash_addr = (W25Q32_BASE_ADDR  +
-            W25Q32_BLOCK_SIZE*block_num    +
-            W25Q32_SECTION_SIZE*sector_num +
-            W25Q32_PAGE_SIZE*page_num);     // 提取当前 Flash 地址
+                       uint8 *buf, uint16 len) {
+    uint32 flash_addr = (W25Q32_BASE_ADDR +
+                         W25Q32_BLOCK_SIZE * block_num +
+                         W25Q32_SECTION_SIZE * sector_num +
+                         W25Q32_PAGE_SIZE * page_num);     // 提取当前 Flash 地址
 
     w25q32_write_addr_dats(flash_addr, buf, len);
 }
@@ -346,8 +328,7 @@ void w25q32_write_page(w25q32_block_enum block_num, w25q32_section_enum sector_n
 // 参数说明     void
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 w25q32_self_check(void)
-{
+static uint8 w25q32_self_check(void) {
     uint8 ret = 0;
     uint16 dat = 0;
     volatile int16 timeout_count = W25Q32_TIMEOUT_COUNT;
@@ -359,21 +340,18 @@ static uint8 w25q32_self_check(void)
 //#define W25Q64                   0XEF16
 //#define W25Q128                  0XEF17
 
-    while(((dat & 0xEF10) != 0xEF10) && timeout_count)                                         // 判断 ID 是否正确
+    while (((dat & 0xEF10) != 0xEF10) && timeout_count)                                         // 判断 ID 是否正确
     {
-       timeout_count--;
+        timeout_count--;
 
-       dat = w25q32_read_device_id();
+        dat = w25q32_read_device_id();
 
-       system_delay_ms(1);
+        system_delay_ms(1);
     }
 
-    if(timeout_count < 0)
-    {
+    if (timeout_count < 0) {
         ret = 1;
-    }
-    else
-    {
+    } else {
         ret = 0;
     }
 
@@ -386,12 +364,10 @@ static uint8 w25q32_self_check(void)
 // 返回参数     uint8         1-初始化失败 0-初始化成功
 // Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-uint8 w25q32_init(void)
-{
+uint8 w25q32_init(void) {
     spi_init(W25Q32_SPI, SPI_MODE0, W25Q32_SPI_SPEED, W25Q32_SPC_PIN, W25Q32_SDI_PIN, W25Q32_SDO_PIN, W25Q32_CS_PIN);
 
-    if( w25q32_self_check() )
-    {
+    if (w25q32_self_check()) {
         zf_log(0, "W25Q32 self check error.");
         return 1;
     }

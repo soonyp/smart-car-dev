@@ -55,7 +55,6 @@
 #include "zf_driver_delay.h"
 
 
-
 #define WIRELESS_CH573_NUMBER            1                                           // 定义接入的CH573无线模块的数量 默认最大就三个
 #define WIRELESS_CH573_INDEX             UART_2                                      // CH573无线模块1 对应使用的串口号
 #define WIRELESS_CH573_BUAD_RATE         115200                                      // CH573无线模块1 对应使用的串口波特率
@@ -68,13 +67,18 @@
 #define WIRELESS_CH573_TIMEOUT_COUNT     0x64
 
 
+void wireless_ch573_callback(void);
 
-void        wireless_ch573_callback      (void);
-uint32      wireless_ch573_send_byte         (const uint8 data);
-uint32      wireless_ch573_send_buff         (const uint8 *buff, uint32 len);
-uint32      wireless_ch573_send_string       (const uint8 *str);
-void        wireless_ch573_send_image        (const uint8 *image_addr, uint32 image_size);
-uint32      wireless_ch573_read_buff     (uint8 *buff, uint32 len);
-uint8       wireless_ch573_init          (void);
+uint32 wireless_ch573_send_byte(const uint8 data);
+
+uint32 wireless_ch573_send_buff(const uint8 *buff, uint32 len);
+
+uint32 wireless_ch573_send_string(const uint8 *str);
+
+void wireless_ch573_send_image(const uint8 *image_addr, uint32 image_size);
+
+uint32 wireless_ch573_read_buff(uint8 *buff, uint32 len);
+
+uint8 wireless_ch573_init(void);
 
 #endif

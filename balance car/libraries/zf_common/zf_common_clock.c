@@ -46,14 +46,13 @@ uint32 system_clock = SYSTEM_CLOCK_144M;                               // 系统时
 // 参数说明     void
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-void clock_reset(void)
-{
-    RCC->CTLR  |= (uint32) 0x00000001;      //使能HSI振荡器
+void clock_reset(void) {
+    RCC->CTLR |= (uint32) 0x00000001;      //使能HSI振荡器
     RCC->CFGR0 &= (uint32) 0xF8FF0000;
-    RCC->CTLR  &= (uint32) 0xFEF6FFFF;
-    RCC->CTLR  &= (uint32) 0xFFFBFFFF;
+    RCC->CTLR &= (uint32) 0xFEF6FFFF;
+    RCC->CTLR &= (uint32) 0xFFFBFFFF;
     RCC->CFGR0 &= (uint32) 0xFF80FFFF;
-    RCC->INTR   = (uint32) 0x009F0000;      // 禁用所有中断并清除挂起位
+    RCC->INTR = (uint32) 0x009F0000;      // 禁用所有中断并清除挂起位
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -61,8 +60,7 @@ void clock_reset(void)
 // 参数说明     clock           时钟频率 推荐使用 zf_common_clock.h 中 system_clock_enum 定义的选项
 // 返回参数     void
 //-------------------------------------------------------------------------------------------------------------------
-void clock_set_freq(uint32 clock)
-{
+void clock_set_freq(uint32 clock) {
     clock_reset();
     __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
 
@@ -74,17 +72,13 @@ void clock_set_freq(uint32 clock)
         StartUpCounter++;
     } while ((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
 
-    if ((RCC->CTLR & RCC_HSERDY) != RESET)
-    {
+    if ((RCC->CTLR & RCC_HSERDY) != RESET) {
         HSEStatus = (uint32_t) 0x01;
-    }
-    else
-    {
+    } else {
         HSEStatus = (uint32_t) 0x00;
     }
 
-    if (HSEStatus == (uint32_t) 0x01)
-    {
+    if (HSEStatus == (uint32_t) 0x01) {
 
 //        /* Enable Prefetch Buffer */
 //        FLASH->ACTLR |= FLASH_ACTLR_PRFTBE; ((uint8_t)0x10)
@@ -102,44 +96,40 @@ void clock_set_freq(uint32 clock)
 
         /*  PLL configuration: PLLCLK = HSE * ? = ? MHz */
         RCC->CFGR0 &= (uint32) ((uint32) ~(RCC_PLLSRC | RCC_PLLXTPRE
-                | RCC_PLLMULL));
+                                           | RCC_PLLMULL));
 
         if (clock == SYSTEM_CLOCK_144M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL18_EXTEN);
+                                    | RCC_PLLMULL18_EXTEN);
         else if (clock == SYSTEM_CLOCK_120M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL15_EXTEN);
+                                    | RCC_PLLMULL15_EXTEN);
         else if (clock == SYSTEM_CLOCK_96M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL12_EXTEN);
+                                    | RCC_PLLMULL12_EXTEN);
         else if (clock == SYSTEM_CLOCK_72M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL9_EXTEN);
+                                    | RCC_PLLMULL9_EXTEN);
         else if (clock == SYSTEM_CLOCK_48M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL6_EXTEN);
+                                    | RCC_PLLMULL6_EXTEN);
         else if (clock == SYSTEM_CLOCK_24M)
             RCC->CFGR0 |= (uint32) (RCC_PLLSRC_HSE | RCC_PLLXTPRE_HSE
-                    | RCC_PLLMULL3_EXTEN);
+                                    | RCC_PLLMULL3_EXTEN);
 
         /* Enable PLL */
         RCC->CTLR |= RCC_PLLON;
         /* Wait till PLL is ready */
-        while((RCC->CTLR & RCC_PLLRDY) == 0)
-        {
+        while ((RCC->CTLR & RCC_PLLRDY) == 0) {
         }
         /* Select PLL as system clock source */
         RCC->CFGR0 &= (uint32_t) ((uint32_t) ~(RCC_SW));
         RCC->CFGR0 |= (uint32_t) RCC_SW_PLL;
         /* Wait till PLL is used as system clock source */
-        while ((RCC->CFGR0 & (uint32_t)RCC_SWS) != (uint32_t)0x08)
-        {
+        while ((RCC->CFGR0 & (uint32_t) RCC_SWS) != (uint32_t) 0x08) {
         }
-    }
-    else
-    {
-        while(1);
+    } else {
+        while (1);
         // 外部晶振不稳定或缺失 时钟设置失败
         /*
          * If HSE fails to start-up, the application will have wrong clock
@@ -154,8 +144,7 @@ void clock_set_freq(uint32 clock)
 // 返回参数     void
 // 使用示例     clock_init(SYSTEM_CLOCK_144M);                   // 初始化核心时钟为 144MHz
 //-------------------------------------------------------------------------------------------------------------------
-void clock_init(uint32 clock)
-{
+void clock_init(uint32 clock) {
 
     system_clock = clock;                                            // 记录核心时钟频率
     clock_reset();

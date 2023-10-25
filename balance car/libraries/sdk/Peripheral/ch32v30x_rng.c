@@ -19,14 +19,10 @@
  *
  * @return  none
  */
-void RNG_Cmd(FunctionalState NewState)
-{
-    if(NewState != DISABLE)
-    {
+void RNG_Cmd(FunctionalState NewState) {
+    if (NewState != DISABLE) {
         RNG->CR |= RNG_CR_RNGEN;
-    }
-    else
-    {
+    } else {
         RNG->CR &= ~RNG_CR_RNGEN;
     }
 }
@@ -38,8 +34,7 @@ void RNG_Cmd(FunctionalState NewState)
  *
  * @return  32-bit random number.
  */
-uint32_t RNG_GetRandomNumber(void)
-{
+uint32_t RNG_GetRandomNumber(void) {
     return RNG->DR;
 }
 
@@ -52,14 +47,10 @@ uint32_t RNG_GetRandomNumber(void)
  *
  * @return  32-bit random number.
  */
-void RNG_ITConfig(FunctionalState NewState)
-{
-    if(NewState != DISABLE)
-    {
+void RNG_ITConfig(FunctionalState NewState) {
+    if (NewState != DISABLE) {
         RNG->CR |= RNG_CR_IE;
-    }
-    else
-    {
+    } else {
         RNG->CR &= ~RNG_CR_IE;
     }
 }
@@ -76,16 +67,12 @@ void RNG_ITConfig(FunctionalState NewState)
  *
  * @return  32-bit random number.
  */
-FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG)
-{
+FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG) {
     FlagStatus bitstatus = RESET;
 
-    if((RNG->SR & RNG_FLAG) != (uint8_t)RESET)
-    {
+    if ((RNG->SR & RNG_FLAG) != (uint8_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
 
@@ -103,9 +90,8 @@ FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG)
  *
  * @return  32-bit random number.
  */
-void RNG_ClearFlag(uint8_t RNG_FLAG)
-{
-    RNG->SR = ~(uint32_t)(((uint32_t)RNG_FLAG) << 4);
+void RNG_ClearFlag(uint8_t RNG_FLAG) {
+    RNG->SR = ~(uint32_t) (((uint32_t) RNG_FLAG) << 4);
 }
 
 /*********************************************************************
@@ -119,16 +105,12 @@ void RNG_ClearFlag(uint8_t RNG_FLAG)
  *
  * @return  bitstatus£ºSET or RESET.
  */
-ITStatus RNG_GetITStatus(uint8_t RNG_IT)
-{
+ITStatus RNG_GetITStatus(uint8_t RNG_IT) {
     ITStatus bitstatus = RESET;
 
-    if((RNG->SR & RNG_IT) != (uint8_t)RESET)
-    {
+    if ((RNG->SR & RNG_IT) != (uint8_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
 
@@ -146,7 +128,6 @@ ITStatus RNG_GetITStatus(uint8_t RNG_IT)
  *
  * @return  None
  */
-void RNG_ClearITPendingBit(uint8_t RNG_IT)
-{
-    RNG->SR = (uint8_t)~RNG_IT;
+void RNG_ClearITPendingBit(uint8_t RNG_IT) {
+    RNG->SR = (uint8_t) ~RNG_IT;
 }

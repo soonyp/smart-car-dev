@@ -59,10 +59,10 @@
 
 #include "zf_device_dm1xa.h"
 
-static uint16                   dm1xa_distance_mm   = 6800;
-static uint32                   dm1xa_plus_count    = 0;
+static uint16 dm1xa_distance_mm = 6800;
+static uint32 dm1xa_plus_count = 0;
 //static uint32                   dm1xa_match_count   = 0;
-static dm1xa_type_enum          dm1xa_type          = DM1XA_NO_INIT;
+static dm1xa_type_enum dm1xa_type = DM1XA_NO_INIT;
 static dm1xa_ranging_state_enum dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_NO_SIGNAL;
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -72,45 +72,46 @@ static dm1xa_ranging_state_enum dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_NO_
 // 使用示例     dm1xa_sound_callback();
 // 备注信息     这个函数需要放在 DM1XA_FB_PIN / DM1XA_S_PIN 对应的外部中断服务函数里
 //-------------------------------------------------------------------------------------------------------------------
-void dm1xa_sound_callback (void)
-{
-    switch(dm1xa_type)
-    {
+void dm1xa_sound_callback(void) {
+    switch (dm1xa_type) {
         case DM1XA_NO_INIT:                                                     // 未初始化 退出
         {
-        }break;
+        }
+            break;
         case DM1XA_CHECK_TYPE:                                                  // 初始化阶段
         {
-            dm1xa_plus_count ++;                                                // 对 FB 或者 sound 信号计数
-        }break;
+            dm1xa_plus_count++;                                                // 对 FB 或者 sound 信号计数
+        }
+            break;
         case DM1XA_TRANSMITTER:                                                 // DM1TA 模块发起测距
         {
-            dm1xa_plus_count ++;                                                // 对 FB 信号计数
-            if(DM1XA_FB_SEND <= dm1xa_plus_count)                               // 达到规定的 DM1XA_FB_SEND 计数
+            dm1xa_plus_count++;                                                // 对 FB 信号计数
+            if (DM1XA_FB_SEND <= dm1xa_plus_count)                               // 达到规定的 DM1XA_FB_SEND 计数
             {
                 gpio_low(DM1XA_EN_PIN);                                         // 停止发送测距信号
                 dm1xa_plus_count = 0;                                           // 清空计数
             }
-        }break;
+        }
+            break;
         case DM1XA_RECEIVER:                                                    // DM1RA 获取测距信号
         {
-            if(DM1XA_RECEIVER_RANGING_WAIT_SOUND == dm1xa_ranging_state)        // 已经获取光信号 证明本次信号有效
+            if (DM1XA_RECEIVER_RANGING_WAIT_SOUND == dm1xa_ranging_state)        // 已经获取光信号 证明本次信号有效
             {
-                if(gpio_get_level(DM1XA_S_PIN))                                 // 声信号为高 是一个完整脉冲
+                if (gpio_get_level(DM1XA_S_PIN))                                 // 声信号为高 是一个完整脉冲
                 {
-                    if(150 < timer_get(DM1XA_TIM_INDEX) - dm1xa_plus_count)     // 判断这个声信号脉冲是否是低于 150us 的干扰噪声
+                    if (150 < timer_get(DM1XA_TIM_INDEX) - dm1xa_plus_count)     // 判断这个声信号脉冲是否是低于 150us 的干扰噪声
                     {
                         timer_clear(DM1XA_TIM_INDEX);                           // 清空时间
-                        dm1xa_distance_mm = (float)dm1xa_plus_count * DM1XA_SOUND_SPEED_MM_PER_US;	// 计算距离值 毫米单位
+                        dm1xa_distance_mm = (float) dm1xa_plus_count * DM1XA_SOUND_SPEED_MM_PER_US;    // 计算距离值 毫米单位
                         dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_SUCCESS;   // 测距信息更新为完成测距
                     }
-                }
-                else                                                            // 声信号为低 证明是脉冲起始
+                } else                                                            // 声信号为低 证明是脉冲起始
                 {
                     dm1xa_plus_count = timer_get(DM1XA_TIM_INDEX);              // 记录声光时间差
                 }
             }
-        }break;
+        }
+            break;
     }
 }
 
@@ -121,20 +122,20 @@ void dm1xa_sound_callback (void)
 // 使用示例     dm1xa_light_callback();
 // 备注信息     这个函数需要放在 DM1XA_EN_PIN / DM1XA_L_PIN 对应的外部中断服务函数里
 //-------------------------------------------------------------------------------------------------------------------
-void dm1xa_light_callback (void)
-{
-    switch(dm1xa_type)
-    {
+void dm1xa_light_callback(void) {
+    switch (dm1xa_type) {
         case DM1XA_NO_INIT:                                                     // 未初始化 退出
         case DM1XA_CHECK_TYPE:                                                  // 初始化阶段
         case DM1XA_TRANSMITTER:                                                 // DM1TA 模块发起测距
         {
-        }break;
+        }
+            break;
         case DM1XA_RECEIVER:                                                    // DM1RA 获取测距信号
         {
             timer_clear(DM1XA_TIM_INDEX);                                       // 清空时间 准备获取声光时间差
             dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_WAIT_SOUND;            // 标记获取到光信号
-        }break;
+        }
+            break;
     }
 }
 
@@ -151,25 +152,25 @@ void dm1xa_light_callback (void)
 //              如果 dm1xa_receiver_ranging 的调用周期不在这个范围
 //              那么可能出现本驱动的测距信息异常
 //-------------------------------------------------------------------------------------------------------------------
-uint16 dm1xa_receiver_ranging (void)
-{
-    switch(dm1xa_ranging_state)
-    {
+uint16 dm1xa_receiver_ranging(void) {
+    switch (dm1xa_ranging_state) {
         case DM1XA_RECEIVER_RANGING_NO_SIGNAL:                                  // 无测距信号
         case DM1XA_RECEIVER_RANGING_WAIT_SOUND:                                 // 正获取测距信号
         {
-            if(DM1XA_RECEIVER_TIMEROUT_US <= timer_get(DM1XA_TIM_INDEX))        // 如果距离上次光信号不超过 30ms
+            if (DM1XA_RECEIVER_TIMEROUT_US <= timer_get(DM1XA_TIM_INDEX))        // 如果距离上次光信号不超过 30ms
             {
                 dm1xa_distance_mm = 6800;                                       // 恢复默认最大输出值
             }
-        }break;
+        }
+            break;
         case DM1XA_RECEIVER_RANGING_SUCCESS:                                    // 完成测距信息
         {
             dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_NO_SIGNAL;             // 标记测距信号恢复默认
-        }break;
-        default:
-        {
-        }break;
+        }
+            break;
+        default: {
+        }
+            break;
     }
     return dm1xa_distance_mm;
 }
@@ -189,8 +190,7 @@ uint16 dm1xa_receiver_ranging (void)
 //              如果 dm1xa_transmitter_ranging 的调用周期不在这个范围
 //              那么可能出现本驱动的测距信息异常
 //-------------------------------------------------------------------------------------------------------------------
-void dm1xa_transmitter_ranging (void)
-{
+void dm1xa_transmitter_ranging(void) {
     gpio_high(DM1XA_EN_PIN);                                                    // 拉高 EN 开启一次测距信息发送
 }
 
@@ -201,12 +201,10 @@ void dm1xa_transmitter_ranging (void)
 // 使用示例     dm1xa_init();
 // 备注信息     会自动识别是 DM1TA 模块还是 DM1RA 模块
 //-------------------------------------------------------------------------------------------------------------------
-dm1xa_error_code_enum dm1xa_init (void)
-{
+dm1xa_error_code_enum dm1xa_init(void) {
     dm1xa_error_code_enum return_state = DM1XA_NO_ERROR;
 
-    do
-    {
+    do {
         dm1xa_distance_mm = 0;
         dm1xa_type = DM1XA_CHECK_TYPE;                                          // 模块状态标记为类型确认模式
 
@@ -214,9 +212,8 @@ dm1xa_error_code_enum dm1xa_init (void)
         gpio_init(DM1XA_L_PIN, GPI, GPIO_LOW, GPI_PULL_DOWN);                   // 两个引脚设置为下拉输入模式
 
         int16 i = DM1XA_INIT_MAX_COUNT;
-        while(i --)
-        {
-            if(gpio_get_level(DM1XA_S_PIN) && gpio_get_level(DM1XA_L_PIN))      // 两个都是高电平 那么可能是 DM1RA 模块
+        while (i--) {
+            if (gpio_get_level(DM1XA_S_PIN) && gpio_get_level(DM1XA_L_PIN))      // 两个都是高电平 那么可能是 DM1RA 模块
             {
                 dm1xa_type = DM1XA_RECEIVER;
                 dm1xa_ranging_state = DM1XA_RECEIVER_RANGING_NO_SIGNAL;
@@ -229,27 +226,23 @@ dm1xa_error_code_enum dm1xa_init (void)
             }
             system_delay_us(100);
         }
-        if(0 > i)
-        {
+        if (0 > i) {
             exti_init(DM1XA_FB_PIN, EXTI_TRIGGER_FALLING);
             gpio_init(DM1XA_EN_PIN, GPO, GPIO_LOW, GPO_PUSH_PULL);
             dm1xa_plus_count = 0;
             gpio_high(DM1XA_EN_PIN);
             system_delay_us(210);
             gpio_low(DM1XA_EN_PIN);
-            if(6 < dm1xa_plus_count && 10 > dm1xa_plus_count)
-            {
+            if (6 < dm1xa_plus_count && 10 > dm1xa_plus_count) {
                 dm1xa_type = DM1XA_TRANSMITTER;
                 dm1xa_plus_count = 0;
-            }
-            else
-            {
+            } else {
                 dm1xa_type = DM1XA_NO_INIT;
                 return_state = DM1XA_TYPE_ERROR;
                 break;
             }
         }
-    }while(0);
+    } while (0);
 
     return return_state;
 }

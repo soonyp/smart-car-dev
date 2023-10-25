@@ -44,11 +44,12 @@
 extern fifo_struct camera_receiver_fifo;
 extern uint8 camera_receiver_buffer[CAMERA_RECEIVER_BUFFER_SIZE];
 
-extern  uint8 camera_send_image_frame_header[4];
+extern uint8 camera_send_image_frame_header[4];
 
-void    camera_binary_image_decompression   (const uint8 *data1, uint8 *data2, uint32 image_size);
-void    camera_send_image                   (uart_index_enum uartn, const uint8 *image_addr, uint32 image_size);
+void camera_binary_image_decompression(const uint8 *data1, uint8 *data2, uint32 image_size);
 
-void    camera_fifo_init                    (void);
+void camera_send_image(uart_index_enum uartn, const uint8 *image_addr, uint32 image_size);
+
+void camera_fifo_init(void);
 
 #endif

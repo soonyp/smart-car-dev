@@ -169,23 +169,20 @@
 #define DL1A_PRERANGE_OVERHEAD                              ( 660  )
 #define DL1A_FINALlRANGE_OVERHEAD                           ( 550  )
 
-typedef enum
-{
+typedef enum {
     DL1A_VCSEL_PERIOD_PER_RANGE,
     DL1A_VCSEL_PERIOD_FINAL_RANGE,
-}dl1a_vcsel_period_type_enum;
+} dl1a_vcsel_period_type_enum;
 
-typedef struct
-{
+typedef struct {
     uint8 tcc;
     uint8 msrc;
     uint8 dss;
     uint8 pre_range;
     uint8 final_range;
-}dl1a_sequence_enables_step_struct;
+} dl1a_sequence_enables_step_struct;
 
-typedef struct
-{
+typedef struct {
     uint16 pre_range_vcsel_period_pclks;
     uint16 final_range_vcsel_period_pclks;
 
@@ -195,14 +192,14 @@ typedef struct
     uint32 msrc_dss_tcc_us;
     uint32 pre_range_us;
     uint32 final_range_us;
-}dl1a_sequence_timeout_step_struct;
+} dl1a_sequence_timeout_step_struct;
 
 extern uint8 dl1a_finsh_flag;
 extern uint16 dl1a_distance_mm;
 
-void   dl1a_get_distance (void);
+void dl1a_get_distance(void);
 
-uint8  dl1a_init         (void);
+uint8 dl1a_init(void);
 
 #endif
 

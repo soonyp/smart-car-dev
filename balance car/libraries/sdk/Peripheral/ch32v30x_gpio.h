@@ -7,55 +7,52 @@
 *                      GPIO firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_GPIO_H
 #define __CH32V30x_GPIO_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
-                                 
+
 /* Output Maximum frequency selection */
-typedef enum
-{ 
-  GPIO_Speed_10MHz = 1,
-  GPIO_Speed_2MHz, 
-  GPIO_Speed_50MHz
-}GPIOSpeed_TypeDef;
+typedef enum {
+    GPIO_Speed_10MHz = 1,
+    GPIO_Speed_2MHz,
+    GPIO_Speed_50MHz
+} GPIOSpeed_TypeDef;
 
 /* Configuration Mode enumeration */
-typedef enum
-{ GPIO_Mode_AIN = 0x0,
-  GPIO_Mode_IN_FLOATING = 0x04,
-  GPIO_Mode_IPD = 0x28,
-  GPIO_Mode_IPU = 0x48,
-  GPIO_Mode_Out_OD = 0x14,
-  GPIO_Mode_Out_PP = 0x10,
-  GPIO_Mode_AF_OD = 0x1C,
-  GPIO_Mode_AF_PP = 0x18
-}GPIOMode_TypeDef;
+typedef enum {
+    GPIO_Mode_AIN = 0x0,
+    GPIO_Mode_IN_FLOATING = 0x04,
+    GPIO_Mode_IPD = 0x28,
+    GPIO_Mode_IPU = 0x48,
+    GPIO_Mode_Out_OD = 0x14,
+    GPIO_Mode_Out_PP = 0x10,
+    GPIO_Mode_AF_OD = 0x1C,
+    GPIO_Mode_AF_PP = 0x18
+} GPIOMode_TypeDef;
 
 /* GPIO Init structure definition */
-typedef struct
-{
-  uint16_t GPIO_Pin;             /* Specifies the GPIO pins to be configured.
+typedef struct {
+    uint16_t GPIO_Pin;             /* Specifies the GPIO pins to be configured.
                                     This parameter can be any value of @ref GPIO_pins_define */
 
-  GPIOSpeed_TypeDef GPIO_Speed;  /* Specifies the speed for the selected pins.
+    GPIOSpeed_TypeDef GPIO_Speed;  /* Specifies the speed for the selected pins.
                                     This parameter can be a value of @ref GPIOSpeed_TypeDef */
 
-  GPIOMode_TypeDef GPIO_Mode;    /* Specifies the operating mode for the selected pins.
+    GPIOMode_TypeDef GPIO_Mode;    /* Specifies the operating mode for the selected pins.
                                     This parameter can be a value of @ref GPIOMode_TypeDef */
-}GPIO_InitTypeDef;
+} GPIO_InitTypeDef;
 
 /* Bit_SET and Bit_RESET enumeration */
-typedef enum
-{
-	Bit_RESET = 0,
-  Bit_SET
-}BitAction;
+typedef enum {
+    Bit_RESET = 0,
+    Bit_SET
+} BitAction;
 
 /* GPIO_pins_define */
 #define GPIO_Pin_0                  ((uint16_t)0x0001)  /* Pin 0 selected */
@@ -164,23 +161,40 @@ typedef enum
 #define GPIO_ETH_MediaInterface_RMII   ((u32)0x00000001)
 
 
-void GPIO_DeInit(GPIO_TypeDef* GPIOx);
+void GPIO_DeInit(GPIO_TypeDef *GPIOx);
+
 void GPIO_AFIODeInit(void);
-void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct);
-void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct);
-uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx);
-uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx);
-void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal);
-void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal);
-void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+void GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_InitStruct);
+
+void GPIO_StructInit(GPIO_InitTypeDef *GPIO_InitStruct);
+
+uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
+uint16_t GPIO_ReadInputData(GPIO_TypeDef *GPIOx);
+
+uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
+uint16_t GPIO_ReadOutputData(GPIO_TypeDef *GPIOx);
+
+void GPIO_SetBits(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
+void GPIO_ResetBits(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
+void GPIO_WriteBit(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, BitAction BitVal);
+
+void GPIO_Write(GPIO_TypeDef *GPIOx, uint16_t PortVal);
+
+void GPIO_PinLockConfig(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
 void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource);
+
 void GPIO_EventOutputCmd(FunctionalState NewState);
+
 void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState);
+
 void GPIO_EXTILineConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource);
+
 void GPIO_ETH_MediaInterfaceConfig(uint32_t GPIO_ETH_MediaInterface);
 
 #ifdef __cplusplus

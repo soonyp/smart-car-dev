@@ -42,8 +42,8 @@
 #include "zf_common_debug.h"
 
 
-static  ADC_TypeDef    *adc_index[2]        = {ADC1, ADC2};
-static  uint8           adc_resolution[2]   = {ADC_12BIT, ADC_12BIT};
+static ADC_TypeDef *adc_index[2] = {ADC1, ADC2};
+static uint8 adc_resolution[2] = {ADC_12BIT, ADC_12BIT};
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -53,14 +53,13 @@ static  uint8           adc_resolution[2]   = {ADC_12BIT, ADC_12BIT};
 // 返回参数     void
 // 使用示例     adc_convert(ADC_IN0_A0, ADC_8BIT);  //采集A0端口返回8位分辨率的AD值
 //-------------------------------------------------------------------------------------------------------------------
-uint16 adc_convert (adc_channel_enum ch)
-{
+uint16 adc_convert(adc_channel_enum ch) {
     uint8 adc = ((ch & 0xF000) >> 12);
-    uint8 adc_ch = (uint8)(ch >> 8) & 0xF;
+    uint8 adc_ch = (uint8) (ch >> 8) & 0xF;
 
     ADC_RegularChannelConfig(adc_index[adc], adc_ch, 1, ADC_SampleTime_41Cycles5);  // 使能对应通道
     ADC_SoftwareStartConvCmd(adc_index[adc], ENABLE);                               // 开始数据转换
-    while(!ADC_GetFlagStatus(adc_index[adc], ADC_FLAG_EOC ));                       // 等待数据转换完成
+    while (!ADC_GetFlagStatus(adc_index[adc], ADC_FLAG_EOC));                       // 等待数据转换完成
     return ((adc_index[adc]->RDATAR) >> adc_resolution[adc]);                       // 读取数据
 }
 
@@ -72,20 +71,18 @@ uint16 adc_convert (adc_channel_enum ch)
 // 返回参数     void
 // 使用示例     adc_mean_filter(ADC_IN0_A0, ADC_8BIT,5);  //采集A0端口返回8位分辨率的AD值，采集五次取平均值
 //-------------------------------------------------------------------------------------------------------------------
-uint16 adc_mean_filter_convert (adc_channel_enum ch, const uint8 count)
-{
+uint16 adc_mean_filter_convert(adc_channel_enum ch, const uint8 count) {
     uint8 i;
     uint32 sum;
 
     zf_assert(count);//断言次数不能为0
 
     sum = 0;
-    for(i=0; i<count; i++)
-    {
+    for (i = 0; i < count; i++) {
         sum += adc_convert(ch);
     }
 
-    sum = sum/count;
+    sum = sum / count;
     return sum;
 }
 
@@ -95,20 +92,16 @@ uint16 adc_mean_filter_convert (adc_channel_enum ch, const uint8 count)
 // 返回参数     void
 // 使用示例    adc_init(ADC_IN0_A0);//初始化A0引脚为ADC功能
 //-------------------------------------------------------------------------------------------------------------------
-void adc_init (adc_channel_enum ch, adc_resolution_enum resolution)
-{
+void adc_init(adc_channel_enum ch, adc_resolution_enum resolution) {
     ADC_InitTypeDef ADC_InitStructure = {0};
 
     uint8 adc = ((ch & 0xF000) >> 12);
-    gpio_init(ch&0xFF, GPI, 0, GPI_ANAOG_IN);                           // GPIO初始化
+    gpio_init(ch & 0xFF, GPI, 0, GPI_ANAOG_IN);                           // GPIO初始化
 
-    if(adc == 0)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 , ENABLE );          // 使能ADC1通道时钟
-    }
-    else if(adc == 1)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2 , ENABLE );          // 使能ADC2通道时钟
+    if (adc == 0) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);          // 使能ADC1通道时钟
+    } else if (adc == 1) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE);          // 使能ADC2通道时钟
     }
 
     RCC_ADCCLKConfig(RCC_PCLK2_Div8);
@@ -130,9 +123,9 @@ void adc_init (adc_channel_enum ch, adc_resolution_enum resolution)
     ADC_BufferCmd(adc_index[adc], DISABLE);                             // disable buffer
 
     ADC_ResetCalibration(adc_index[adc]);                               // 使能复位校准
-    while(ADC_GetResetCalibrationStatus(adc_index[adc]));               // 等待复位校准结束
+    while (ADC_GetResetCalibrationStatus(adc_index[adc]));               // 等待复位校准结束
     ADC_StartCalibration(adc_index[adc]);                               // 开启AD校准
-    while(ADC_GetCalibrationStatus(adc_index[adc]));                    // 等待校准结束
+    while (ADC_GetCalibrationStatus(adc_index[adc]));                    // 等待校准结束
     //ADC_BufferCmd(ADC1, ENABLE);                                      // enable buffer
 
     adc_resolution[adc] = resolution;                                   // 记录ADC精度 将在采集时使用

@@ -8,8 +8,7 @@
 
 //int swap;
 
-void Motor_Init(void)
-{
+void Motor_Init(void) {
 
     gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
     gpio_init(D15, GPO, 0, GPIO_PIN_CONFIG);
@@ -23,56 +22,49 @@ void Motor_Init(void)
 }
 
 
-
-void Motor_Set (int motor1,int motor2) // motor1左轮，motor2右轮;
+void Motor_Set(int motor1, int motor2) // motor1左轮，motor2右轮;
 {
-    int motorL=0,motorR=0;
+    int motorL = 0, motorR = 0;
     //swap=swap;
-    motorL=-motor2;
-    motorR=-motor1;
+    motorL = -motor2;
+    motorR = -motor1;
     //根据参数正负 设置选择方向
-    if(motorL < 0)
-    {gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
+    if (motorL < 0) {
+        gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
 
-    }
-    else     gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
+    } else gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
 
-    if(motorR < 0)
-    { gpio_init(D15, GPO, 1, GPIO_PIN_CONFIG);
+    if (motorR < 0) {
+        gpio_init(D15, GPO, 1, GPIO_PIN_CONFIG);
 
-    }
-      else    gpio_init(D15, GPO, 0, GPIO_PIN_CONFIG);
+    } else gpio_init(D15, GPO, 0, GPIO_PIN_CONFIG);
 
     //motor1 设置左轮的转速
-    if(motorL < 0)
-    {
+    if (motorL < 0) {
 
 
-        if(motorL < -8000) motorL = -8000;//超过PWM幅值
-                 pwm_set_duty(TIM4_PWM_MAP1_CH2_D13,-motorL);
+        if (motorL < -8000) motorL = -8000;//超过PWM幅值
+        pwm_set_duty(TIM4_PWM_MAP1_CH2_D13, -motorL);
 
-    }
-    else{
+    } else {
 
-        if(motorL > 8000) motorL = 8000;
-                pwm_set_duty(TIM4_PWM_MAP1_CH2_D13,motorL);
+        if (motorL > 8000) motorL = 8000;
+        pwm_set_duty(TIM4_PWM_MAP1_CH2_D13, motorL);
 
     }
 
     //motor2 设置右轮的转速
-    if(motorR < 0)
-       {
+    if (motorR < 0) {
         gpio_init(D15, GPO, 1, GPIO_PIN_CONFIG);
-        if(motorR < -8000) motorR = -8000;//超过PWM幅值
-                       pwm_set_duty(TIM4_PWM_MAP1_CH3_D14,-motorR);
+        if (motorR < -8000) motorR = -8000;//超过PWM幅值
+        pwm_set_duty(TIM4_PWM_MAP1_CH3_D14, -motorR);
 
-       }
-    else{
+    } else {
         gpio_init(D15, GPO, 0, GPIO_PIN_CONFIG);
-        if(motorR > 8000) motorR = 8000;
-                         pwm_set_duty(TIM4_PWM_MAP1_CH3_D14,motorR);
+        if (motorR > 8000) motorR = 8000;
+        pwm_set_duty(TIM4_PWM_MAP1_CH3_D14, motorR);
 
 
-       }
+    }
 }
 

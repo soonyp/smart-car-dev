@@ -40,14 +40,16 @@
 
 #include "zf_driver_gpio.h"
 
-typedef enum{                                                                   // 枚举 EXTI 触发信号  此枚举定义不允许用户修改
+typedef enum {                                                                   // 枚举 EXTI 触发信号  此枚举定义不允许用户修改
     EXTI_TRIGGER_RISING = 0x08,                                                        // 上升沿触发模式
     EXTI_TRIGGER_FALLING = 0x0C,                                                       // 下降沿触发模式
     EXTI_TRIGGER_BOTH = 0x10,                                                          // 双边沿触发模式
-}exti_trigger_enum;
+} exti_trigger_enum;
 
-void    exti_enable   (gpio_pin_enum pin);
-void    exti_disable  (gpio_pin_enum pin);
-void    exti_init     (gpio_pin_enum pin, exti_trigger_enum trigger);
+void exti_enable(gpio_pin_enum pin);
+
+void exti_disable(gpio_pin_enum pin);
+
+void exti_init(gpio_pin_enum pin, exti_trigger_enum trigger);
 
 #endif

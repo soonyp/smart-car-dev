@@ -88,34 +88,34 @@
 #define DM1XA_RECEIVER_TIMEROUT_US          ( 30000 )                           // 超时设置 这里不允许用户修改
 
 // DM1XA 模块错误识别码 用户不允许更改
-typedef enum
-{
+typedef enum {
     DM1XA_NO_ERROR,
     DM1XA_TYPE_ERROR,
-}dm1xa_error_code_enum;
+} dm1xa_error_code_enum;
 
 // DM1XA 模块错误识别码 用户不允许更改
-typedef enum
-{
+typedef enum {
     DM1XA_RECEIVER_RANGING_NO_SIGNAL,
     DM1XA_RECEIVER_RANGING_WAIT_SOUND,
     DM1XA_RECEIVER_RANGING_SUCCESS,
-}dm1xa_ranging_state_enum;
+} dm1xa_ranging_state_enum;
 
 // DM1XA 模块类型 用户不允许更改
-typedef enum
-{
+typedef enum {
     DM1XA_NO_INIT,
     DM1XA_CHECK_TYPE,
     DM1XA_TRANSMITTER,
     DM1XA_RECEIVER,
-}dm1xa_type_enum;
+} dm1xa_type_enum;
 
-void                    dm1xa_sound_callback        (void);
-void                    dm1xa_light_callback        (void);
-    
-uint16                  dm1xa_receiver_ranging      (void);
-void                    dm1xa_transmitter_ranging   (void);
-dm1xa_error_code_enum   dm1xa_init                  (void);
+void dm1xa_sound_callback(void);
+
+void dm1xa_light_callback(void);
+
+uint16 dm1xa_receiver_ranging(void);
+
+void dm1xa_transmitter_ranging(void);
+
+dm1xa_error_code_enum dm1xa_init(void);
 
 #endif

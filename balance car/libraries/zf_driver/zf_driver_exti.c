@@ -44,9 +44,8 @@
 // 返回参数     void
 // 使用示例     exti_enable(A0);
 //-------------------------------------------------------------------------------------------------------------------
-void exti_enable (gpio_pin_enum pin)
-{
-    EXTI->INTENR |= (0x00000001 << (pin&0x1F));
+void exti_enable(gpio_pin_enum pin) {
+    EXTI->INTENR |= (0x00000001 << (pin & 0x1F));
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -55,9 +54,8 @@ void exti_enable (gpio_pin_enum pin)
 // 返回参数     void
 // 使用示例     exti_disable(A0);
 //-------------------------------------------------------------------------------------------------------------------
-void exti_disable (gpio_pin_enum pin)
-{
-    EXTI->INTENR &= ~(0x00000001 << (pin&0x1F));
+void exti_disable(gpio_pin_enum pin) {
+    EXTI->INTENR &= ~(0x00000001 << (pin & 0x1F));
 }
 
 
@@ -68,9 +66,8 @@ void exti_disable (gpio_pin_enum pin)
 // 返回参数     void
 // 使用示例     exti_init(A0, EXTI_TRIGGER_RISING);
 //-------------------------------------------------------------------------------------------------------------------
-void exti_init (gpio_pin_enum pin, exti_trigger_enum trigger)
-{
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);                         // 复用时钟使能
+void exti_init(gpio_pin_enum pin, exti_trigger_enum trigger) {
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);                         // 复用时钟使能
     gpio_init(pin, GPI, GPIO_HIGH, GPI_PULL_UP);                                // 初始化选中的引脚
     GPIO_EXTILineConfig(pin >> 5, pin & 0x1F);                                  // 选择哪一组GPIO做中断
 
@@ -81,19 +78,19 @@ void exti_init (gpio_pin_enum pin, exti_trigger_enum trigger)
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;                                   // 使能或者失能
     EXTI_Init(&EXTI_InitStructure);
 
-    if((pin&0x1F) < 1)
-       interrupt_enable(EXTI0_IRQn);                                             // 使能 Line0 的中断响应
-    else if((pin&0x1F) < 2)
-       interrupt_enable(EXTI1_IRQn);                                             // 使能 Line1 的中断响应
-    else if((pin&0x1F) < 3)
-       interrupt_enable(EXTI2_IRQn);                                             // 使能 Line2 的中断响应
-    else if((pin&0x1F) < 4)
-       interrupt_enable(EXTI3_IRQn);                                             // 使能 Line3 的中断响应
-    else if((pin&0x1F) < 5)
-       interrupt_enable(EXTI4_IRQn);                                             // 使能 Line4 的中断响应
-    else if((pin&0x1F) < 10)
-       interrupt_enable(EXTI9_5_IRQn);                                           // 使能 Line5-9 的中断响应
+    if ((pin & 0x1F) < 1)
+        interrupt_enable(EXTI0_IRQn);                                             // 使能 Line0 的中断响应
+    else if ((pin & 0x1F) < 2)
+        interrupt_enable(EXTI1_IRQn);                                             // 使能 Line1 的中断响应
+    else if ((pin & 0x1F) < 3)
+        interrupt_enable(EXTI2_IRQn);                                             // 使能 Line2 的中断响应
+    else if ((pin & 0x1F) < 4)
+        interrupt_enable(EXTI3_IRQn);                                             // 使能 Line3 的中断响应
+    else if ((pin & 0x1F) < 5)
+        interrupt_enable(EXTI4_IRQn);                                             // 使能 Line4 的中断响应
+    else if ((pin & 0x1F) < 10)
+        interrupt_enable(EXTI9_5_IRQn);                                           // 使能 Line5-9 的中断响应
     else
-       interrupt_enable(EXTI15_10_IRQn);                                         // 使能 Line10-15 的中断响应
+        interrupt_enable(EXTI15_10_IRQn);                                         // 使能 Line10-15 的中断响应
 }
 

@@ -7,12 +7,12 @@
 *                      BKP firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_BKP_H
 #define __CH32V30x_BKP_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
@@ -26,7 +26,7 @@
 #define BKP_RTCOutputSource_CalibClock    ((uint16_t)0x0080)
 #define BKP_RTCOutputSource_Alarm         ((uint16_t)0x0100)
 #define BKP_RTCOutputSource_Second        ((uint16_t)0x0300)
-	 
+
 /* Data_Backup_Register */
 #define BKP_DR1                           ((uint16_t)0x0004)
 #define BKP_DR2                           ((uint16_t)0x0008)
@@ -73,16 +73,27 @@
 
 
 void BKP_DeInit(void);
+
 void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel);
+
 void BKP_TamperPinCmd(FunctionalState NewState);
+
 void BKP_ITConfig(FunctionalState NewState);
+
 void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource);
+
 void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue);
+
 void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data);
+
 uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR);
+
 FlagStatus BKP_GetFlagStatus(void);
+
 void BKP_ClearFlag(void);
+
 ITStatus BKP_GetITStatus(void);
+
 void BKP_ClearITPendingBit(void);
 
 #ifdef __cplusplus

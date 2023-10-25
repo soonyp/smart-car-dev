@@ -51,10 +51,9 @@
 // 使用示例         内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
 void dvp_gpio_init(
-        uint8 dvp_d0,uint8 dvp_d1,uint8 dvp_d2,uint8 dvp_d3,
-        uint8 dvp_d4,uint8 dvp_d5,uint8 dvp_d6,uint8 dvp_d7,
-        uint8 dvp_pclk,uint8 dvp_vsync,uint8 dvp_hsync)
-{
+        uint8 dvp_d0, uint8 dvp_d1, uint8 dvp_d2, uint8 dvp_d3,
+        uint8 dvp_d4, uint8 dvp_d5, uint8 dvp_d6, uint8 dvp_d7,
+        uint8 dvp_pclk, uint8 dvp_vsync, uint8 dvp_hsync) {
     //DVP_D0 到 DVP_ D7
     gpio_init(dvp_d0, GPI, 0, GPI_PULL_UP);
     gpio_init(dvp_d1, GPI, 0, GPI_PULL_UP);
@@ -67,7 +66,7 @@ void dvp_gpio_init(
     //DVP_VSYNC
     gpio_init(dvp_vsync, GPI, 0, GPI_PULL_UP);
     //DVP_PCLK
-    gpio_init(dvp_pclk,  GPI, 0, GPI_PULL_UP);
+    gpio_init(dvp_pclk, GPI, 0, GPI_PULL_UP);
     //DVP_HSYNC
     gpio_init(dvp_hsync, GPI, 0, GPI_PULL_UP);
 }
@@ -81,20 +80,19 @@ void dvp_gpio_init(
 // 返回参数     void
 // 使用示例            内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
-void dvp_camera_init(uint32 *image0_addr, uint32 *image1_addr, uint16 col_len, uint16 row_len)
-{
+void dvp_camera_init(uint32 *image0_addr, uint32 *image1_addr, uint16 col_len, uint16 row_len) {
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DVP, ENABLE);
 
     DVP->CR0 &= ~RB_DVP_MSK_DAT_MOD;
 
     /* VSYNC、HSYNC:High level active */
-    DVP->CR0 |= RB_DVP_D8_MOD | RB_DVP_JPEG | RB_DVP_V_POLAR ;
-    DVP->CR1 &= ~((RB_DVP_ALL_CLR)| RB_DVP_RCV_CLR);
+    DVP->CR0 |= RB_DVP_D8_MOD | RB_DVP_JPEG | RB_DVP_V_POLAR;
+    DVP->CR1 &= ~((RB_DVP_ALL_CLR) | RB_DVP_RCV_CLR);
     DVP->ROW_NUM = row_len;                    // rows行数
     DVP->COL_NUM = col_len;                    // cols列数
 
-    DVP->DMA_BUF0 = (uint32)image0_addr;               //DMA addr0
-    DVP->DMA_BUF1 = (uint32)image1_addr;               //DMA addr1
+    DVP->DMA_BUF0 = (uint32) image0_addr;               //DMA addr0
+    DVP->DMA_BUF1 = (uint32) image1_addr;               //DMA addr1
 
 
     /* Set frame capture rate */

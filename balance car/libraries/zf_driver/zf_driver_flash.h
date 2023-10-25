@@ -51,14 +51,14 @@
 
 typedef union                                                                   // 固定的数据缓冲单元格式
 {
-    float   float_type;                                                       // float  类型
-    uint32  uint32_type;                                                      // uint32 类型
-    int32   int32_type;                                                       // int32  类型
-    uint16  uint16_type;                                                      // uint16 类型
-    int16   int16_type;                                                       // int16  类型
-    uint8   uint8_type;                                                       // uint8  类型
-    int8    int8_type;                                                        // int8   类型
-}flash_data_union;                                                              // 所有类型数据共用同一个 32bit 地址
+    float float_type;                                                       // float  类型
+    uint32 uint32_type;                                                      // uint32 类型
+    int32 int32_type;                                                       // int32  类型
+    uint16 uint16_type;                                                      // uint16 类型
+    int16 int16_type;                                                       // int16  类型
+    uint8 uint8_type;                                                       // uint8  类型
+    int8 int8_type;                                                        // int8   类型
+} flash_data_union;                                                              // 所有类型数据共用同一个 32bit 地址
 
 
 /*
@@ -69,13 +69,18 @@ typedef union                                                                   
 
 extern flash_data_union flash_union_buffer[FLASH_DATA_BUFFER_SIZE];
 
-uint8   flash_check                         (uint32 sector_num, uint32 page_num);
-uint8   flash_erase_sector                  (uint32 sector_num, uint32 page_num);
-void    flash_read_page                     (uint32 sector_num, uint32 page_num, uint32 *buf, uint16 len);
-uint8   flash_write_page                    (uint32 sector_num, uint32 page_num, const uint32 *buf, uint16 len);
+uint8 flash_check(uint32 sector_num, uint32 page_num);
 
-void    flash_read_page_to_buffer           (uint32 sector_num, uint32 page_num);
-uint8   flash_write_page_from_buffer        (uint32 sector_num, uint32 page_num);
-void    flash_buffer_clear                  (void);
+uint8 flash_erase_sector(uint32 sector_num, uint32 page_num);
+
+void flash_read_page(uint32 sector_num, uint32 page_num, uint32 *buf, uint16 len);
+
+uint8 flash_write_page(uint32 sector_num, uint32 page_num, const uint32 *buf, uint16 len);
+
+void flash_read_page_to_buffer(uint32 sector_num, uint32 page_num);
+
+uint8 flash_write_page_from_buffer(uint32 sector_num, uint32 page_num);
+
+void flash_buffer_clear(void);
 
 #endif

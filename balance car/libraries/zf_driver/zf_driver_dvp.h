@@ -47,8 +47,10 @@
 
 
 void dvp_camera_init(uint32 *image0_addr, uint32 *image1_addr, uint16 col_len, uint16 row_len);
+
 void dvp_gpio_init(
-        uint8 dvp_d0,uint8 dvp_d1,uint8 dvp_d2,uint8 dvp_d3,
-        uint8 dvp_d4,uint8 dvp_d5,uint8 dvp_d6,uint8 dvp_d7,
-        uint8 dvp_pclk,uint8 dvp_vsync,uint8 dvp_hsync);
+        uint8 dvp_d0, uint8 dvp_d1, uint8 dvp_d2, uint8 dvp_d3,
+        uint8 dvp_d4, uint8 dvp_d5, uint8 dvp_d6, uint8 dvp_d7,
+        uint8 dvp_pclk, uint8 dvp_vsync, uint8 dvp_hsync);
+
 #endif

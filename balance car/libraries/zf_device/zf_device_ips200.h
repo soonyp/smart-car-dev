@@ -130,47 +130,61 @@
 #define IPS200_CS(x)        ((x) ? (gpio_high(ips_cs_pin)) : (gpio_low(ips_cs_pin)))
 
 
-typedef enum
-{
+typedef enum {
     IPS200_TYPE_SPI,                                                            // SPI 驱动
     IPS200_TYPE_PARALLEL8,                                                      // 并口驱动
-}ips200_type_enum;
+} ips200_type_enum;
 
-typedef enum
-{
-    IPS200_PORTAIT                      = 0,                                    // 竖屏模式
-    IPS200_PORTAIT_180                  = 1,                                    // 竖屏模式  旋转180
-    IPS200_CROSSWISE                    = 2,                                    // 横屏模式
-    IPS200_CROSSWISE_180                = 3,                                    // 横屏模式  旋转180
-}ips200_dir_enum;
+typedef enum {
+    IPS200_PORTAIT = 0,                                    // 竖屏模式
+    IPS200_PORTAIT_180 = 1,                                    // 竖屏模式  旋转180
+    IPS200_CROSSWISE = 2,                                    // 横屏模式
+    IPS200_CROSSWISE_180 = 3,                                    // 横屏模式  旋转180
+} ips200_dir_enum;
 
-typedef enum
-{
-    IPS200_6X8_FONT                     = 0,                                    // 6x8      字体
-    IPS200_8X16_FONT                    = 1,                                    // 8x16     字体
-    IPS200_16X16_FONT                   = 2,                                    // 16x16    字体 目前不支持
-}ips200_font_size_enum;
+typedef enum {
+    IPS200_6X8_FONT = 0,                                    // 6x8      字体
+    IPS200_8X16_FONT = 1,                                    // 8x16     字体
+    IPS200_16X16_FONT = 2,                                    // 16x16    字体 目前不支持
+} ips200_font_size_enum;
 
-void    ips200_clear                    (void);
-void    ips200_full                     (const uint16 color);
-void    ips200_set_dir                  (ips200_dir_enum dir);
-void    ips200_set_font                 (ips200_font_size_enum font);
-void    ips200_set_color                (const uint16 pen, const uint16 bgcolor);
-void    ips200_draw_point               (uint16 x, uint16 y, const uint16 color);
-void    ips200_draw_line                (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+void ips200_clear(void);
 
-void    ips200_show_char                (uint16 x, uint16 y, const char dat);
-void    ips200_show_string              (uint16 x, uint16 y, const char dat[]);
-void    ips200_show_int                 (uint16 x, uint16 y, const int32 dat, uint8 num);
-void    ips200_show_uint                (uint16 x, uint16 y, const uint32 dat, uint8 num);
-void    ips200_show_float               (uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+void ips200_full(const uint16 color);
 
-void    ips200_show_binary_image        (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
-void    ips200_show_gray_image          (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
-void    ips200_show_rgb565_image        (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 color_mode);
+void ips200_set_dir(ips200_dir_enum dir);
 
-void    ips200_show_wave                (uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);
-void    ips200_show_chinese             (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
+void ips200_set_font(ips200_font_size_enum font);
+
+void ips200_set_color(const uint16 pen, const uint16 bgcolor);
+
+void ips200_draw_point(uint16 x, uint16 y, const uint16 color);
+
+void ips200_draw_line(uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+
+void ips200_show_char(uint16 x, uint16 y, const char dat);
+
+void ips200_show_string(uint16 x, uint16 y, const char dat[]);
+
+void ips200_show_int(uint16 x, uint16 y, const int32 dat, uint8 num);
+
+void ips200_show_uint(uint16 x, uint16 y, const uint32 dat, uint8 num);
+
+void ips200_show_float(uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+
+void ips200_show_binary_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height);
+
+void ips200_show_gray_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                            uint16 dis_height, uint8 threshold);
+
+void ips200_show_rgb565_image(uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height, uint8 color_mode);
+
+void ips200_show_wave(uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width,
+                      uint16 dis_value_max);
+
+void ips200_show_chinese(uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     IPS200 显示小钻风图像
@@ -205,6 +219,6 @@ void    ips200_show_chinese             (uint16 x, uint16 y, uint8 size, const u
 //-------------------------------------------------------------------------------------------------------------------
 #define ips200_displayimage8660(p, width, height)       (ips200_show_rgb565_image(0, 0, (p), SCC8660_W, SCC8660_H, (width), (height), 1))
 
-void    ips200_init                     (ips200_type_enum type_select);
+void ips200_init(ips200_type_enum type_select);
 
 #endif

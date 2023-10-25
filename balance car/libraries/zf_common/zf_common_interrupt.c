@@ -45,8 +45,7 @@ static uint32 interrupt_nest_count = 0;
 // 返回参数     void
 // 使用示例     interrupt_enable(UART1_IRQn);
 //-------------------------------------------------------------------------------------------------------------------
-void interrupt_enable (IRQn_Type irqn)
-{
+void interrupt_enable(IRQn_Type irqn) {
     NVIC_EnableIRQ(irqn);
 }
 
@@ -56,8 +55,7 @@ void interrupt_enable (IRQn_Type irqn)
 // 返回参数     void
 // 使用示例     interrupt_disable(UART1_IRQn);
 //-------------------------------------------------------------------------------------------------------------------
-void interrupt_disable (IRQn_Type irqn)
-{
+void interrupt_disable(IRQn_Type irqn) {
     NVIC_DisableIRQ(irqn);
 }
 
@@ -70,8 +68,7 @@ void interrupt_disable (IRQn_Type irqn)
 //                              抢占优先级设置为1,次优先级设置为2
 //                              禁止调用ch32v30x_misc里面的函数
 //-------------------------------------------------------------------------------------------------------------------
-void interrupt_set_priority (IRQn_Type irqn, uint8 priority)
-{
+void interrupt_set_priority(IRQn_Type irqn, uint8 priority) {
     NVIC_SetPriority(irqn, priority);
 }
 
@@ -93,14 +90,11 @@ void interrupt_set_priority (IRQn_Type irqn, uint8 priority)
 // 返回参数     void
 // 使用示例     interrupt_global_enable();
 //-------------------------------------------------------------------------------------------------------------------
-void interrupt_global_enable (uint32 primask)
-{
-    if(primask)
-    {
-        interrupt_nest_count --;
+void interrupt_global_enable(uint32 primask) {
+    if (primask) {
+        interrupt_nest_count--;
     }
-    if(!interrupt_nest_count)
-    {
+    if (!interrupt_nest_count) {
         __enable_irq();
     }
 }
@@ -111,14 +105,12 @@ void interrupt_global_enable (uint32 primask)
 // 返回参数     void
 // 使用示例     interrupt_disable_all();
 //-------------------------------------------------------------------------------------------------------------------
-uint32 interrupt_global_disable (void)
-{
+uint32 interrupt_global_disable(void) {
 
-    if(!interrupt_nest_count)
-    {
+    if (!interrupt_nest_count) {
         __disable_irq();
     }
-    interrupt_nest_count ++;
+    interrupt_nest_count++;
     return interrupt_nest_count;
 }
 
@@ -129,7 +121,6 @@ uint32 interrupt_global_disable (void)
 // 使用示例     interrupt_init();
 // 备注信息     会在  clock_init 内部调用
 //-------------------------------------------------------------------------------------------------------------------
-void interrupt_init (void)
-{
+void interrupt_init(void) {
     interrupt_global_enable(0);  //使能全局中断
 }

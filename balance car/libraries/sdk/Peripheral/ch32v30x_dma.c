@@ -50,83 +50,47 @@
  *
  * @return  none
  */
-void DMA_DeInit(DMA_Channel_TypeDef *DMAy_Channelx)
-{
-    DMAy_Channelx->CFGR &= (uint16_t)(~DMA_CFGR1_EN);
+void DMA_DeInit(DMA_Channel_TypeDef *DMAy_Channelx) {
+    DMAy_Channelx->CFGR &= (uint16_t) (~DMA_CFGR1_EN);
     DMAy_Channelx->CFGR = 0;
     DMAy_Channelx->CNTR = 0;
     DMAy_Channelx->PADDR = 0;
     DMAy_Channelx->MADDR = 0;
-    if(DMAy_Channelx == DMA1_Channel1)
-    {
+    if (DMAy_Channelx == DMA1_Channel1) {
         DMA1->INTFCR |= DMA1_Channel1_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel2)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel2) {
         DMA1->INTFCR |= DMA1_Channel2_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel3)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel3) {
         DMA1->INTFCR |= DMA1_Channel3_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel4)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel4) {
         DMA1->INTFCR |= DMA1_Channel4_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel5)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel5) {
         DMA1->INTFCR |= DMA1_Channel5_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel6)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel6) {
         DMA1->INTFCR |= DMA1_Channel6_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA1_Channel7)
-    {
+    } else if (DMAy_Channelx == DMA1_Channel7) {
         DMA1->INTFCR |= DMA1_Channel7_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel1)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel1) {
         DMA2->INTFCR |= DMA2_Channel1_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel2)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel2) {
         DMA2->INTFCR |= DMA2_Channel2_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel3)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel3) {
         DMA2->INTFCR |= DMA2_Channel3_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel4)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel4) {
         DMA2->INTFCR |= DMA2_Channel4_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel5)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel5) {
         DMA2->INTFCR |= DMA2_Channel5_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel6)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel6) {
         DMA2->INTFCR |= DMA2_Channel6_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel7)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel7) {
         DMA2->INTFCR |= DMA2_Channel7_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel8)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel8) {
         DMA2_EXTEN->INTFCR |= DMA2_Channel8_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel9)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel9) {
         DMA2_EXTEN->INTFCR |= DMA2_Channel9_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel10)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel10) {
         DMA2_EXTEN->INTFCR |= DMA2_Channel10_IT_Mask;
-    }
-    else if(DMAy_Channelx == DMA2_Channel11)
-    {
+    } else if (DMAy_Channelx == DMA2_Channel11) {
         DMA2_EXTEN->INTFCR |= DMA2_Channel11_IT_Mask;
     }
 }
@@ -144,8 +108,7 @@ void DMA_DeInit(DMA_Channel_TypeDef *DMAy_Channelx)
  *
  * @return  none
  */
-void DMA_Init(DMA_Channel_TypeDef *DMAy_Channelx, DMA_InitTypeDef *DMA_InitStruct)
-{
+void DMA_Init(DMA_Channel_TypeDef *DMAy_Channelx, DMA_InitTypeDef *DMA_InitStruct) {
     uint32_t tmpreg = 0;
 
     tmpreg = DMAy_Channelx->CFGR;
@@ -173,8 +136,7 @@ void DMA_Init(DMA_Channel_TypeDef *DMAy_Channelx, DMA_InitTypeDef *DMA_InitStruc
  *
  * @return  none
  */
-void DMA_StructInit(DMA_InitTypeDef *DMA_InitStruct)
-{
+void DMA_StructInit(DMA_InitTypeDef *DMA_InitStruct) {
     DMA_InitStruct->DMA_PeripheralBaseAddr = 0;
     DMA_InitStruct->DMA_MemoryBaseAddr = 0;
     DMA_InitStruct->DMA_DIR = DMA_DIR_PeripheralSRC;
@@ -199,15 +161,11 @@ void DMA_StructInit(DMA_InitTypeDef *DMA_InitStruct)
  *
  * @return  none
  */
-void DMA_Cmd(DMA_Channel_TypeDef *DMAy_Channelx, FunctionalState NewState)
-{
-    if(NewState != DISABLE)
-    {
+void DMA_Cmd(DMA_Channel_TypeDef *DMAy_Channelx, FunctionalState NewState) {
+    if (NewState != DISABLE) {
         DMAy_Channelx->CFGR |= DMA_CFGR1_EN;
-    }
-    else
-    {
-        DMAy_Channelx->CFGR &= (uint16_t)(~DMA_CFGR1_EN);
+    } else {
+        DMAy_Channelx->CFGR &= (uint16_t) (~DMA_CFGR1_EN);
     }
 }
 
@@ -227,14 +185,10 @@ void DMA_Cmd(DMA_Channel_TypeDef *DMAy_Channelx, FunctionalState NewState)
  *
  * @return  none
  */
-void DMA_ITConfig(DMA_Channel_TypeDef *DMAy_Channelx, uint32_t DMA_IT, FunctionalState NewState)
-{
-    if(NewState != DISABLE)
-    {
+void DMA_ITConfig(DMA_Channel_TypeDef *DMAy_Channelx, uint32_t DMA_IT, FunctionalState NewState) {
+    if (NewState != DISABLE) {
         DMAy_Channelx->CFGR |= DMA_IT;
-    }
-    else
-    {
+    } else {
         DMAy_Channelx->CFGR &= ~DMA_IT;
     }
 }
@@ -251,8 +205,7 @@ void DMA_ITConfig(DMA_Channel_TypeDef *DMAy_Channelx, uint32_t DMA_IT, Functiona
  *
  * @return  none
  */
-void DMA_SetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx, uint16_t DataNumber)
-{
+void DMA_SetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx, uint16_t DataNumber) {
     DMAy_Channelx->CNTR = DataNumber;
 }
 
@@ -268,9 +221,8 @@ void DMA_SetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx, uint16_t DataNum
  * @return  DataNumber - The number of remaining data units in the current
  *        DMAy Channelx transfer.
  */
-uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx)
-{
-    return ((uint16_t)(DMAy_Channelx->CNTR));
+uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx) {
+    return ((uint16_t) (DMAy_Channelx->CNTR));
 }
 
 /*********************************************************************
@@ -354,30 +306,21 @@ uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef *DMAy_Channelx)
  *
  * @return  The new state of DMAy_FLAG (SET or RESET).
  */
-FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG)
-{
+FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG) {
     FlagStatus bitstatus = RESET;
-    uint32_t   tmpreg = 0;
+    uint32_t tmpreg = 0;
 
-    if((DMAy_FLAG & FLAG_Mask) == FLAG_Mask)
-    {
+    if ((DMAy_FLAG & FLAG_Mask) == FLAG_Mask) {
         tmpreg = DMA2->INTFR;
-    }
-    else if((DMAy_FLAG & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask)
-    {
+    } else if ((DMAy_FLAG & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask) {
         tmpreg = DMA2_EXTEN->INTFR;
-    }
-    else
-    {
+    } else {
         tmpreg = DMA1->INTFR;
     }
 
-    if((tmpreg & DMAy_FLAG) != (uint32_t)RESET)
-    {
+    if ((tmpreg & DMAy_FLAG) != (uint32_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
 
@@ -465,18 +408,12 @@ FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG)
  *
  * @return  none
  */
-void DMA_ClearFlag(uint32_t DMAy_FLAG)
-{
-    if((DMAy_FLAG & FLAG_Mask) == FLAG_Mask)
-    {
+void DMA_ClearFlag(uint32_t DMAy_FLAG) {
+    if ((DMAy_FLAG & FLAG_Mask) == FLAG_Mask) {
         DMA2->INTFCR = DMAy_FLAG;
-    }
-    else if((DMAy_FLAG & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask)
-    {
+    } else if ((DMAy_FLAG & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask) {
         DMA2_EXTEN->INTFCR = DMAy_FLAG;
-    }
-    else
-    {
+    } else {
         DMA1->INTFCR = DMAy_FLAG;
     }
 }
@@ -563,30 +500,21 @@ void DMA_ClearFlag(uint32_t DMAy_FLAG)
  *
  * @return  The new state of DMAy_IT (SET or RESET).
  */
-ITStatus DMA_GetITStatus(uint32_t DMAy_IT)
-{
+ITStatus DMA_GetITStatus(uint32_t DMAy_IT) {
     ITStatus bitstatus = RESET;
     uint32_t tmpreg = 0;
 
-    if((DMAy_IT & FLAG_Mask) == FLAG_Mask)
-    {
+    if ((DMAy_IT & FLAG_Mask) == FLAG_Mask) {
         tmpreg = DMA2->INTFR;
-    }
-    else if((DMAy_IT & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask)
-    {
+    } else if ((DMAy_IT & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask) {
         tmpreg = DMA2_EXTEN->INTFR;
-    }
-    else
-    {
+    } else {
         tmpreg = DMA1->INTFR;
     }
 
-    if((tmpreg & DMAy_IT) != (uint32_t)RESET)
-    {
+    if ((tmpreg & DMAy_IT) != (uint32_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
     return bitstatus;
@@ -673,18 +601,12 @@ ITStatus DMA_GetITStatus(uint32_t DMAy_IT)
  *
  * @return  none
  */
-void DMA_ClearITPendingBit(uint32_t DMAy_IT)
-{
-    if((DMAy_IT & FLAG_Mask) == FLAG_Mask)
-    {
+void DMA_ClearITPendingBit(uint32_t DMAy_IT) {
+    if ((DMAy_IT & FLAG_Mask) == FLAG_Mask) {
         DMA2->INTFCR = DMAy_IT;
-    }
-    else if((DMAy_IT & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask)
-    {
+    } else if ((DMAy_IT & DMA2_EXTEN_FLAG_Mask) == DMA2_EXTEN_FLAG_Mask) {
         DMA2_EXTEN->INTFCR = DMAy_IT;
-    }
-    else
-    {
+    } else {
         DMA1->INTFCR = DMAy_IT;
     }
 }

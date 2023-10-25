@@ -49,10 +49,10 @@
 #include "zf_device_type.h"
 #include "zf_device_wireless_ch573.h"
 
-static  fifo_struct       wireless_ch573_fifo;
-static  uint8             wireless_ch573_buffer[WIRELESS_CH573_BUFFER_SIZE];                                // 对应第一个 无线串口 数据存放数组
+static fifo_struct wireless_ch573_fifo;
+static uint8 wireless_ch573_buffer[WIRELESS_CH573_BUFFER_SIZE];                                // 对应第一个 无线串口 数据存放数组
 
-static  uint8             wireless_ch573_data;
+static uint8 wireless_ch573_data;
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介      CH573无线模块中断回调函数
@@ -61,8 +61,7 @@ static  uint8             wireless_ch573_data;
 // Sample usage:
 // @note
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_ch573_callback (void)
-{
+void wireless_ch573_callback(void) {
     uart_query_byte(WIRELESS_CH573_INDEX, &wireless_ch573_data);
     fifo_write_buffer(&wireless_ch573_fifo, &wireless_ch573_data, 1);
 
@@ -75,12 +74,11 @@ void wireless_ch573_callback (void)
 // 返回参数     uint32          剩余发送长度
 // Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_ch573_send_byte (const uint8 data)
-{
+uint32 wireless_ch573_send_byte(const uint8 data) {
     uint16 time_count = 0;
-    while(gpio_get_level(WIRELESS_CH573_RTS_PIN))                                      // 如果RTS为低电平，则继续发送数据
+    while (gpio_get_level(WIRELESS_CH573_RTS_PIN))                                      // 如果RTS为低电平，则继续发送数据
     {
-        if(time_count++ > WIRELESS_CH573_TIMEOUT_COUNT)
+        if (time_count++ > WIRELESS_CH573_TIMEOUT_COUNT)
             return 1;                                                           // 模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
         system_delay_ms(1);
     }
@@ -97,16 +95,15 @@ uint32 wireless_ch573_send_byte (const uint8 data)
 // Sample usage:
 // @note
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_ch573_send_buff (const uint8 *buff, uint32 len)
-{
+uint32 wireless_ch573_send_buff(const uint8 *buff, uint32 len) {
     uint16 time_count = 0;
     uint8 pack_len = 62;
-    while(len > pack_len)
-    {
+    while (len > pack_len) {
         time_count = 0;
-        while(gpio_get_level(WIRELESS_CH573_RTS_PIN) && time_count++ < WIRELESS_CH573_TIMEOUT_COUNT)  // 如果RTS为低电平，则继续发送数据
+        while (gpio_get_level(WIRELESS_CH573_RTS_PIN) &&
+               time_count++ < WIRELESS_CH573_TIMEOUT_COUNT)  // 如果RTS为低电平，则继续发送数据
             system_delay_ms(1);
-        if(time_count >= WIRELESS_CH573_TIMEOUT_COUNT)
+        if (time_count >= WIRELESS_CH573_TIMEOUT_COUNT)
             return len;                                                                             // 模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
         uart_write_buffer(WIRELESS_CH573_INDEX, buff, 30);
 
@@ -115,9 +112,9 @@ uint32 wireless_ch573_send_buff (const uint8 *buff, uint32 len)
     }
 
     time_count = 0;
-    while(gpio_get_level(WIRELESS_CH573_RTS_PIN) && time_count++ < WIRELESS_CH573_TIMEOUT_COUNT)  // 如果RTS为低电平，则继续发送数据
+    while (gpio_get_level(WIRELESS_CH573_RTS_PIN) && time_count++ < WIRELESS_CH573_TIMEOUT_COUNT)  // 如果RTS为低电平，则继续发送数据
         system_delay_ms(1);
-    if(time_count >= WIRELESS_CH573_TIMEOUT_COUNT)
+    if (time_count >= WIRELESS_CH573_TIMEOUT_COUNT)
         return len;                                                                                 // 模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
     uart_write_buffer(WIRELESS_CH573_INDEX, buff, len);                                            // 发送最后的数据
 
@@ -132,8 +129,7 @@ uint32 wireless_ch573_send_buff (const uint8 *buff, uint32 len)
 // Sample usage:
 // @note
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_ch573_read_buff (uint8 *buff, uint32 len)
-{
+uint32 wireless_ch573_read_buff(uint8 *buff, uint32 len) {
     uint32 data_len = len;
     fifo_read_buffer(&wireless_ch573_fifo, buff, &data_len, FIFO_READ_AND_CLEAN);
     return data_len;
@@ -147,11 +143,10 @@ uint32 wireless_ch573_read_buff (uint8 *buff, uint32 len)
 // 返回参数     void
 // 使用示例     wireless_uart_send_image(&mt9v03x_image[0][0], MT9V03X_IMAGE_SIZE);
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_ch573_send_image (const uint8 *image_addr, uint32 image_size)
-{
+void wireless_ch573_send_image(const uint8 *image_addr, uint32 image_size) {
     extern uint8 camera_send_image_frame_header[4];
     wireless_ch573_send_buff(camera_send_image_frame_header, 4);
-    wireless_ch573_send_buff((uint8 *)image_addr, image_size);
+    wireless_ch573_send_buff((uint8 *) image_addr, image_size);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -161,17 +156,15 @@ void wireless_ch573_send_image (const uint8 *image_addr, uint32 image_size)
 // Sample usage:
 // @note
 //-------------------------------------------------------------------------------------------------------------------
-uint8 wireless_ch573_init (void)
-{
+uint8 wireless_ch573_init(void) {
 
     set_wireless_type(WIRELESS_CH573, wireless_ch573_callback);
-
 
 
     fifo_init(&wireless_ch573_fifo, FIFO_DATA_8BIT, wireless_ch573_buffer, WIRELESS_CH573_BUFFER_SIZE);
     gpio_init(WIRELESS_CH573_RTS_PIN, GPI, GPIO_HIGH, GPI_PULL_UP);
 
-    uart_init (WIRELESS_CH573_INDEX, WIRELESS_CH573_BUAD_RATE, WIRELESS_CH573_RX_PIN, WIRELESS_CH573_TX_PIN);
+    uart_init(WIRELESS_CH573_INDEX, WIRELESS_CH573_BUAD_RATE, WIRELESS_CH573_RX_PIN, WIRELESS_CH573_TX_PIN);
     uart_rx_interrupt(WIRELESS_CH573_INDEX, 1);
 
     return 0;

@@ -60,26 +60,28 @@
 #define KEY_MAX_SHOCK_PERIOD        (10       )                                 // 按键消抖检测时长 单位毫秒 低于这个时长的信号会被认为是杂波抖动
 #define KEY_LONG_PRESS_PERIOD       (1000     )                                 // 最小长按时长 单位毫秒
 
-typedef enum
-{
+typedef enum {
     KEY_1,
     KEY_2,
     KEY_3,
     KEY_4,
     KEY_NUMBER,
-}key_index_enum;                                                                // 按键索引 对应上方定义的按键引脚个数 默认定义四个按键
+} key_index_enum;                                                                // 按键索引 对应上方定义的按键引脚个数 默认定义四个按键
 
-typedef enum
-{
+typedef enum {
     KEY_RELEASE,                                                                // 按键释放状态
     KEY_SHORT_PRESS,                                                            // 按键短按状态
     KEY_LONG_PRESS,                                                             // 按键长按状态
-}key_state_enum;
+} key_state_enum;
 
-void            key_scanner             (void);
-key_state_enum  key_get_state           (key_index_enum key_n);
-void            key_clear_state         (key_index_enum key_n);
-void            key_clear_all_state     (void);
-void            key_init                (uint32 period);
+void key_scanner(void);
+
+key_state_enum key_get_state(key_index_enum key_n);
+
+void key_clear_state(key_index_enum key_n);
+
+void key_clear_all_state(void);
+
+void key_init(uint32 period);
 
 #endif

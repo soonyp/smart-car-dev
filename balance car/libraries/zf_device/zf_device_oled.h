@@ -79,38 +79,48 @@
 #define OLED_DC(x)                      ((x) ? (gpio_high(OLED_DC_PIN)) : (gpio_low(OLED_DC_PIN)))
 #define OLED_CS(x)                      ((x) ? (gpio_high(OLED_CS_PIN)) : (gpio_low(OLED_CS_PIN)))
 
-typedef enum
-{
-    OLED_CROSSWISE                      = 0,                                    // 横屏模式
-    OLED_CROSSWISE_180                  = 1,                                    // 横屏模式  旋转180
-}oled_dir_enum;
+typedef enum {
+    OLED_CROSSWISE = 0,                                    // 横屏模式
+    OLED_CROSSWISE_180 = 1,                                    // 横屏模式  旋转180
+} oled_dir_enum;
 
-typedef enum
-{
-    OLED_6X8_FONT                       = 0,                                    // 6x8      字体
-    OLED_8X16_FONT                      = 1,                                    // 8x16     字体
-    OLED_16X16_FONT                     = 2,                                    // 16x16    字体 目前不支持
-}oled_font_size_enum;
+typedef enum {
+    OLED_6X8_FONT = 0,                                    // 6x8      字体
+    OLED_8X16_FONT = 1,                                    // 8x16     字体
+    OLED_16X16_FONT = 2,                                    // 16x16    字体 目前不支持
+} oled_font_size_enum;
 
 #define OLED_X_MAX                      (128)
 #define OLED_Y_MAX                      (64 )
 
-void    oled_clear                      (void);
-void    oled_full                       (const uint8 color);
-void    oled_set_dir                    (oled_dir_enum dir);
-void    oled_set_font                   (oled_font_size_enum font);
-void    oled_draw_point                 (uint16 x, uint16 y, const uint8 color);
+void oled_clear(void);
 
-void    oled_show_string                (uint16 x, uint16 y, const char ch[]);
-void    oled_show_int                   (uint16 x, uint16 y, const int32 dat, uint8 num);
-void    oled_show_uint                  (uint16 x, uint16 y, const uint32 dat, uint8 num);
-void    oled_show_float                 (uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+void oled_full(const uint8 color);
 
-void    oled_show_binary_image          (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
-void    oled_show_gray_image            (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
+void oled_set_dir(oled_dir_enum dir);
 
-void    oled_show_wave                  (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);
-void    oled_show_chinese               (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number);
+void oled_set_font(oled_font_size_enum font);
+
+void oled_draw_point(uint16 x, uint16 y, const uint8 color);
+
+void oled_show_string(uint16 x, uint16 y, const char ch[]);
+
+void oled_show_int(uint16 x, uint16 y, const int32 dat, uint8 num);
+
+void oled_show_uint(uint16 x, uint16 y, const uint32 dat, uint8 num);
+
+void oled_show_float(uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+
+void oled_show_binary_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                            uint16 dis_height);
+
+void oled_show_gray_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                          uint16 dis_height, uint8 threshold);
+
+void oled_show_wave(uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 value_max, uint16 dis_width,
+                    uint16 dis_value_max);
+
+void oled_show_chinese(uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     OLED 128*64 显示小钻风图像
@@ -129,8 +139,8 @@ void    oled_show_chinese               (uint16 x, uint16 y, uint8 size, const u
 // 使用示例     oled_displayimage03x(mt9v03x_image[0], 127);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-#define oled_displayimage03x(p,x)       (oled_show_gray_image(0, 0, (p), MT9V03X_W, MT9V03X_H, 128, 64, (x)))
+#define oled_displayimage03x(p, x)       (oled_show_gray_image(0, 0, (p), MT9V03X_W, MT9V03X_H, 128, 64, (x)))
 
-void    oled_init                       (void);
+void oled_init(void);
 
 #endif

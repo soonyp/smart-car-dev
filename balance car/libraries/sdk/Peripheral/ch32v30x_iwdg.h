@@ -7,12 +7,12 @@
 *                      IWDG firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_IWDG_H
 #define __CH32V30x_IWDG_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
@@ -36,10 +36,15 @@
 
 
 void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess);
+
 void IWDG_SetPrescaler(uint8_t IWDG_Prescaler);
+
 void IWDG_SetReload(uint16_t Reload);
+
 void IWDG_ReloadCounter(void);
+
 void IWDG_Enable(void);
+
 FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG);
 
 #ifdef __cplusplus

@@ -78,29 +78,26 @@
 #define IMU963RA_CS_PIN                             (C10)                       // CS 片选引脚
 #define IMU963RA_CS(x)                              (x? (gpio_high(IMU963RA_CS_PIN)): (gpio_low(IMU963RA_CS_PIN)))
 
-typedef enum
-{
-    IMU963RA_ACC_SAMPLE_SGN_2G ,                                                // 加速度计量程 ±2G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-    IMU963RA_ACC_SAMPLE_SGN_4G ,                                                // 加速度计量程 ±4G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-    IMU963RA_ACC_SAMPLE_SGN_8G ,                                                // 加速度计量程 ±8G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+typedef enum {
+    IMU963RA_ACC_SAMPLE_SGN_2G,                                                // 加速度计量程 ±2G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+    IMU963RA_ACC_SAMPLE_SGN_4G,                                                // 加速度计量程 ±4G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+    IMU963RA_ACC_SAMPLE_SGN_8G,                                                // 加速度计量程 ±8G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
     IMU963RA_ACC_SAMPLE_SGN_16G,                                                // 加速度计量程 ±16G (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-}imu963ra_acc_sample_config;
+} imu963ra_acc_sample_config;
 
-typedef enum
-{
-    IMU963RA_GYRO_SAMPLE_SGN_125DPS ,                                           // 陀螺仪量程 ±125DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU963RA_GYRO_SAMPLE_SGN_250DPS ,                                           // 陀螺仪量程 ±250DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU963RA_GYRO_SAMPLE_SGN_500DPS ,                                           // 陀螺仪量程 ±500DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+typedef enum {
+    IMU963RA_GYRO_SAMPLE_SGN_125DPS,                                           // 陀螺仪量程 ±125DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+    IMU963RA_GYRO_SAMPLE_SGN_250DPS,                                           // 陀螺仪量程 ±250DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+    IMU963RA_GYRO_SAMPLE_SGN_500DPS,                                           // 陀螺仪量程 ±500DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
     IMU963RA_GYRO_SAMPLE_SGN_1000DPS,                                           // 陀螺仪量程 ±1000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
     IMU963RA_GYRO_SAMPLE_SGN_2000DPS,                                           // 陀螺仪量程 ±2000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
     IMU963RA_GYRO_SAMPLE_SGN_4000DPS,                                           // 陀螺仪量程 ±4000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-}imu963ra_gyro_sample_config;
+} imu963ra_gyro_sample_config;
 
-typedef enum
-{
+typedef enum {
     IMU963RA_MAG_SAMPLE_2G,                                                     // 磁力计量程 2G (MAG = Magnetometer 陀螺仪) (G = Gs 高斯)
     IMU963RA_MAG_SAMPLE_8G,                                                     // 磁力计量程 8G (MAG = Magnetometer 陀螺仪) (G = Gs 高斯)
-}imu963ra_mag_sample_config;
+} imu963ra_mag_sample_config;
 
 #define IMU963RA_ACC_SAMPLE_DEFAULT     ( IMU963RA_ACC_SAMPLE_SGN_8G )          // 在这设置默认的 加速度计 初始化量程
 #define IMU963RA_GYRO_SAMPLE_DEFAULT    ( IMU963RA_GYRO_SAMPLE_SGN_2000DPS )    // 在这设置默认的 陀螺仪   初始化量程
@@ -196,38 +193,38 @@ typedef enum
 #define IMU963RA_FIFO_DATA_OUT_Z_H                  ( 0x7E )
 
 // 集线器功能相关寄存器 需要将FUNC_CFG_ACCESS的SHUB_REG_ACCESS位设置为1才能正确访问
-#define IMU963RA_SENSOR_HUB_1                       ( 0x02 ) 
-#define IMU963RA_SENSOR_HUB_2                       ( 0x03 ) 
-#define IMU963RA_SENSOR_HUB_3                       ( 0x04 ) 
-#define IMU963RA_SENSOR_HUB_4                       ( 0x05 ) 
-#define IMU963RA_SENSOR_HUB_5                       ( 0x06 ) 
-#define IMU963RA_SENSOR_HUB_6                       ( 0x07 ) 
-#define IMU963RA_SENSOR_HUB_7                       ( 0x08 ) 
-#define IMU963RA_SENSOR_HUB_8                       ( 0x09 ) 
-#define IMU963RA_SENSOR_HUB_9                       ( 0x0A ) 
-#define IMU963RA_SENSOR_HUB_10                      ( 0x0B ) 
-#define IMU963RA_SENSOR_HUB_11                      ( 0x0C ) 
-#define IMU963RA_SENSOR_HUB_12                      ( 0x0D ) 
-#define IMU963RA_SENSOR_HUB_13                      ( 0x0E ) 
-#define IMU963RA_SENSOR_HUB_14                      ( 0x0F ) 
-#define IMU963RA_SENSOR_HUB_15                      ( 0x10 ) 
-#define IMU963RA_SENSOR_HUB_16                      ( 0x11 ) 
-#define IMU963RA_SENSOR_HUB_17                      ( 0x12 ) 
-#define IMU963RA_SENSOR_HUB_18                      ( 0x13 ) 
-#define IMU963RA_MASTER_CONFIG                      ( 0x14 ) 
-#define IMU963RA_SLV0_ADD                           ( 0x15 ) 
-#define IMU963RA_SLV0_SUBADD                        ( 0x16 ) 
-#define IMU963RA_SLV0_CONFIG                        ( 0x17 ) 
-#define IMU963RA_SLV1_ADD                           ( 0x18 ) 
-#define IMU963RA_SLV1_SUBADD                        ( 0x19 ) 
-#define IMU963RA_SLV1_CONFIG                        ( 0x1A ) 
-#define IMU963RA_SLV2_ADD                           ( 0x1B ) 
-#define IMU963RA_SLV2_SUBADD                        ( 0x1C ) 
-#define IMU963RA_SLV2_CONFIG                        ( 0x1D ) 
-#define IMU963RA_SLV3_ADD                           ( 0x1E ) 
-#define IMU963RA_SLV3_SUBADD                        ( 0x1F ) 
-#define IMU963RA_SLV3_CONFIG                        ( 0x20 ) 
-#define IMU963RA_DATAWRITE_SLV0                     ( 0x21 ) 
+#define IMU963RA_SENSOR_HUB_1                       ( 0x02 )
+#define IMU963RA_SENSOR_HUB_2                       ( 0x03 )
+#define IMU963RA_SENSOR_HUB_3                       ( 0x04 )
+#define IMU963RA_SENSOR_HUB_4                       ( 0x05 )
+#define IMU963RA_SENSOR_HUB_5                       ( 0x06 )
+#define IMU963RA_SENSOR_HUB_6                       ( 0x07 )
+#define IMU963RA_SENSOR_HUB_7                       ( 0x08 )
+#define IMU963RA_SENSOR_HUB_8                       ( 0x09 )
+#define IMU963RA_SENSOR_HUB_9                       ( 0x0A )
+#define IMU963RA_SENSOR_HUB_10                      ( 0x0B )
+#define IMU963RA_SENSOR_HUB_11                      ( 0x0C )
+#define IMU963RA_SENSOR_HUB_12                      ( 0x0D )
+#define IMU963RA_SENSOR_HUB_13                      ( 0x0E )
+#define IMU963RA_SENSOR_HUB_14                      ( 0x0F )
+#define IMU963RA_SENSOR_HUB_15                      ( 0x10 )
+#define IMU963RA_SENSOR_HUB_16                      ( 0x11 )
+#define IMU963RA_SENSOR_HUB_17                      ( 0x12 )
+#define IMU963RA_SENSOR_HUB_18                      ( 0x13 )
+#define IMU963RA_MASTER_CONFIG                      ( 0x14 )
+#define IMU963RA_SLV0_ADD                           ( 0x15 )
+#define IMU963RA_SLV0_SUBADD                        ( 0x16 )
+#define IMU963RA_SLV0_CONFIG                        ( 0x17 )
+#define IMU963RA_SLV1_ADD                           ( 0x18 )
+#define IMU963RA_SLV1_SUBADD                        ( 0x19 )
+#define IMU963RA_SLV1_CONFIG                        ( 0x1A )
+#define IMU963RA_SLV2_ADD                           ( 0x1B )
+#define IMU963RA_SLV2_SUBADD                        ( 0x1C )
+#define IMU963RA_SLV2_CONFIG                        ( 0x1D )
+#define IMU963RA_SLV3_ADD                           ( 0x1E )
+#define IMU963RA_SLV3_SUBADD                        ( 0x1F )
+#define IMU963RA_SLV3_CONFIG                        ( 0x20 )
+#define IMU963RA_DATAWRITE_SLV0                     ( 0x21 )
 #define IMU963RA_STATUS_MASTER                      ( 0x22 )
 
 #define IMU963RA_MAG_ADDR                           ( 0x0D )                    // 7位IIC地址
@@ -238,14 +235,16 @@ typedef enum
 #define IMU963RA_MAG_CHIP_ID                        ( 0x0D )
 //================================================定义 IMU963RA 内部地址================================================
 
-extern int16 imu963ra_acc_x,  imu963ra_acc_y,  imu963ra_acc_z;
+extern int16 imu963ra_acc_x, imu963ra_acc_y, imu963ra_acc_z;
 extern int16 imu963ra_gyro_x, imu963ra_gyro_y, imu963ra_gyro_z;
-extern int16 imu963ra_mag_x,  imu963ra_mag_y,  imu963ra_mag_z;
+extern int16 imu963ra_mag_x, imu963ra_mag_y, imu963ra_mag_z;
 extern float imu963ra_transition_factor[3];
 
-void    imu963ra_get_acc            (void);
-void    imu963ra_get_gyro           (void);
-void    imu963ra_get_mag            (void);
+void imu963ra_get_acc(void);
+
+void imu963ra_get_gyro(void);
+
+void imu963ra_get_mag(void);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     将 IMU963RA 加速度计数据转换为实际物理数据
@@ -274,6 +273,6 @@ void    imu963ra_get_mag            (void);
 //-------------------------------------------------------------------------------------------------------------------
 #define imu963ra_mag_transition(mag_value)    ((float)mag_value / imu963ra_transition_factor[2])
 
-uint8   imu963ra_init               (void);
+uint8 imu963ra_init(void);
 
 #endif

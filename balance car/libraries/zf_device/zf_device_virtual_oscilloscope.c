@@ -44,24 +44,21 @@ uint8_t virtual_oscilloscope_data[10];
 // @return		uint16          CRC 校验结果
 // Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-static uint16 crc_check (uint8 *buff, uint8 crc_cnt)
-{
-	uint16 crc_temp;
-	uint8 i,j;
-	crc_temp = 0xffff;
+static uint16 crc_check(uint8 *buff, uint8 crc_cnt) {
+    uint16 crc_temp;
+    uint8 i, j;
+    crc_temp = 0xffff;
 
-	for (i=0;i<crc_cnt; i++)
-	{
-		crc_temp ^= buff[i];
-		for (j=0;j<8;j++)
-		{
-			if (crc_temp & 0x01)
-				crc_temp = (crc_temp >>1) ^ 0xa001;
-			else
-				crc_temp = crc_temp >> 1;
-		}
-	}
-	return(crc_temp);
+    for (i = 0; i < crc_cnt; i++) {
+        crc_temp ^= buff[i];
+        for (j = 0; j < 8; j++) {
+            if (crc_temp & 0x01)
+                crc_temp = (crc_temp >> 1) ^ 0xa001;
+            else
+                crc_temp = crc_temp >> 1;
+        }
+    }
+    return (crc_temp);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -76,23 +73,22 @@ static uint16 crc_check (uint8 *buff, uint8 crc_cnt)
 //                              virtual_oscilloscope_data_conversion(100,200,300,400, data_buffer);
 //                              wireless_uart_send_buff(data_buffer, 10);
 //-------------------------------------------------------------------------------------------------------------------
-void virtual_oscilloscope_data_conversion (const int16 data1, const int16 data2, const int16 data3, const int16 data4)
-{
-	uint16 crc_16 = 0;
+void virtual_oscilloscope_data_conversion(const int16 data1, const int16 data2, const int16 data3, const int16 data4) {
+    uint16 crc_16 = 0;
 
-	virtual_oscilloscope_data[0] = (uint8)((uint16)data1&0xff);
-	virtual_oscilloscope_data[1] = (uint8)((uint16)data1>>8);
+    virtual_oscilloscope_data[0] = (uint8) ((uint16) data1 & 0xff);
+    virtual_oscilloscope_data[1] = (uint8) ((uint16) data1 >> 8);
 
-	virtual_oscilloscope_data[2] = (uint8)((uint16)data2&0xff);
-	virtual_oscilloscope_data[3] = (uint8)((uint16)data2>>8);
+    virtual_oscilloscope_data[2] = (uint8) ((uint16) data2 & 0xff);
+    virtual_oscilloscope_data[3] = (uint8) ((uint16) data2 >> 8);
 
-	virtual_oscilloscope_data[4] = (uint8)((uint16)data3&0xff);
-	virtual_oscilloscope_data[5] = (uint8)((uint16)data3>>8);
+    virtual_oscilloscope_data[4] = (uint8) ((uint16) data3 & 0xff);
+    virtual_oscilloscope_data[5] = (uint8) ((uint16) data3 >> 8);
 
-	virtual_oscilloscope_data[6] = (uint8)((uint16)data4&0xff);
-	virtual_oscilloscope_data[7] = (uint8)((uint16)data4>>8);
+    virtual_oscilloscope_data[6] = (uint8) ((uint16) data4 & 0xff);
+    virtual_oscilloscope_data[7] = (uint8) ((uint16) data4 >> 8);
 
-	crc_16  = crc_check(virtual_oscilloscope_data,8);
-	virtual_oscilloscope_data[8] = (uint8)(crc_16&0xff);
-	virtual_oscilloscope_data[9] = (uint8)(crc_16>>8);
+    crc_16 = crc_check(virtual_oscilloscope_data, 8);
+    virtual_oscilloscope_data[8] = (uint8) (crc_16 & 0xff);
+    virtual_oscilloscope_data[9] = (uint8) (crc_16 >> 8);
 }

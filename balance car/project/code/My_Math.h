@@ -26,8 +26,8 @@
 #define MYMATH_ANGLE_UNIT           (MYMATH_TWO_PI / 10.0)
 
 #define myMath_pow(a)               ((a)*(a))
-#define myMath_3_norm(x,y,z)        (myMath_sqrt(my_pow((x)) + myMath_pow((y)) + myMath_pow((z))))
-#define myMath_2_norm(x,y)          (myMath_sqrt(my_pow((x)) + myMath_pow((y))))
+#define myMath_3_norm(x, y, z)        (myMath_sqrt(my_pow((x)) + myMath_pow((y)) + myMath_pow((z))))
+#define myMath_2_norm(x, y)          (myMath_sqrt(my_pow((x)) + myMath_pow((y))))
 
 #define _abs(x)                     ((x) > 0 ? (x) : (-(x)))
 #define _max(x, y)                  (((x) > (y)) ? (x) : (y))    //maximum value
@@ -46,21 +46,31 @@
 #define _iidif(x, y)                _iiabs((int)(x - y))    //求差
 
 #define _limit(a, b, c)                 (a > b ? (a < c ? a : c) : b) //注意：b < c
-#define _ilimit(a,b,c)               ((a)<(b)?(b):((a)>(c)?(c):(a)))   //限幅 a原始 b小 c大
+#define _ilimit(a, b, c)               ((a)<(b)?(b):((a)>(c)?(c):(a)))   //限幅 a原始 b小 c大
 
-float       myMath_sqrt(float number);
-float       myMath_fast_atan2(float y, float x);
-float       myMath_atan(float x, float y);
-float       myMath_mx_sin(float rad);
-float       myMath_sin(float rad);
-float       myMath_cos(float rad);
-float       myMath_linear_interpolation(float range[], float interpolation[], float in, unsigned char  length); //range 必须从小到大
+float myMath_sqrt(float number);
 
-void        myMath_delay(long t);
-unsigned char     myMath_iDigits(int num);
-unsigned short int    myMath_power(unsigned char  m, unsigned char  n);
-float       myMath_fast_exp(float x);
-float       _ifabs(float number);
+float myMath_fast_atan2(float y, float x);
+
+float myMath_atan(float x, float y);
+
+float myMath_mx_sin(float rad);
+
+float myMath_sin(float rad);
+
+float myMath_cos(float rad);
+
+float myMath_linear_interpolation(float range[], float interpolation[], float in, unsigned char length); //range 必须从小到大
+
+void myMath_delay(long t);
+
+unsigned char myMath_iDigits(int num);
+
+unsigned short int myMath_power(unsigned char m, unsigned char n);
+
+float myMath_fast_exp(float x);
+
+float _ifabs(float number);
 
 float invSqrt1(float x);
 

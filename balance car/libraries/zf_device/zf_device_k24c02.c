@@ -110,9 +110,8 @@ k24c02_data_union k24c02_union_buffer[K24C02_DATA_BUFFER_SIZE];
 // 使用示例     k24c02_read_page_to_buffer(K24C02_PAGE_0);
 // 备注信息     数据更新到缓冲区 调用本函数后直接读取缓冲区即可
 //-------------------------------------------------------------------------------------------------------------------
-void k24c02_read_page_to_buffer (k24c02_page_enum page_num)
-{
-    k24c02_read_registers(page_num*8, (uint8 *)&k24c02_union_buffer[0], K24C02_PAGE_SIZE);
+void k24c02_read_page_to_buffer(k24c02_page_enum page_num) {
+    k24c02_read_registers(page_num * 8, (uint8 *) &k24c02_union_buffer[0], K24C02_PAGE_SIZE);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -122,10 +121,9 @@ void k24c02_read_page_to_buffer (k24c02_page_enum page_num)
 // 使用示例     k24c02_write_page_from_buffer(K24C02_PAGE_0);
 // 备注信息     将数据缓冲区的数据写入 K24C02 的指定页码
 //-------------------------------------------------------------------------------------------------------------------
-uint8 k24c02_write_page_from_buffer (k24c02_page_enum page_num)
-{
+uint8 k24c02_write_page_from_buffer(k24c02_page_enum page_num) {
     uint8 return_state = 0;
-    k24c02_write_registers(page_num*8, (uint8 *)&k24c02_union_buffer[0], K24C02_PAGE_SIZE);
+    k24c02_write_registers(page_num * 8, (uint8 *) &k24c02_union_buffer[0], K24C02_PAGE_SIZE);
     return return_state;
 }
 
@@ -136,8 +134,7 @@ uint8 k24c02_write_page_from_buffer (k24c02_page_enum page_num)
 // 使用示例     k24c02_init();
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 k24c02_init (void)
-{
+uint8 k24c02_init(void) {
     uint8 return_state = 0;
 #if K24C02_USE_SOFT_IIC
     soft_iic_init(&k24c02_iic_struct, K24C02_DEV_ADDR, K24C02_SOFT_IIC_DELAY, K24C02_SCL_PIN, K24C02_SDA_PIN);

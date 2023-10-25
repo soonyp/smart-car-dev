@@ -84,41 +84,56 @@
 #define TFT180_CS(x)                    ((x) ? (gpio_high(TFT180_CS_PIN)) : (gpio_low(TFT180_CS_PIN)))
 #define TFT180_BLK(x)                   ((x) ? (gpio_high(TFT180_BL_PIN)) : (gpio_low(TFT180_BL_PIN)))
 
-typedef enum
-{
-    TFT180_PORTAIT                      = 0,                                    // 竖屏模式
-    TFT180_PORTAIT_180                  = 1,                                    // 竖屏模式  旋转180
-    TFT180_CROSSWISE                    = 2,                                    // 横屏模式
-    TFT180_CROSSWISE_180                = 3,                                    // 横屏模式  旋转180
-}tft180_dir_enum;
+typedef enum {
+    TFT180_PORTAIT = 0,                                    // 竖屏模式
+    TFT180_PORTAIT_180 = 1,                                    // 竖屏模式  旋转180
+    TFT180_CROSSWISE = 2,                                    // 横屏模式
+    TFT180_CROSSWISE_180 = 3,                                    // 横屏模式  旋转180
+} tft180_dir_enum;
 
-typedef enum
-{
-    TFT180_6X8_FONT                     = 0,                                    // 6x8      字体
-    TFT180_8X16_FONT                    = 1,                                    // 8x16     字体
-    TFT180_16X16_FONT                   = 2,                                    // 16x16    字体 目前不支持
-}tft180_font_size_enum;
+typedef enum {
+    TFT180_6X8_FONT = 0,                                    // 6x8      字体
+    TFT180_8X16_FONT = 1,                                    // 8x16     字体
+    TFT180_16X16_FONT = 2,                                    // 16x16    字体 目前不支持
+} tft180_font_size_enum;
 
-void    tft180_clear                    (void);
-void    tft180_full                     (const uint16 color);
-void    tft180_set_dir                  (tft180_dir_enum dir);
-void    tft180_set_font                 (tft180_font_size_enum font);
-void    tft180_set_color                (const uint16 pen, const  uint16 bgcolor);
-void    tft180_draw_point               (uint16 x, uint16 y, const uint16 color);
-void    tft180_draw_line                (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+void tft180_clear(void);
 
-void    tft180_show_char                (uint16 x, uint16 y, const char dat);
-void    tft180_show_string              (uint16 x, uint16 y, const char dat[]);
-void    tft180_show_int                 (uint16 x,uint16 y, const int32 dat, uint8 num);
-void    tft180_show_uint                (uint16 x,uint16 y, const uint32 dat, uint8 num);
-void    tft180_show_float               (uint16 x,uint16 y, const double dat, uint8 num, uint8 pointnum);
+void tft180_full(const uint16 color);
 
-void    tft180_show_binary_image        (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
-void    tft180_show_gray_image          (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
-void    tft180_show_rgb565_image        (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 color_mode);
+void tft180_set_dir(tft180_dir_enum dir);
 
-void    tft180_show_wave                (uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);
-void    tft180_show_chinese             (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
+void tft180_set_font(tft180_font_size_enum font);
+
+void tft180_set_color(const uint16 pen, const uint16 bgcolor);
+
+void tft180_draw_point(uint16 x, uint16 y, const uint16 color);
+
+void tft180_draw_line(uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+
+void tft180_show_char(uint16 x, uint16 y, const char dat);
+
+void tft180_show_string(uint16 x, uint16 y, const char dat[]);
+
+void tft180_show_int(uint16 x, uint16 y, const int32 dat, uint8 num);
+
+void tft180_show_uint(uint16 x, uint16 y, const uint32 dat, uint8 num);
+
+void tft180_show_float(uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+
+void tft180_show_binary_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height);
+
+void tft180_show_gray_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                            uint16 dis_height, uint8 threshold);
+
+void tft180_show_rgb565_image(uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height, uint8 color_mode);
+
+void tft180_show_wave(uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width,
+                      uint16 dis_value_max);
+
+void tft180_show_chinese(uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     TFT180 显示小钻风图像
@@ -153,7 +168,7 @@ void    tft180_show_chinese             (uint16 x, uint16 y, uint8 size, const u
 //-------------------------------------------------------------------------------------------------------------------
 #define tft180_displayimage8660(p, width, height)       (tft180_show_rgb565_image(0, 0, (p), SCC8660_W, SCC8660_H, (width), (height), 1))
 
-void    tft180_init                     (void);
+void tft180_init(void);
 
 #endif
 

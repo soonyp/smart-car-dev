@@ -86,15 +86,18 @@ typedef enum
 #define WIRELESS_UART_BUFFER_SIZE       ( 64   )
 #define WIRELESS_UART_TIMEOUT_COUNT     ( 0x64 )
 
-uint32      wireless_uart_send_byte         (const uint8 data);
-uint32      wireless_uart_send_buffer      (const uint8 *buff, uint32 len);
-uint32      wireless_uart_send_string       (const char *str);
-void        wireless_uart_send_image        (const uint8 *image_addr, uint32 image_size);
+uint32 wireless_uart_send_byte(const uint8 data);
 
-uint32      wireless_uart_read_buffer       (uint8 *buff, uint32 len);
+uint32 wireless_uart_send_buffer(const uint8 *buff, uint32 len);
 
-void        wireless_uart_callback          (void);
+uint32 wireless_uart_send_string(const char *str);
 
-uint8       wireless_uart_init              (void);
+void wireless_uart_send_image(const uint8 *image_addr, uint32 image_size);
+
+uint32 wireless_uart_read_buffer(uint8 *buff, uint32 len);
+
+void wireless_uart_callback(void);
+
+uint8 wireless_uart_init(void);
 
 #endif

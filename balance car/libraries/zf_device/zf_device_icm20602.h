@@ -77,21 +77,19 @@
 #define ICM20602_CS_PIN             C10                                          // CS 片选引脚
 #define ICM20602_CS(x)              (x? (gpio_high(ICM20602_CS_PIN)): (gpio_low(ICM20602_CS_PIN)))
 
-typedef enum
-{
-    ICM20602_ACC_SAMPLE_SGN_2G ,                                                // 加速度计量程 ±2G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-    ICM20602_ACC_SAMPLE_SGN_4G ,                                                // 加速度计量程 ±4G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-    ICM20602_ACC_SAMPLE_SGN_8G ,                                                // 加速度计量程 ±8G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+typedef enum {
+    ICM20602_ACC_SAMPLE_SGN_2G,                                                // 加速度计量程 ±2G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+    ICM20602_ACC_SAMPLE_SGN_4G,                                                // 加速度计量程 ±4G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
+    ICM20602_ACC_SAMPLE_SGN_8G,                                                // 加速度计量程 ±8G  (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
     ICM20602_ACC_SAMPLE_SGN_16G,                                                // 加速度计量程 ±16G (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (G = g 重力加速度 g≈9.80 m/s^2)
-}icm20602_acc_sample_config;
+} icm20602_acc_sample_config;
 
-typedef enum
-{
-    ICM20602_GYRO_SAMPLE_SGN_250DPS ,                                           // 陀螺仪量程 ±250DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    ICM20602_GYRO_SAMPLE_SGN_500DPS ,                                           // 陀螺仪量程 ±500DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+typedef enum {
+    ICM20602_GYRO_SAMPLE_SGN_250DPS,                                           // 陀螺仪量程 ±250DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+    ICM20602_GYRO_SAMPLE_SGN_500DPS,                                           // 陀螺仪量程 ±500DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
     ICM20602_GYRO_SAMPLE_SGN_1000DPS,                                           // 陀螺仪量程 ±1000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
     ICM20602_GYRO_SAMPLE_SGN_2000DPS,                                           // 陀螺仪量程 ±2000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-}icm20602_gyro_sample_config;
+} icm20602_gyro_sample_config;
 
 #define ICM20602_ACC_SAMPLE_DEFAULT     ( ICM20602_ACC_SAMPLE_SGN_8G )          // 在这设置默认的 加速度计 初始化量程
 #define ICM20602_GYRO_SAMPLE_DEFAULT    ( ICM20602_GYRO_SAMPLE_SGN_2000DPS )    // 在这设置默认的 陀螺仪   初始化量程
@@ -174,8 +172,9 @@ extern int16 icm20602_gyro_x, icm20602_gyro_y, icm20602_gyro_z;                 
 extern int16 icm20602_acc_x, icm20602_acc_y, icm20602_acc_z;                    // 三轴加速度计数据
 extern float icm20602_transition_factor[2];
 
-void    icm20602_get_acc            (void);
-void    icm20602_get_gyro           (void);
+void icm20602_get_acc(void);
+
+void icm20602_get_gyro(void);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     将 ICM20602 加速度计数据转换为实际物理数据
@@ -195,7 +194,7 @@ void    icm20602_get_gyro           (void);
 //-------------------------------------------------------------------------------------------------------------------
 #define icm20602_gyro_transition(gyro_value)    ((float)gyro_value / icm20602_transition_factor[1])
 
-uint8   icm20602_init               (void);
+uint8 icm20602_init(void);
 
 #endif
 

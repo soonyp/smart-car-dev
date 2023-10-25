@@ -60,36 +60,36 @@ typedef enum //  此枚举定义不允许用户修改
     // 例如：UART1_MAP0_TX_A9与UART1_MAP1_TX_B6不能一起使用。
 
     // 默认映射
-    UART1_MAP0_TX_A9  = 0x0000 | A9 ,
+    UART1_MAP0_TX_A9 = 0x0000 | A9,
     UART1_MAP0_RX_A10 = 0x0000 | A10,
 
     // 以下为串口1的一组映射引脚，不允许映射引脚混用。
     // 重映射               
-    UART1_MAP1_TX_B6  = 0x0100 | B6 ,
-    UART1_MAP1_RX_B7  = 0x0100 | B7 ,
+    UART1_MAP1_TX_B6 = 0x0100 | B6,
+    UART1_MAP1_RX_B7 = 0x0100 | B7,
 
     // 以下为串口1的一组映射引脚，不允许映射引脚混用。
     // 部分映射             
     UART1_MAP2_TX_B15 = 0x0200 | B15,
-    UART1_MAP2_RX_A8  = 0x0200 | A8 ,
+    UART1_MAP2_RX_A8 = 0x0200 | A8,
 
     // 以下为串口1的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
-    UART1_MAP3_TX_A6  = 0x0300 | A6 ,
-    UART1_MAP3_RX_A7  = 0x0300 | A7 ,
+    UART1_MAP3_TX_A6 = 0x0300 | A6,
+    UART1_MAP3_RX_A7 = 0x0300 | A7,
 
     //----------UART2-----------//
 
     // 以下为串口2的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    UART2_MAP0_TX_A2  = 0x1000 | A2 ,
-    UART2_MAP0_RX_A3  = 0x1000 | A3 ,
+    UART2_MAP0_TX_A2 = 0x1000 | A2,
+    UART2_MAP0_RX_A3 = 0x1000 | A3,
 
     // 以下为串口2的一组映射引脚，不允许映射引脚混用。
     // 重映射               
-    UART2_MAP1_TX_D5  = 0x1100 | D5 ,
-    UART2_MAP1_RX_D6  = 0x1100 | D6 ,
-                            
+    UART2_MAP1_TX_D5 = 0x1100 | D5,
+    UART2_MAP1_RX_D6 = 0x1100 | D6,
+
     //----------UART3--------------//
 
     // 以下为串口3的一组映射引脚，不允许映射引脚混用。
@@ -104,8 +104,8 @@ typedef enum //  此枚举定义不允许用户修改
 
     // 以下为串口3的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
-    UART3_MAP2_TX_D8  = 0x2300 | D8 ,
-    UART3_MAP2_RX_D9  = 0x2300 | D9 ,
+    UART3_MAP2_TX_D8 = 0x2300 | D8,
+    UART3_MAP2_RX_D9 = 0x2300 | D9,
 
     //----------UART4-----------//
 
@@ -116,42 +116,42 @@ typedef enum //  此枚举定义不允许用户修改
 
     // 以下为串口4的一组映射引脚，不允许映射引脚混用。
     // 重映射               
-    UART4_MAP1_TX_B0  = 0x3100 | B0 ,
-    UART4_MAP1_RX_B1  = 0x3100 | B1 ,
+    UART4_MAP1_TX_B0 = 0x3100 | B0,
+    UART4_MAP1_RX_B1 = 0x3100 | B1,
 
     // 以下为串口4的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
-    UART4_MAP3_TX_E0  = 0x3300 | E0 ,
-    UART4_MAP3_RX_E1  = 0x3300 | E1 ,
+    UART4_MAP3_TX_E0 = 0x3300 | E0,
+    UART4_MAP3_RX_E1 = 0x3300 | E1,
 
     //----------UART5-----------//
 
     // 以下为串口5的一组映射引脚，不允许映射引脚混用。
     // 默认映射
     UART5_MAP0_TX_C12 = 0x4000 | C12,
-    UART5_MAP0_RX_D2  = 0x4000 | D2,
+    UART5_MAP0_RX_D2 = 0x4000 | D2,
 
     // 以下为串口5的一组映射引脚，不允许映射引脚混用。
     // 重映射                
-    UART5_MAP1_TX_B4  = 0x4100 | B4,
-    UART5_MAP1_RX_B5  = 0x4100 | B5,
+    UART5_MAP1_TX_B4 = 0x4100 | B4,
+    UART5_MAP1_RX_B5 = 0x4100 | B5,
 
     // 以下为串口5的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
-    UART5_MAP3_TX_E8  = 0x4300 | E8,
-    UART5_MAP3_RX_E9  = 0x4300 | E9,
+    UART5_MAP3_TX_E8 = 0x4300 | E8,
+    UART5_MAP3_RX_E9 = 0x4300 | E9,
 
     //----------UART6-----------//
 
     // 以下为串口6的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    UART6_MAP0_TX_C0  = 0x5000 | C0 ,
-    UART6_MAP0_RX_C1  = 0x5000 | C1 ,
+    UART6_MAP0_TX_C0 = 0x5000 | C0,
+    UART6_MAP0_RX_C1 = 0x5000 | C1,
 
     // 以下为串口6的一组映射引脚，不允许映射引脚混用。
     // 重映射                
-    UART6_MAP1_TX_B8  = 0x5100 | B8 ,
-    UART6_MAP1_RX_B9  = 0x5100 | B9 ,
+    UART6_MAP1_TX_B8 = 0x5100 | B8,
+    UART6_MAP1_RX_B9 = 0x5100 | B9,
 
     // 以下为串口6的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
@@ -162,13 +162,13 @@ typedef enum //  此枚举定义不允许用户修改
 
     // 以下为串口7的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    UART7_MAP0_TX_C2  = 0x6000 | C2 ,
-    UART7_MAP0_RX_C3  = 0x6000 | C3 ,
+    UART7_MAP0_TX_C2 = 0x6000 | C2,
+    UART7_MAP0_RX_C3 = 0x6000 | C3,
 
     // 以下为串口7的一组映射引脚，不允许映射引脚混用。
     // 重映射                
-    UART7_MAP1_TX_A6  = 0x6100 | A6 ,
-    UART7_MAP1_RX_A7  = 0x6100 | A7 ,
+    UART7_MAP1_TX_A6 = 0x6100 | A6,
+    UART7_MAP1_RX_A7 = 0x6100 | A7,
 
     // 以下为串口7的一组映射引脚，不允许映射引脚混用。
     // 完全映射             
@@ -179,8 +179,8 @@ typedef enum //  此枚举定义不允许用户修改
 
     // 以下为串口8的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    UART8_MAP0_TX_C4  = 0x7000 | C4 ,
-    UART8_MAP0_RX_C5  = 0x7000 | C5 ,
+    UART8_MAP0_TX_C4 = 0x7000 | C4,
+    UART8_MAP0_RX_C5 = 0x7000 | C5,
 
     // 以下为串口8的一组映射引脚，不允许映射引脚混用。
     // 重映射                
@@ -192,7 +192,7 @@ typedef enum //  此枚举定义不允许用户修改
     UART8_MAP3_TX_E14 = 0x7300 | E14,
     UART8_MAP3_RX_E15 = 0x7300 | E15,
 
-}uart_pin_enum;
+} uart_pin_enum;
 
 
 typedef enum//  此枚举定义不允许用户修改
@@ -205,27 +205,27 @@ typedef enum//  此枚举定义不允许用户修改
     UART_6,
     UART_7,
     UART_8,
-}uart_index_enum;
-
+} uart_index_enum;
 
 
 extern const uint32 uart_index[];
 
 
+void uart_write_byte(uart_index_enum uart_n, const uint8 dat);
 
+void uart_write_buffer(uart_index_enum uart_n, const uint8 *buff, uint32 len);
 
-void    uart_write_byte         (uart_index_enum uart_n, const uint8 dat);
-void    uart_write_buffer       (uart_index_enum uart_n, const uint8 *buff, uint32 len);
-void    uart_write_string       (uart_index_enum uart_n, const char *str);
+void uart_write_string(uart_index_enum uart_n, const char *str);
 
-uint8   uart_read_byte                      (uart_index_enum uartn);
-uint8   uart_query_byte                     (uart_index_enum uartn, uint8 *dat);
+uint8 uart_read_byte(uart_index_enum uartn);
 
-void    uart_tx_interrupt       (uart_index_enum uart_n, uint8 status);
-void    uart_rx_interrupt       (uart_index_enum uart_n, uint8 status);
+uint8 uart_query_byte(uart_index_enum uartn, uint8 *dat);
 
-void    uart_init               (uart_index_enum uart_n, uint32 baud, uart_pin_enum tx_pin, uart_pin_enum rx_pin);
+void uart_tx_interrupt(uart_index_enum uart_n, uint8 status);
 
+void uart_rx_interrupt(uart_index_enum uart_n, uint8 status);
+
+void uart_init(uart_index_enum uart_n, uint32 baud, uart_pin_enum tx_pin, uart_pin_enum rx_pin);
 
 
 #endif

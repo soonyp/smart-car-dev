@@ -81,20 +81,21 @@
 #define AHT20_TIMEOUT_COUNT         (0x001F)                                    // MPU6050 超时计数
 
 //================================================定义 AHT20 内部地址================================================
-#define	AHT20_DEV_ADDR              (0x38)
+#define    AHT20_DEV_ADDR              (0x38)
 
-#define	AHT20_READ_STATE            (0x71)
-#define	AHT20_CAL_ENABLE            (0x08)
-#define	AHT20_STATE_BUSY            (0x80)
+#define    AHT20_READ_STATE            (0x71)
+#define    AHT20_CAL_ENABLE            (0x08)
+#define    AHT20_STATE_BUSY            (0x80)
 
-#define	AHT20_MEASURE_CMD           (0xAC)
+#define    AHT20_MEASURE_CMD           (0xAC)
 
-#define	AHT20_SELF_INIT             (0xBE)
+#define    AHT20_SELF_INIT             (0xBE)
 //================================================定义 AHT20 内部地址================================================
 
 extern float aht_temperature, aht_humidity;
 
-void    aht20_read_data     (void);
-uint8   aht20_init          (void);
+void aht20_read_data(void);
+
+uint8 aht20_init(void);
 
 #endif

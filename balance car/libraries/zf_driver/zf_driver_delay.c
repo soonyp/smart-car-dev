@@ -46,16 +46,15 @@
 // 使用示例     system_delay_ms(100);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void system_delay_ms (uint32 num)
-{
+void system_delay_ms(uint32 num) {
     SysTick->SR &= ~(1 << 0);
 
 
-    SysTick->CMP = (uint64_t)(system_clock/8000) * num;
+    SysTick->CMP = (uint64_t) (system_clock / 8000) * num;
     SysTick->CTLR |= (1 << 4);
     SysTick->CTLR |= (1 << 5) | (1 << 0);
 
-    while((SysTick->SR & (1 << 0)) != (1 << 0));
+    while ((SysTick->SR & (1 << 0)) != (1 << 0));
 
     SysTick->CTLR &= ~(1 << 0);
 }
@@ -68,16 +67,15 @@ void system_delay_ms (uint32 num)
 // 使用示例     system_delay_us(100);
 // 备注信息     受限于程序运行跳转 此延时会比输入值高出一些
 //-------------------------------------------------------------------------------------------------------------------
-void system_delay_us (uint32 num)
-{
+void system_delay_us(uint32 num) {
     SysTick->SR &= ~(1 << 0);
 
 
-    SysTick->CMP = (uint64_t)(system_clock/8000000) * num;
+    SysTick->CMP = (uint64_t) (system_clock / 8000000) * num;
     SysTick->CTLR |= (1 << 4);
     SysTick->CTLR |= (1 << 5) | (1 << 0);
 
-    while((SysTick->SR & (1 << 0)) != (1 << 0));
+    while ((SysTick->SR & (1 << 0)) != (1 << 0));
 
     SysTick->CTLR &= ~(1 << 0);
 }

@@ -77,8 +77,7 @@
 
 
 // 枚举 Flash 块区  此枚举定义不允许用户修改
-typedef enum
-{
+typedef enum {
     W25Q32_BLOCK_00,
     W25Q32_BLOCK_01,
     W25Q32_BLOCK_02,
@@ -143,11 +142,10 @@ typedef enum
     W25Q32_BLOCK_61,
     W25Q32_BLOCK_62,
     W25Q32_BLOCK_63
-}w25q32_block_enum;
+} w25q32_block_enum;
 
 // 枚举 Flash 扇区  此枚举定义不允许用户修改
-typedef enum
-{
+typedef enum {
     W25Q32_SECTION_00,
     W25Q32_SECTION_01,
     W25Q32_SECTION_02,
@@ -164,11 +162,10 @@ typedef enum
     W25Q32_SECTION_13,
     W25Q32_SECTION_14,
     W25Q32_SECTION_15,
-}w25q32_section_enum;
+} w25q32_section_enum;
 
 // 枚举 Flash 页索引 此枚举定义不允许用户修改
-typedef enum
-{
+typedef enum {
     W25Q32_PAGE_00,
     W25Q32_PAGE_01,
     W25Q32_PAGE_02,
@@ -185,7 +182,7 @@ typedef enum
     W25Q32_PAGE_13,
     W25Q32_PAGE_14,
     W25Q32_PAGE_15,
-}w25q32_page_enum;
+} w25q32_page_enum;
 
 //====================================================硬件 SPI 驱动====================================================
 #define W25Q32_SPI_SPEED          system_clock/8                              // 硬件 SPI 速率
@@ -226,15 +223,18 @@ typedef enum
 //================================================定义 ICM20602 内部地址================================================
 
 
-void  w25q32_erase_chip(void);
-uint8 w25q32_check          (w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num);
-uint8 w25q32_erase_sector   (w25q32_block_enum block_num, w25q32_section_enum sector_num);
+void w25q32_erase_chip(void);
 
-void  w25q32_read_page      (w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
-        uint8 *buf, uint16 len);
+uint8 w25q32_check(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num);
 
-void  w25q32_write_page     (w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
-        uint8 *buf, uint16 len);
+uint8 w25q32_erase_sector(w25q32_block_enum block_num, w25q32_section_enum sector_num);
+
+void w25q32_read_page(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
+                      uint8 *buf, uint16 len);
+
+void w25q32_write_page(w25q32_block_enum block_num, w25q32_section_enum sector_num, w25q32_page_enum page_num,
+                       uint8 *buf, uint16 len);
+
 uint8 w25q32_init();
 
 //SPI_FLASH写使能

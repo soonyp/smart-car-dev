@@ -59,77 +59,62 @@
 // 使用示例     soft_spi_8bit_data_handler(soft_spi_obj, 1);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 soft_spi_8bit_data_handler (soft_spi_info_struct *soft_spi_obj, const uint8 data)
-{
+static uint8 soft_spi_8bit_data_handler(soft_spi_info_struct *soft_spi_obj, const uint8 data) {
     uint8 temp = 0;
     uint8 write_data = data;
     uint8 read_data = 0;
 
-    if(soft_spi_obj->config.use_cs)
-    {
+    if (soft_spi_obj->config.use_cs) {
         gpio_low(soft_spi_obj->cs_pin);
     }
 
-    if(0 == soft_spi_obj->config.mode || 1 == soft_spi_obj->config.mode)        // CPOL = 0 SCK 空闲低电平
+    if (0 == soft_spi_obj->config.mode || 1 == soft_spi_obj->config.mode)        // CPOL = 0 SCK 空闲低电平
     {
         gpio_low(soft_spi_obj->sck_pin);
-    }
-    else                                                                        // CPOL = 1 SCK 空闲高电平
+    } else                                                                        // CPOL = 1 SCK 空闲高电平
     {
         gpio_high(soft_spi_obj->sck_pin);
     }
 
-    if(0 == soft_spi_obj->config.mode % 2)                                      // CPHA = 0 第一个边沿采样
+    if (0 == soft_spi_obj->config.mode % 2)                                      // CPHA = 0 第一个边沿采样
     {
-        for(temp = 8; temp > 0; temp --)
-        {
-            if(0x80 & write_data)
-            {
+        for (temp = 8; temp > 0; temp--) {
+            if (0x80 & write_data) {
                 gpio_high(soft_spi_obj->mosi_pin);
-            }
-            else
-            {
+            } else {
                 gpio_low(soft_spi_obj->mosi_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
             write_data = write_data << 1;
             read_data = read_data << 1;
-            if(soft_spi_obj->config.use_miso)
-            {
+            if (soft_spi_obj->config.use_miso) {
                 read_data |= gpio_get_level(soft_spi_obj->miso_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
         }
-    }
-    else                                                                        // CPHA = 1 第二个边沿采样
+    } else                                                                        // CPHA = 1 第二个边沿采样
     {
-        for(temp = 8; 0 < temp; temp --)
-        {
+        for (temp = 8; 0 < temp; temp--) {
             gpio_toggle_level(soft_spi_obj->sck_pin);
-            if(0x80 & write_data)
-            {
+            if (0x80 & write_data) {
                 gpio_high(soft_spi_obj->mosi_pin);
-            }
-            else
-            {
+            } else {
                 gpio_low(soft_spi_obj->mosi_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
             write_data = write_data << 1;
             read_data = read_data << 1;
-            if(soft_spi_obj->config.use_miso)
-            {
+            if (soft_spi_obj->config.use_miso) {
                 read_data |= gpio_get_level(soft_spi_obj->miso_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
         }
     }
 
-    if(soft_spi_obj->config.use_cs)
-    {
+    if (soft_spi_obj->config.use_cs) {
         gpio_high(soft_spi_obj->cs_pin);
     }
     return read_data;
@@ -143,77 +128,62 @@ static uint8 soft_spi_8bit_data_handler (soft_spi_info_struct *soft_spi_obj, con
 // 使用示例     soft_spi_16bit_data_handler(soft_spi_obj, 1);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint16 soft_spi_16bit_data_handler (soft_spi_info_struct *soft_spi_obj, const uint16 data)
-{
+static uint16 soft_spi_16bit_data_handler(soft_spi_info_struct *soft_spi_obj, const uint16 data) {
     uint8 temp = 0;
     uint16 write_data = data;
     uint16 read_data = 0;
 
-    if(soft_spi_obj->config.use_cs)
-    {
+    if (soft_spi_obj->config.use_cs) {
         gpio_low(soft_spi_obj->cs_pin);
     }
 
-    if(0 == soft_spi_obj->config.mode || 1 == soft_spi_obj->config.mode)        // CPOL = 0 SCK 空闲低电平
+    if (0 == soft_spi_obj->config.mode || 1 == soft_spi_obj->config.mode)        // CPOL = 0 SCK 空闲低电平
     {
         gpio_low(soft_spi_obj->sck_pin);
-    }
-    else                                                                        // CPOL = 1 SCK 空闲高电平
+    } else                                                                        // CPOL = 1 SCK 空闲高电平
     {
         gpio_high(soft_spi_obj->sck_pin);
     }
 
-    if(0 == soft_spi_obj->config.mode % 2)                                      // CPHA = 0 第一个边沿采样
+    if (0 == soft_spi_obj->config.mode % 2)                                      // CPHA = 0 第一个边沿采样
     {
-        for(temp = 16; 0 < temp; temp --)
-        {
-            if(0x8000 & write_data)
-            {
+        for (temp = 16; 0 < temp; temp--) {
+            if (0x8000 & write_data) {
                 gpio_high(soft_spi_obj->mosi_pin);
-            }
-            else
-            {
+            } else {
                 gpio_low(soft_spi_obj->mosi_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
             write_data = write_data << 1;
             read_data = read_data << 1;
-            if(soft_spi_obj->config.use_miso)
-            {
+            if (soft_spi_obj->config.use_miso) {
                 read_data |= gpio_get_level(soft_spi_obj->miso_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
         }
-    }
-    else                                                                        // CPHA = 1 第二个边沿采样
+    } else                                                                        // CPHA = 1 第二个边沿采样
     {
-        for(temp = 16; 0 < temp; temp --)
-        {
+        for (temp = 16; 0 < temp; temp--) {
             gpio_toggle_level(soft_spi_obj->sck_pin);
-            if(write_data & 0x8000)
-            {
+            if (write_data & 0x8000) {
                 gpio_high(soft_spi_obj->mosi_pin);
-            }
-            else
-            {
+            } else {
                 gpio_low(soft_spi_obj->mosi_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
             gpio_toggle_level(soft_spi_obj->sck_pin);
             write_data = write_data << 1;
             read_data = read_data << 1;
-            if(soft_spi_obj->config.use_miso)
-            {
+            if (soft_spi_obj->config.use_miso) {
                 read_data |= gpio_get_level(soft_spi_obj->miso_pin);
             }
             soft_spi_delay(soft_spi_obj->delay);
         }
     }
 
-    if(soft_spi_obj->config.use_cs)
-    {
+    if (soft_spi_obj->config.use_cs) {
         gpio_high(soft_spi_obj->cs_pin);
     }
     return read_data;
@@ -227,8 +197,7 @@ static uint16 soft_spi_16bit_data_handler (soft_spi_info_struct *soft_spi_obj, c
 // 使用示例     soft_spi_write_8bit(&soft_spi_obj, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 data)
-{
+void soft_spi_write_8bit(soft_spi_info_struct *soft_spi_obj, const uint8 data) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_8bit_data_handler(soft_spi_obj, data);
 }
@@ -242,13 +211,11 @@ void soft_spi_write_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 data)
 // 使用示例     soft_spi_write_8bit_array(&soft_spi_obj, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_8bit_array (soft_spi_info_struct *soft_spi_obj, const uint8 *data, uint32 len)
-{
+void soft_spi_write_8bit_array(soft_spi_info_struct *soft_spi_obj, const uint8 *data, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
-    while(len --)
-    {
-        soft_spi_8bit_data_handler(soft_spi_obj, *data ++);
+    while (len--) {
+        soft_spi_8bit_data_handler(soft_spi_obj, *data++);
     }
 }
 
@@ -260,8 +227,7 @@ void soft_spi_write_8bit_array (soft_spi_info_struct *soft_spi_obj, const uint8 
 // 使用示例     soft_spi_write_16bit(&soft_spi_obj, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_16bit (soft_spi_info_struct *soft_spi_obj, uint16 data)
-{
+void soft_spi_write_16bit(soft_spi_info_struct *soft_spi_obj, uint16 data) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_16bit_data_handler(soft_spi_obj, data);
 }
@@ -275,13 +241,11 @@ void soft_spi_write_16bit (soft_spi_info_struct *soft_spi_obj, uint16 data)
 // 使用示例     soft_spi_write_16bit_array(&soft_spi_obj, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_16bit_array (soft_spi_info_struct *soft_spi_obj, const uint16 *data, uint32 len)
-{
+void soft_spi_write_16bit_array(soft_spi_info_struct *soft_spi_obj, const uint16 *data, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
-    while(len --)
-    {
-        soft_spi_16bit_data_handler(soft_spi_obj, *data ++);
+    while (len--) {
+        soft_spi_16bit_data_handler(soft_spi_obj, *data++);
     }
 }
 
@@ -294,8 +258,7 @@ void soft_spi_write_16bit_array (soft_spi_info_struct *soft_spi_obj, const uint1
 // 使用示例     soft_spi_write_8bit_register(&soft_spi_obj, 1, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_8bit_register (soft_spi_info_struct *soft_spi_obj, const uint8 register_name, const uint8 data)
-{
+void soft_spi_write_8bit_register(soft_spi_info_struct *soft_spi_obj, const uint8 register_name, const uint8 data) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_8bit_data_handler(soft_spi_obj, register_name);
     soft_spi_8bit_data_handler(soft_spi_obj, data);
@@ -310,14 +273,13 @@ void soft_spi_write_8bit_register (soft_spi_info_struct *soft_spi_obj, const uin
 // 返回参数     void
 // 使用示例     soft_spi_write_8bit_registers(&soft_spi_obj, 1, buf, 16);
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_8bit_registers (soft_spi_info_struct *soft_spi_obj, const uint8 register_name, const uint8 *data, uint32 len)
-{
+void soft_spi_write_8bit_registers(soft_spi_info_struct *soft_spi_obj, const uint8 register_name, const uint8 *data,
+                                   uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
     soft_spi_8bit_data_handler(soft_spi_obj, register_name);
-    while(len --)
-    {
-        soft_spi_8bit_data_handler(soft_spi_obj, *data ++);
+    while (len--) {
+        soft_spi_8bit_data_handler(soft_spi_obj, *data++);
     }
 }
 
@@ -330,8 +292,7 @@ void soft_spi_write_8bit_registers (soft_spi_info_struct *soft_spi_obj, const ui
 // 使用示例     soft_spi_write_16bit_register(&soft_spi_obj, 1, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_16bit_register (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 data)
-{
+void soft_spi_write_16bit_register(soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 data) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_16bit_data_handler(soft_spi_obj, register_name);
     soft_spi_16bit_data_handler(soft_spi_obj, data);
@@ -347,14 +308,13 @@ void soft_spi_write_16bit_register (soft_spi_info_struct *soft_spi_obj, const ui
 // 使用示例     soft_spi_write_16bit_registers(&soft_spi_obj, 1, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_write_16bit_registers (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, const uint16 *data, uint32 len)
-{
+void soft_spi_write_16bit_registers(soft_spi_info_struct *soft_spi_obj, const uint16 register_name, const uint16 *data,
+                                    uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
     soft_spi_16bit_data_handler(soft_spi_obj, register_name);
-    while(len --)
-    {
-        soft_spi_16bit_data_handler(soft_spi_obj, *data ++);
+    while (len--) {
+        soft_spi_16bit_data_handler(soft_spi_obj, *data++);
     }
 }
 
@@ -366,8 +326,7 @@ void soft_spi_write_16bit_registers (soft_spi_info_struct *soft_spi_obj, const u
 // 使用示例     soft_spi_read_8bit(&soft_spi_obj);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 soft_spi_read_8bit (soft_spi_info_struct *soft_spi_obj)
-{
+uint8 soft_spi_read_8bit(soft_spi_info_struct *soft_spi_obj) {
     zf_assert(soft_spi_obj != NULL);
     return soft_spi_8bit_data_handler(soft_spi_obj, 0);
 }
@@ -381,13 +340,11 @@ uint8 soft_spi_read_8bit (soft_spi_info_struct *soft_spi_obj)
 // 使用示例     soft_spi_read_8bit_array(&soft_spi_obj, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_read_8bit_array (soft_spi_info_struct *soft_spi_obj, uint8 *data, uint32 len)
-{
+void soft_spi_read_8bit_array(soft_spi_info_struct *soft_spi_obj, uint8 *data, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
-    while(len --)
-    {
-        *data ++ = soft_spi_8bit_data_handler(soft_spi_obj, 0);
+    while (len--) {
+        *data++ = soft_spi_8bit_data_handler(soft_spi_obj, 0);
     }
 }
 
@@ -399,8 +356,7 @@ void soft_spi_read_8bit_array (soft_spi_info_struct *soft_spi_obj, uint8 *data, 
 // 使用示例     soft_spi_read_16bit(&soft_spi_obj);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint16 soft_spi_read_16bit (soft_spi_info_struct *soft_spi_obj)
-{
+uint16 soft_spi_read_16bit(soft_spi_info_struct *soft_spi_obj) {
     zf_assert(soft_spi_obj != NULL);
     return soft_spi_16bit_data_handler(soft_spi_obj, 0);
 }
@@ -414,13 +370,11 @@ uint16 soft_spi_read_16bit (soft_spi_info_struct *soft_spi_obj)
 // 使用示例     soft_spi_read_16bit_array(&soft_spi_obj, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_read_16bit_array (soft_spi_info_struct *soft_spi_obj, uint16 *data, uint32 len)
-{
+void soft_spi_read_16bit_array(soft_spi_info_struct *soft_spi_obj, uint16 *data, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
-    while(len --)
-    {
-        *data ++ = soft_spi_16bit_data_handler(soft_spi_obj, 0);
+    while (len--) {
+        *data++ = soft_spi_16bit_data_handler(soft_spi_obj, 0);
     }
 }
 
@@ -433,8 +387,7 @@ void soft_spi_read_16bit_array (soft_spi_info_struct *soft_spi_obj, uint16 *data
 // 使用示例     soft_spi_read_8bit_register(&soft_spi_obj, 0x01, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 soft_spi_read_8bit_register (soft_spi_info_struct *soft_spi_obj, const uint8 register_name)
-{
+uint8 soft_spi_read_8bit_register(soft_spi_info_struct *soft_spi_obj, const uint8 register_name) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_8bit_data_handler(soft_spi_obj, register_name);
     return soft_spi_8bit_data_handler(soft_spi_obj, 0);
@@ -450,14 +403,13 @@ uint8 soft_spi_read_8bit_register (soft_spi_info_struct *soft_spi_obj, const uin
 // 使用示例     soft_spi_read_8bit_registers(&soft_spi_obj, 0x01, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_read_8bit_registers (soft_spi_info_struct *soft_spi_obj, const uint8 register_name, uint8 *data, uint32 len)
-{
+void
+soft_spi_read_8bit_registers(soft_spi_info_struct *soft_spi_obj, const uint8 register_name, uint8 *data, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
     soft_spi_8bit_data_handler(soft_spi_obj, register_name);
-    while(len --)
-    {
-        *data ++ = soft_spi_8bit_data_handler(soft_spi_obj, 0);
+    while (len--) {
+        *data++ = soft_spi_8bit_data_handler(soft_spi_obj, 0);
     }
 }
 
@@ -470,8 +422,7 @@ void soft_spi_read_8bit_registers (soft_spi_info_struct *soft_spi_obj, const uin
 // 使用示例     soft_spi_read_16bit_register(&soft_spi_obj, 0x0101);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint16 soft_spi_read_16bit_register (soft_spi_info_struct *soft_spi_obj, const uint16 register_name)
-{
+uint16 soft_spi_read_16bit_register(soft_spi_info_struct *soft_spi_obj, const uint16 register_name) {
     zf_assert(soft_spi_obj != NULL);
     soft_spi_16bit_data_handler(soft_spi_obj, register_name);
     return soft_spi_16bit_data_handler(soft_spi_obj, 0);
@@ -487,14 +438,13 @@ uint16 soft_spi_read_16bit_register (soft_spi_info_struct *soft_spi_obj, const u
 // 使用示例     soft_spi_read_16bit_registers(&soft_spi_obj, 0x0101, buf, 16);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_read_16bit_registers (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 *data, uint32 len)
-{
+void soft_spi_read_16bit_registers(soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 *data,
+                                   uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(data != NULL);
     soft_spi_16bit_data_handler(soft_spi_obj, register_name);
-    while(len --)
-    {
-        *data ++ = soft_spi_16bit_data_handler(soft_spi_obj, 0);
+    while (len--) {
+        *data++ = soft_spi_16bit_data_handler(soft_spi_obj, 0);
     }
 }
 
@@ -508,22 +458,18 @@ void soft_spi_read_16bit_registers (soft_spi_info_struct *soft_spi_obj, const ui
 // 使用示例     soft_spi_transfer_8bit(&soft_spi_obj, buf, buf, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_transfer_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 *write_buffer, uint8 *read_buffer, uint32 len)
-{
+void
+soft_spi_transfer_8bit(soft_spi_info_struct *soft_spi_obj, const uint8 *write_buffer, uint8 *read_buffer, uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(write_buffer != NULL);
-    while(len --)
-    {
-        if(read_buffer != NULL)
-        {
+    while (len--) {
+        if (read_buffer != NULL) {
             *read_buffer = soft_spi_8bit_data_handler(soft_spi_obj, *write_buffer);
-            write_buffer ++;
-            read_buffer ++;
-        }
-        else
-        {
+            write_buffer++;
+            read_buffer++;
+        } else {
             soft_spi_8bit_data_handler(soft_spi_obj, *write_buffer);
-            write_buffer ++;
+            write_buffer++;
         }
     }
 }
@@ -538,22 +484,18 @@ void soft_spi_transfer_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 *wr
 // 使用示例     soft_spi_transfer_16bit(&soft_spi_obj, buf, buf, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_transfer_16bit (soft_spi_info_struct *soft_spi_obj, const uint16 *write_buffer, uint16 *read_buffer, uint32 len)
-{
+void soft_spi_transfer_16bit(soft_spi_info_struct *soft_spi_obj, const uint16 *write_buffer, uint16 *read_buffer,
+                             uint32 len) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(write_buffer != NULL);
-    while(len --)
-    {
-        if(read_buffer != NULL)
-        {
+    while (len--) {
+        if (read_buffer != NULL) {
             *read_buffer = soft_spi_16bit_data_handler(soft_spi_obj, *write_buffer);
-            write_buffer ++;
-            read_buffer ++;
-        }
-        else
-        {
+            write_buffer++;
+            read_buffer++;
+        } else {
             soft_spi_16bit_data_handler(soft_spi_obj, *write_buffer);
-            write_buffer ++;
+            write_buffer++;
         }
     }
 }
@@ -571,8 +513,8 @@ void soft_spi_transfer_16bit (soft_spi_info_struct *soft_spi_obj, const uint16 *
 // 使用示例     spi_init(SPI_1, 0, 1*1000*1000, A5, A7, A6, A4);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_spi_init (soft_spi_info_struct *soft_spi_obj, uint8 mode, uint32 delay, gpio_pin_enum sck_pin, gpio_pin_enum mosi_pin, uint32 miso_pin, uint32 cs_pin)
-{
+void soft_spi_init(soft_spi_info_struct *soft_spi_obj, uint8 mode, uint32 delay, gpio_pin_enum sck_pin,
+                   gpio_pin_enum mosi_pin, uint32 miso_pin, uint32 cs_pin) {
     zf_assert(soft_spi_obj != NULL);
     zf_assert(sck_pin != mosi_pin);                                             // sck_pin  与 mosi_pin 怎么能填同一个引脚？
     zf_assert(sck_pin != miso_pin);                                             // sck_pin  与 miso_pin 怎么能填同一个引脚？
@@ -581,41 +523,33 @@ void soft_spi_init (soft_spi_info_struct *soft_spi_obj, uint8 mode, uint32 delay
     zf_assert(mosi_pin != cs_pin);                                              // mosi_pin 与 cs_pin   怎么能填同一个引脚？
     zf_assert((miso_pin != cs_pin) || (cs_pin == SOFT_SPI_PIN_NULL));           // miso_pin 与 cs_pin   怎么能填同一个引脚？
 
-    zf_assert(4 > mode);                                                        // 参照 zf_driver_spi.h 内 spi_mode_enum 枚举体定义
+    zf_assert(4 >
+              mode);                                                        // 参照 zf_driver_spi.h 内 spi_mode_enum 枚举体定义
 
     soft_spi_obj->config.mode = mode;
     soft_spi_obj->delay = delay;
 
     soft_spi_obj->sck_pin = sck_pin;
     soft_spi_obj->mosi_pin = mosi_pin;
-    if(0 == mode || 1 == mode)
-    {
+    if (0 == mode || 1 == mode) {
         gpio_init(sck_pin, GPO, GPIO_LOW, GPO_PUSH_PULL);                       // IO 初始化
-    }
-    else
-    {
+    } else {
         gpio_init(sck_pin, GPO, GPIO_HIGH, GPO_PUSH_PULL);                      // IO 初始化
     }
     gpio_init(mosi_pin, GPO, GPIO_HIGH, GPO_PUSH_PULL);                         // IO 初始化
 
-    if(SOFT_SPI_PIN_NULL == miso_pin)
-    {
+    if (SOFT_SPI_PIN_NULL == miso_pin) {
         soft_spi_obj->config.use_miso = 0;
-    }
-    else
-    {
+    } else {
         soft_spi_obj->config.use_miso = 1;
-        soft_spi_obj->miso_pin = (gpio_pin_enum)miso_pin;
+        soft_spi_obj->miso_pin = (gpio_pin_enum) miso_pin;
         gpio_init(soft_spi_obj->miso_pin, GPI, GPIO_HIGH, GPI_FLOATING_IN);     // IO 初始化
     }
-    if(SOFT_SPI_PIN_NULL == cs_pin)
-    {
+    if (SOFT_SPI_PIN_NULL == cs_pin) {
         soft_spi_obj->config.use_cs = 0;
-    }
-    else
-    {
+    } else {
         soft_spi_obj->config.use_cs = 1;
-        soft_spi_obj->cs_pin = (gpio_pin_enum)cs_pin;
+        soft_spi_obj->cs_pin = (gpio_pin_enum) cs_pin;
         gpio_init(soft_spi_obj->cs_pin, GPO, GPIO_HIGH, GPO_PUSH_PULL);         // IO 初始化
     }
 }

@@ -7,25 +7,24 @@
 *                      firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_FLASH_H
 #define __CH32V30x_FLASH_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
 
 /* FLASH Status */
-typedef enum
-{ 
-  FLASH_BUSY = 1,
-  FLASH_ERROR_PG,
-  FLASH_ERROR_WRP,
-  FLASH_COMPLETE,
-  FLASH_TIMEOUT
-}FLASH_Status;
+typedef enum {
+    FLASH_BUSY = 1,
+    FLASH_ERROR_PG,
+    FLASH_ERROR_WRP,
+    FLASH_COMPLETE,
+    FLASH_TIMEOUT
+} FLASH_Status;
 
 
 /* Write Protect */
@@ -76,13 +75,13 @@ typedef enum
 #define OB_STDBY_NoRST                 ((uint16_t)0x0004) /* No reset generated when entering in STANDBY */
 #define OB_STDBY_RST                   ((uint16_t)0x0000) /* Reset generated when entering in STANDBY */
 
-/* FLASH_Interrupts */	
+/* FLASH_Interrupts */
 #define FLASH_IT_ERROR                 ((uint32_t)0x00000400)  /* FPEC error interrupt source */
 #define FLASH_IT_EOP                   ((uint32_t)0x00001000)  /* End of FLASH Operation Interrupt source */
 #define FLASH_IT_BANK1_ERROR           FLASH_IT_ERROR          /* FPEC BANK1 error interrupt source */
 #define FLASH_IT_BANK1_EOP             FLASH_IT_EOP            /* End of FLASH BANK1 Operation Interrupt source */
 
-/* FLASH_Flags */	
+/* FLASH_Flags */
 #define FLASH_FLAG_BSY                 ((uint32_t)0x00000001)  /* FLASH Busy flag */
 #define FLASH_FLAG_EOP                 ((uint32_t)0x00000020)  /* FLASH End of Operation flag */
 #define FLASH_FLAG_PGERR               ((uint32_t)0x00000004)  /* FLASH Program error flag */
@@ -97,42 +96,72 @@ typedef enum
 /* FLASH_Access_CLK */
 #define FLASH_Access_SYSTEM_HALF      ((uint32_t)0x00000000)   /* FLASH Access Clock = SYSTEM/2 */
 #define FLASH_Access_SYSTEM           ((uint32_t)0x02000000)   /* FLASH Access Clock = SYSTEM */
- 
- 
+
+
 /*Functions used for all devices*/
 void FLASH_Unlock(void);
+
 void FLASH_Lock(void);
+
 FLASH_Status FLASH_ErasePage(uint32_t Page_Address);
+
 FLASH_Status FLASH_EraseAllPages(void);
+
 FLASH_Status FLASH_EraseOptionBytes(void);
+
 FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data);
+
 FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data);
+
 FLASH_Status FLASH_ProgramOptionByteData(uint32_t Address, uint8_t Data);
+
 FLASH_Status FLASH_EnableWriteProtection(uint32_t FLASH_Sectors);
+
 FLASH_Status FLASH_ReadOutProtection(FunctionalState NewState);
+
 FLASH_Status FLASH_UserOptionByteConfig(uint16_t OB_IWDG, uint16_t OB_STOP, uint16_t OB_STDBY);
+
 uint32_t FLASH_GetUserOptionByte(void);
+
 uint32_t FLASH_GetWriteProtectionOptionByte(void);
+
 FlagStatus FLASH_GetReadOutProtectionStatus(void);
+
 void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState);
+
 FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG);
+
 void FLASH_ClearFlag(uint32_t FLASH_FLAG);
+
 FLASH_Status FLASH_GetStatus(void);
+
 FLASH_Status FLASH_WaitForLastOperation(uint32_t Timeout);
+
 void FLASH_Unlock_Fast(void);
+
 void FLASH_Lock_Fast(void);
+
 void FLASH_ErasePage_Fast(uint32_t Page_Address);
+
 void FLASH_EraseBlock_32K_Fast(uint32_t Block_Address);
+
 void FLASH_EraseBlock_64K_Fast(uint32_t Block_Address);
-void FLASH_ProgramPage_Fast(uint32_t Page_Address, uint32_t* pbuf);
+
+void FLASH_ProgramPage_Fast(uint32_t Page_Address, uint32_t *pbuf);
+
 void FLASH_Access_Clock_Cfg(uint32_t FLASH_Access_CLK);
+
 void FLASH_Enhance_Mode(FunctionalState NewState);
 
 /* New function used for all devices */
 void FLASH_UnlockBank1(void);
+
 void FLASH_LockBank1(void);
+
 FLASH_Status FLASH_EraseAllBank1Pages(void);
+
 FLASH_Status FLASH_GetBank1Status(void);
+
 FLASH_Status FLASH_WaitForLastBank1Operation(uint32_t Timeout);
 
 #ifdef __cplusplus

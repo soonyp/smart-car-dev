@@ -95,18 +95,17 @@
 #define SCC8660_BRIGHT_DEF      (300)                                           // 亮度设置     手动曝光默认：300   手动曝光时：参数范围0-65535   自动曝光推荐值：100 自动曝光时参数设置范围0-255
 #define SCC8660_FPS_DEF         (60 )                                           // 图像帧率     默认：60        可选参数为：60 50 30 25。 实际帧率还需要看SCC8660_PCLK_DIV参数的设置
 #define SCC8660_PCLK_DIV_DEF    (1  )                                           // PCLK分频系数 默认：0         可选参数为：<0:1/1> <1:2/3> <2:1/2> <3:1/3> <4:1/4> <5:1/8>
-                                                                                //              分频系数越大，PCLK频率越低，降低PCLK可以减轻DVP接口的干扰，但降低PCLK频率则会影响帧率。若无特殊需求请保持默认。
-                                                                                //              例如设置FPS为50帧，但是pclk分频系数选择的为5，则摄像头输出的帧率为50*（1/8）=6.25帧
-                                                                                //              其他参数不变的情况下，SCC8660_PCLK_DIV参数越大图像会越亮
+//              分频系数越大，PCLK频率越低，降低PCLK可以减轻DVP接口的干扰，但降低PCLK频率则会影响帧率。若无特殊需求请保持默认。
+//              例如设置FPS为50帧，但是pclk分频系数选择的为5，则摄像头输出的帧率为50*（1/8）=6.25帧
+//              其他参数不变的情况下，SCC8660_PCLK_DIV参数越大图像会越亮
 #define SCC8660_PCLK_MODE_DEF   (1  )                                           // PCLK模式     默认：0         可选参数为：[0,1] 0：不输出消隐信号 1：输出消隐信号 <通常都设置为0，如果使用STM32的DCMI接口采集需要设置为1>
 #define SCC8660_COLOR_MODE_DEF  (0  )                                           // 图像色彩模式 默认：0         可选参数为：[0,1] 0：正常彩色模式   1：鲜艳模式（色彩饱和度提高）
 #define SCC8660_DATA_FORMAT_DEF (0  )                                           // 输出数据格式 默认：0         可选参数为：[0-3] 0：RGB565 1：RGB565(字节交换) 2：YUV422(YUYV) 3：YUV422(UYVY)
 #define SCC8660_MANUAL_WB_DEF   (0  )                                           // 手动白平衡   默认：0         可选参数为：[0,0x65-0xa0] 0：关闭手动白平衡，启用自动白平衡    其他：手动白平衡 手动白平衡时 参数范围0x65-0xa0
 
 // 摄像头命令枚举
-typedef enum
-{
-    SCC8660_INIT                = 0x00,                                         // 摄像头初始化命令
+typedef enum {
+    SCC8660_INIT = 0x00,                                         // 摄像头初始化命令
     SCC8660_AUTO_EXP,                                                           // 自动曝光命令
     SCC8660_BRIGHT,                                                             // 亮度命令
     SCC8660_FPS,                                                                // 摄像头帧率命令
@@ -119,33 +118,37 @@ typedef enum
     SCC8660_MANUAL_WB,                                                          // 手动白平衡命令
     SCC8660_CONFIG_FINISH,                                                      // 非命令位，主要用来占位计数
 
-    SCC8660_GET_WHO_AM_I        = 0xEF,                                         // 我是谁命令，用于判断摄像头型号
-    SCC8660_SET_BRIGHT          = 0xF0,                                         // 单独设置亮度
-    SCC8660_GET_STATUS          = 0XF1,                                         // 获取摄像头配置命令
-    SCC8660_GET_VERSION         = 0xF2,                                         // 固件版本号
-    SCC8660_SET_MANUAL_WB       = 0xF3,                                         // 单独设置手动白平衡
+    SCC8660_GET_WHO_AM_I = 0xEF,                                         // 我是谁命令，用于判断摄像头型号
+    SCC8660_SET_BRIGHT = 0xF0,                                         // 单独设置亮度
+    SCC8660_GET_STATUS = 0XF1,                                         // 获取摄像头配置命令
+    SCC8660_GET_VERSION = 0xF2,                                         // 固件版本号
+    SCC8660_SET_MANUAL_WB = 0xF3,                                         // 单独设置手动白平衡
 
-    SCC8660_SET_REG_ADDR        = 0xFE,
-    SCC8660_SET_REG_DATA        = 0xFF,
-}scc8660_cmd_enum;
+    SCC8660_SET_REG_ADDR = 0xFE,
+    SCC8660_SET_REG_DATA = 0xFF,
+} scc8660_cmd_enum;
 
 // 摄像头接口类型枚举
-typedef enum
-{
+typedef enum {
     SCC8660_UART,
     SCC8660_SCCB,
-}scc8660_type_enum;
+} scc8660_type_enum;
 
-extern vuint8       scc8660_finish_flag;                                        // 一场图像采集完成标志位
-extern uint16       scc8660_image[SCC8660_H][SCC8660_W];
+extern vuint8 scc8660_finish_flag;                                        // 一场图像采集完成标志位
+extern uint16 scc8660_image[SCC8660_H][SCC8660_W];
 
-uint16      scc8660_get_id              (void);
-uint16      scc8660_get_parameter       (uint16 config);
-uint16      scc8660_get_version         (void);
-uint8       scc8660_set_bright          (uint16 data);
-uint8       scc8660_set_white_balance   (uint16 data);
-uint8       scc8660_set_reg             (uint8 addr, uint16 data);
+uint16 scc8660_get_id(void);
 
-uint8       scc8660_init                (void);
+uint16 scc8660_get_parameter(uint16 config);
+
+uint16 scc8660_get_version(void);
+
+uint8 scc8660_set_bright(uint16 data);
+
+uint8 scc8660_set_white_balance(uint16 data);
+
+uint8 scc8660_set_reg(uint8 addr, uint16 data);
+
+uint8 scc8660_init(void);
 
 #endif

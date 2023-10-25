@@ -73,10 +73,8 @@ static soft_iic_info_struct dl1b_iic_struct;
 // 使用示例     dl1b_get_distance();
 // 备注信息     在开始单次射程测量后也调用此函数
 //-------------------------------------------------------------------------------------------------------------------
-void dl1b_get_distance (void)
-{
-    if(dl1b_init_flag)
-    {
+void dl1b_get_distance(void) {
+    if (dl1b_init_flag) {
         uint8 data_buffer[3];
         int16 dl1b_distance_temp = 0;
 
@@ -84,8 +82,7 @@ void dl1b_get_distance (void)
         data_buffer[1] = DL1B_GPIO__TIO_HV_STATUS & 0xFF;
         dl1b_transfer_8bit_array(data_buffer, 2, &data_buffer[2], 1);
 
-        if(data_buffer[2])
-        {
+        if (data_buffer[2]) {
 
             data_buffer[0] = DL1B_SYSTEM__INTERRUPT_CLEAR >> 8;
             data_buffer[1] = DL1B_SYSTEM__INTERRUPT_CLEAR & 0xFF;
@@ -95,34 +92,26 @@ void dl1b_get_distance (void)
             data_buffer[0] = DL1B_RESULT__RANGE_STATUS >> 8;
             data_buffer[1] = DL1B_RESULT__RANGE_STATUS & 0xFF;
             dl1b_transfer_8bit_array(data_buffer, 2, &data_buffer[2], 1);
-            
-            if(0x89 == data_buffer[2])
-            {
+
+            if (0x89 == data_buffer[2]) {
                 data_buffer[0] = DL1B_RESULT__FINAL_CROSSTALK_CORRECTED_RANGE_MM_SD0 >> 8;
                 data_buffer[1] = DL1B_RESULT__FINAL_CROSSTALK_CORRECTED_RANGE_MM_SD0 & 0xFF;
                 dl1b_transfer_8bit_array(data_buffer, 2, data_buffer, 2);
                 dl1b_distance_temp = data_buffer[0];
                 dl1b_distance_temp = (dl1b_distance_temp << 8) | data_buffer[1];
-                
-                if(dl1b_distance_temp > 4000 || dl1b_distance_temp < 0)
-                {
+
+                if (dl1b_distance_temp > 4000 || dl1b_distance_temp < 0) {
                     dl1b_distance_mm = 8192;
                     dl1b_finsh_flag = 0;
-                }
-                else
-                {
+                } else {
                     dl1b_distance_mm = dl1b_distance_temp;
                     dl1b_finsh_flag = 1;
                 }
-            }
-            else
-            {
+            } else {
                 dl1b_distance_mm = 8192;
                 dl1b_finsh_flag = 0;
             }
-        }
-        else
-        {
+        } else {
             dl1b_distance_mm = 8192;
             dl1b_finsh_flag = 0;
         }
@@ -136,8 +125,7 @@ void dl1b_get_distance (void)
 // 使用示例     dl1b_int_handler();
 // 备注信息     本函数需要在 DL1B_INT_PIN 对应的外部中断处理函数中调用
 //-------------------------------------------------------------------------------------------------------------------
-void dl1b_int_handler (void)
-{
+void dl1b_int_handler(void) {
 #if DL1B_INT_ENABLE
     dl1b_get_distance();
 #endif
@@ -150,11 +138,10 @@ void dl1b_int_handler (void)
 // 使用示例     dl1b_init();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-uint8 dl1b_init (void)
-{
-    uint8   return_state    = 0;
-    uint8   data_buffer[2 + sizeof(dl1b_config_file)]; 
-    uint16  time_out_count  = 0;
+uint8 dl1b_init(void) {
+    uint8 return_state = 0;
+    uint8 data_buffer[2 + sizeof(dl1b_config_file)];
+    uint16 time_out_count = 0;
 
 #if DL1B_USE_SOFT_IIC
     soft_iic_init(&dl1b_iic_struct, DL1B_DEV_ADDR, DL1B_SOFT_IIC_DELAY, DL1B_SCL_PIN, DL1B_SDA_PIN);
@@ -163,8 +150,7 @@ uint8 dl1b_init (void)
 #endif
     gpio_init(DL1B_XS_PIN, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 
-    do
-    {
+    do {
         system_delay_ms(50);
         gpio_low(DL1B_XS_PIN);
         system_delay_ms(10);
@@ -175,28 +161,24 @@ uint8 dl1b_init (void)
         data_buffer[1] = DL1B_FIRMWARE__SYSTEM_STATUS & 0xFF;
         dl1b_transfer_8bit_array(data_buffer, 2, &data_buffer[2], 1);
         return_state = (0x01 == (data_buffer[2] & 0x01)) ? (0) : (1);
-        if(1 == return_state)
-        {
+        if (1 == return_state) {
             break;
         }
 
         data_buffer[0] = DL1B_I2C_SLAVE__DEVICE_ADDRESS >> 8;
         data_buffer[1] = DL1B_I2C_SLAVE__DEVICE_ADDRESS & 0xFF;
-        memcpy(&data_buffer[2], (uint8 *)dl1b_config_file, sizeof(dl1b_config_file));
+        memcpy(&data_buffer[2], (uint8 *) dl1b_config_file, sizeof(dl1b_config_file));
         dl1b_transfer_8bit_array(data_buffer, 2 + sizeof(dl1b_config_file), data_buffer, 0);
 
-        while(1)
-        {
+        while (1) {
             data_buffer[0] = DL1B_GPIO__TIO_HV_STATUS >> 8;
             data_buffer[1] = DL1B_GPIO__TIO_HV_STATUS & 0xFF;
             dl1b_transfer_8bit_array(data_buffer, 2, &data_buffer[2], 1);
-            if(0x00 == (data_buffer[2] & 0x01))
-            {
+            if (0x00 == (data_buffer[2] & 0x01)) {
                 time_out_count = 0;
                 break;
             }
-            if(DL1B_TIMEOUT_COUNT < time_out_count ++)
-            {
+            if (DL1B_TIMEOUT_COUNT < time_out_count++) {
                 return_state = 1;
                 break;
             }
@@ -204,7 +186,7 @@ uint8 dl1b_init (void)
         }
 
         dl1b_init_flag = 1;
-    }while(0);
+    } while (0);
 
 #if DL1B_INT_ENABLE
     exti_init(DL1B_INT_PIN, EXTI_TRIGGER_FALLING);

@@ -7,18 +7,19 @@
 *                      DBGMCU firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_DBGMCU_H
 #define __CH32V30x_DBGMCU_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
 
 
 uint32_t DBGMCU_GetREVID(void);
+
 uint32_t DBGMCU_GetDEVID(void);
 
 #ifdef __cplusplus

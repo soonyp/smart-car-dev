@@ -27,8 +27,7 @@
  *
  * @return  none
  */
-void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess)
-{
+void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess) {
     IWDG->CTLR = IWDG_WriteAccess;
 }
 
@@ -48,8 +47,7 @@ void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess)
  *
  * @return  none
  */
-void IWDG_SetPrescaler(uint8_t IWDG_Prescaler)
-{
+void IWDG_SetPrescaler(uint8_t IWDG_Prescaler) {
     IWDG->PSCR = IWDG_Prescaler;
 }
 
@@ -63,8 +61,7 @@ void IWDG_SetPrescaler(uint8_t IWDG_Prescaler)
  *
  * @return  none
  */
-void IWDG_SetReload(uint16_t Reload)
-{
+void IWDG_SetReload(uint16_t Reload) {
     IWDG->RLDR = Reload;
 }
 
@@ -75,8 +72,7 @@ void IWDG_SetReload(uint16_t Reload)
  *
  * @return  none
  */
-void IWDG_ReloadCounter(void)
-{
+void IWDG_ReloadCounter(void) {
     IWDG->CTLR = CTLR_KEY_Reload;
 }
 
@@ -87,8 +83,7 @@ void IWDG_ReloadCounter(void)
  *
  * @return  none
  */
-void IWDG_Enable(void)
-{
+void IWDG_Enable(void) {
     IWDG->CTLR = CTLR_KEY_Enable;
 }
 
@@ -103,16 +98,12 @@ void IWDG_Enable(void)
  *
  * @return  none
  */
-FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG)
-{
+FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG) {
     FlagStatus bitstatus = RESET;
 
-    if((IWDG->STATR & IWDG_FLAG) != (uint32_t)RESET)
-    {
+    if ((IWDG->STATR & IWDG_FLAG) != (uint32_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
 

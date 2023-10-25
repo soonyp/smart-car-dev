@@ -83,8 +83,10 @@
 #define ABSOLUTE_ENCODER_DIR_REG            (0X09)
 //====================================================角度传感器参数====================================================
 
-int16       absolute_encoder_get_location   (void);
-int16       absolute_encoder_get_offset     (void);
-uint8       absolute_encoder_init           (void);
+int16 absolute_encoder_get_location(void);
+
+int16 absolute_encoder_get_offset(void);
+
+uint8 absolute_encoder_init(void);
 
 #endif

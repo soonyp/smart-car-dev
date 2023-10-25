@@ -60,8 +60,7 @@
 // 使用示例     soft_iic_start(soft_iic_obj);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static void soft_iic_start (soft_iic_info_struct *soft_iic_obj)
-{
+static void soft_iic_start(soft_iic_info_struct *soft_iic_obj) {
     zf_assert(soft_iic_obj != NULL);
     gpio_high(soft_iic_obj->scl_pin);                                           // SCL 高电平
     gpio_high(soft_iic_obj->sda_pin);                                           // SDA 高电平
@@ -79,8 +78,7 @@ static void soft_iic_start (soft_iic_info_struct *soft_iic_obj)
 // 使用示例     soft_iic_stop(soft_iic_obj);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static void soft_iic_stop (soft_iic_info_struct *soft_iic_obj)
-{
+static void soft_iic_stop(soft_iic_info_struct *soft_iic_obj) {
     zf_assert(soft_iic_obj != NULL);
     gpio_low(soft_iic_obj->sda_pin);                                            // SDA 低电平
     gpio_low(soft_iic_obj->scl_pin);                                            // SCL 低电平
@@ -100,17 +98,13 @@ static void soft_iic_stop (soft_iic_info_struct *soft_iic_obj)
 // 使用示例     soft_iic_send_ack(soft_iic_obj, 1);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static void soft_iic_send_ack (soft_iic_info_struct *soft_iic_obj, uint8 ack)
-{
+static void soft_iic_send_ack(soft_iic_info_struct *soft_iic_obj, uint8 ack) {
     zf_assert(soft_iic_obj != NULL);
     gpio_low(soft_iic_obj->scl_pin);                                            // SCL 低电平
 
-    if(ack)
-    {
+    if (ack) {
         gpio_high(soft_iic_obj->sda_pin);                                       // SDA 拉高
-    }
-    else
-    {
+    } else {
         gpio_low(soft_iic_obj->sda_pin);                                        // SDA 拉低
     }
 
@@ -128,8 +122,7 @@ static void soft_iic_send_ack (soft_iic_info_struct *soft_iic_obj, uint8 ack)
 // 使用示例     soft_iic_wait_ack(soft_iic_obj);
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 soft_iic_wait_ack (soft_iic_info_struct *soft_iic_obj)
-{
+static uint8 soft_iic_wait_ack(soft_iic_info_struct *soft_iic_obj) {
     zf_assert(soft_iic_obj != NULL);
     uint8 temp = 0;
     gpio_low(soft_iic_obj->scl_pin);                                            // SCL 低电平
@@ -142,8 +135,7 @@ static uint8 soft_iic_wait_ack (soft_iic_info_struct *soft_iic_obj)
     gpio_high(soft_iic_obj->scl_pin);                                           // SCL 高电平
     soft_iic_delay(soft_iic_obj->delay);
 
-    if(gpio_get_level((gpio_pin_enum)soft_iic_obj->sda_pin))
-    {
+    if (gpio_get_level((gpio_pin_enum) soft_iic_obj->sda_pin)) {
         temp = 1;
     }
     gpio_low(soft_iic_obj->scl_pin);                                            // SCL 低电平
@@ -162,12 +154,10 @@ static uint8 soft_iic_wait_ack (soft_iic_info_struct *soft_iic_obj)
 // 返回参数     uint8           ACK 状态
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 soft_iic_send_data (soft_iic_info_struct *soft_iic_obj, const uint8 data)
-{
+static uint8 soft_iic_send_data(soft_iic_info_struct *soft_iic_obj, const uint8 data) {
     zf_assert(soft_iic_obj != NULL);
     uint8 temp = 0x80;
-    while(temp)
-    {
+    while (temp) {
 //        gpio_set_level(soft_iic_obj->sda_pin, data & temp);
         ((data & temp) ? (gpio_high(soft_iic_obj->sda_pin)) : (gpio_low(soft_iic_obj->sda_pin)));
         temp >>= 1;
@@ -177,7 +167,7 @@ static uint8 soft_iic_send_data (soft_iic_info_struct *soft_iic_obj, const uint8
         soft_iic_delay(soft_iic_obj->delay);
         gpio_low(soft_iic_obj->scl_pin);                                        // SCL 拉低
     }
-    return ((soft_iic_wait_ack(soft_iic_obj) == 1) ? 0 : 1 );
+    return ((soft_iic_wait_ack(soft_iic_obj) == 1) ? 0 : 1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -187,8 +177,7 @@ static uint8 soft_iic_send_data (soft_iic_info_struct *soft_iic_obj, const uint8
 // 返回参数     uint8           数据
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 soft_iic_read_data (soft_iic_info_struct *soft_iic_obj, uint8 ack)
-{
+static uint8 soft_iic_read_data(soft_iic_info_struct *soft_iic_obj, uint8 ack) {
     zf_assert(soft_iic_obj != NULL);
     uint8 data = 0x00;
     uint8 temp = 8;
@@ -199,13 +188,12 @@ static uint8 soft_iic_read_data (soft_iic_info_struct *soft_iic_obj, uint8 ack)
     gpio_set_dir(soft_iic_obj->sda_pin, GPI, GPI_FLOATING_IN);
 #endif
 
-    while(temp --)
-    {
+    while (temp--) {
         gpio_low(soft_iic_obj->scl_pin);                                        // SCL 拉低
         soft_iic_delay(soft_iic_obj->delay);
         gpio_high(soft_iic_obj->scl_pin);                                       // SCL 拉高
         soft_iic_delay(soft_iic_obj->delay);
-        data = ((data << 1) | gpio_get_level((gpio_pin_enum)soft_iic_obj->sda_pin));
+        data = ((data << 1) | gpio_get_level((gpio_pin_enum) soft_iic_obj->sda_pin));
     }
     gpio_low(soft_iic_obj->scl_pin);                                            // SCL 低电平
 #if SOFT_IIC_SDA_IO_SWITCH
@@ -224,8 +212,7 @@ static uint8 soft_iic_read_data (soft_iic_info_struct *soft_iic_obj, uint8 ack)
 // 使用示例     soft_iic_write_8bit_register(soft_iic_obj, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_8bit (soft_iic_info_struct *soft_iic_obj, const uint8 data)
-{
+void soft_iic_write_8bit(soft_iic_info_struct *soft_iic_obj, const uint8 data) {
     zf_assert(soft_iic_obj != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
@@ -242,15 +229,13 @@ void soft_iic_write_8bit (soft_iic_info_struct *soft_iic_obj, const uint8 data)
 // 使用示例     soft_iic_write_8bit_array(soft_iic_obj, data, 6);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_8bit_array (soft_iic_info_struct *soft_iic_obj, const uint8 *data, uint32 len)
-{
+void soft_iic_write_8bit_array(soft_iic_info_struct *soft_iic_obj, const uint8 *data, uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    while(len --)
-    {
-        soft_iic_send_data(soft_iic_obj, *data ++);
+    while (len--) {
+        soft_iic_send_data(soft_iic_obj, *data++);
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -263,13 +248,12 @@ void soft_iic_write_8bit_array (soft_iic_info_struct *soft_iic_obj, const uint8 
 // 使用示例     soft_iic_write_16bit(soft_iic_obj, 0x0101);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_16bit (soft_iic_info_struct *soft_iic_obj, const uint16 data)
-{
+void soft_iic_write_16bit(soft_iic_info_struct *soft_iic_obj, const uint16 data) {
     zf_assert(soft_iic_obj != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    soft_iic_send_data(soft_iic_obj, (uint8)((data & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(data & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((data & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (data & 0x00FF));
     soft_iic_stop(soft_iic_obj);
 }
 
@@ -282,16 +266,14 @@ void soft_iic_write_16bit (soft_iic_info_struct *soft_iic_obj, const uint16 data
 // 使用示例     soft_iic_write_16bit_array(soft_iic_obj, data, 6);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_16bit_array (soft_iic_info_struct *soft_iic_obj, const uint16 *data, uint32 len)
-{
+void soft_iic_write_16bit_array(soft_iic_info_struct *soft_iic_obj, const uint16 *data, uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    while(len --)
-    {
-        soft_iic_send_data(soft_iic_obj, (uint8)((*data & 0xFF00) >> 8));
-        soft_iic_send_data(soft_iic_obj, (uint8)(*data ++ & 0x00FF));
+    while (len--) {
+        soft_iic_send_data(soft_iic_obj, (uint8) ((*data & 0xFF00) >> 8));
+        soft_iic_send_data(soft_iic_obj, (uint8) (*data++ & 0x00FF));
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -305,8 +287,7 @@ void soft_iic_write_16bit_array (soft_iic_info_struct *soft_iic_obj, const uint1
 // 使用示例     soft_iic_write_8bit_register(soft_iic_obj, 0x01, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_8bit_register (soft_iic_info_struct *soft_iic_obj, const uint8 register_name, const uint8 data)
-{
+void soft_iic_write_8bit_register(soft_iic_info_struct *soft_iic_obj, const uint8 register_name, const uint8 data) {
     zf_assert(soft_iic_obj != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
@@ -325,16 +306,15 @@ void soft_iic_write_8bit_register (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     soft_iic_write_8bit_registers(soft_iic_obj, 0x01, data, 6);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_8bit_registers (soft_iic_info_struct *soft_iic_obj, const uint8 register_name, const uint8 *data, uint32 len)
-{
+void soft_iic_write_8bit_registers(soft_iic_info_struct *soft_iic_obj, const uint8 register_name, const uint8 *data,
+                                   uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
     soft_iic_send_data(soft_iic_obj, register_name);
-    while(len --)
-    {
-        soft_iic_send_data(soft_iic_obj, *data ++);
+    while (len--) {
+        soft_iic_send_data(soft_iic_obj, *data++);
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -348,15 +328,14 @@ void soft_iic_write_8bit_registers (soft_iic_info_struct *soft_iic_obj, const ui
 // 使用示例     soft_iic_write_16bit_register(soft_iic_obj, 0x0101, 0x0101);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_16bit_register (soft_iic_info_struct *soft_iic_obj, const uint16 register_name, const uint16 data)
-{
+void soft_iic_write_16bit_register(soft_iic_info_struct *soft_iic_obj, const uint16 register_name, const uint16 data) {
     zf_assert(soft_iic_obj != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    soft_iic_send_data(soft_iic_obj, (uint8)((register_name & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(register_name & 0x00FF));
-    soft_iic_send_data(soft_iic_obj, (uint8)((data & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(data & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((register_name & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (register_name & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((data & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (data & 0x00FF));
     soft_iic_stop(soft_iic_obj);
 }
 
@@ -370,18 +349,17 @@ void soft_iic_write_16bit_register (soft_iic_info_struct *soft_iic_obj, const ui
 // 使用示例     soft_iic_write_16bit_registers(soft_iic_obj, 0x0101, data, 6);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_write_16bit_registers (soft_iic_info_struct *soft_iic_obj, const uint16 register_name, const uint16 *data, uint32 len)
-{
+void soft_iic_write_16bit_registers(soft_iic_info_struct *soft_iic_obj, const uint16 register_name, const uint16 *data,
+                                    uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    soft_iic_send_data(soft_iic_obj, (uint8)((register_name & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(register_name & 0x00FF));
-    while(len--)
-    {
-        soft_iic_send_data(soft_iic_obj, (uint8)((*data & 0xFF00) >> 8));
-        soft_iic_send_data(soft_iic_obj, (uint8)(*data ++ & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((register_name & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (register_name & 0x00FF));
+    while (len--) {
+        soft_iic_send_data(soft_iic_obj, (uint8) ((*data & 0xFF00) >> 8));
+        soft_iic_send_data(soft_iic_obj, (uint8) (*data++ & 0x00FF));
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -393,8 +371,7 @@ void soft_iic_write_16bit_registers (soft_iic_info_struct *soft_iic_obj, const u
 // 使用示例     soft_iic_read_8bit(soft_iic_obj);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 soft_iic_read_8bit (soft_iic_info_struct *soft_iic_obj)
-{
+uint8 soft_iic_read_8bit(soft_iic_info_struct *soft_iic_obj) {
     zf_assert(soft_iic_obj != NULL);
     uint8 temp = 0;
     soft_iic_start(soft_iic_obj);
@@ -414,15 +391,13 @@ uint8 soft_iic_read_8bit (soft_iic_info_struct *soft_iic_obj)
 // 使用示例     soft_iic_read_8bit_array(soft_iic_obj, data, 8);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_read_8bit_array (soft_iic_info_struct *soft_iic_obj, uint8 *data, uint32 len)
-{
+void soft_iic_read_8bit_array(soft_iic_info_struct *soft_iic_obj, uint8 *data, uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-    while(len --)
-    {
-        *data ++ = soft_iic_read_data(soft_iic_obj, len == 0);
+    while (len--) {
+        *data++ = soft_iic_read_data(soft_iic_obj, len == 0);
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -435,14 +410,13 @@ void soft_iic_read_8bit_array (soft_iic_info_struct *soft_iic_obj, uint8 *data, 
 // 使用示例     soft_iic_read_16bit(soft_iic_obj);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint16 soft_iic_read_16bit (soft_iic_info_struct *soft_iic_obj)
-{
+uint16 soft_iic_read_16bit(soft_iic_info_struct *soft_iic_obj) {
     zf_assert(soft_iic_obj != NULL);
     uint16 temp = 0;
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
     temp = soft_iic_read_data(soft_iic_obj, 0);
-    temp = ((temp << 8)| soft_iic_read_data(soft_iic_obj, 1));
+    temp = ((temp << 8) | soft_iic_read_data(soft_iic_obj, 1));
     soft_iic_stop(soft_iic_obj);
     return temp;
 }
@@ -456,17 +430,15 @@ uint16 soft_iic_read_16bit (soft_iic_info_struct *soft_iic_obj)
 // 使用示例     soft_iic_read_16bit_array(soft_iic_obj, data, 8);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_read_16bit_array (soft_iic_info_struct *soft_iic_obj, uint16 *data, uint32 len)
-{
+void soft_iic_read_16bit_array(soft_iic_info_struct *soft_iic_obj, uint16 *data, uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-    while(len --)
-    {
+    while (len--) {
         *data = soft_iic_read_data(soft_iic_obj, 0);
-        *data = ((*data << 8)| soft_iic_read_data(soft_iic_obj, len == 0));
-        data ++;
+        *data = ((*data << 8) | soft_iic_read_data(soft_iic_obj, len == 0));
+        data++;
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -479,8 +451,7 @@ void soft_iic_read_16bit_array (soft_iic_info_struct *soft_iic_obj, uint16 *data
 // 使用示例     soft_iic_read_8bit_register(soft_iic_obj, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 soft_iic_read_8bit_register (soft_iic_info_struct *soft_iic_obj, const uint8 register_name)
-{
+uint8 soft_iic_read_8bit_register(soft_iic_info_struct *soft_iic_obj, const uint8 register_name) {
     zf_assert(soft_iic_obj != NULL);
     uint8 temp = 0;
     soft_iic_start(soft_iic_obj);
@@ -503,8 +474,8 @@ uint8 soft_iic_read_8bit_register (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     soft_iic_read_8bit_registers(soft_iic_obj, 0x01, data, 8);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_read_8bit_registers (soft_iic_info_struct *soft_iic_obj, const uint8 register_name, uint8 *data, uint32 len)
-{
+void
+soft_iic_read_8bit_registers(soft_iic_info_struct *soft_iic_obj, const uint8 register_name, uint8 *data, uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
@@ -512,9 +483,8 @@ void soft_iic_read_8bit_registers (soft_iic_info_struct *soft_iic_obj, const uin
     soft_iic_send_data(soft_iic_obj, register_name);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-    while(len --)
-    {
-        *data ++ = soft_iic_read_data(soft_iic_obj, len == 0);
+    while (len--) {
+        *data++ = soft_iic_read_data(soft_iic_obj, len == 0);
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -527,18 +497,17 @@ void soft_iic_read_8bit_registers (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     soft_iic_read_16bit_register(soft_iic_obj, 0x0101);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint16 soft_iic_read_16bit_register (soft_iic_info_struct *soft_iic_obj, const uint16 register_name)
-{
+uint16 soft_iic_read_16bit_register(soft_iic_info_struct *soft_iic_obj, const uint16 register_name) {
     zf_assert(soft_iic_obj != NULL);
     uint16 temp = 0;
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    soft_iic_send_data(soft_iic_obj, (uint8)((register_name & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(register_name & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((register_name & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (register_name & 0x00FF));
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
     temp = soft_iic_read_data(soft_iic_obj, 0);
-    temp = ((temp << 8)| soft_iic_read_data(soft_iic_obj, 1));
+    temp = ((temp << 8) | soft_iic_read_data(soft_iic_obj, 1));
     soft_iic_stop(soft_iic_obj);
     return temp;
 }
@@ -553,21 +522,20 @@ uint16 soft_iic_read_16bit_register (soft_iic_info_struct *soft_iic_obj, const u
 // 使用示例     soft_iic_read_16bit_registers(soft_iic_obj, 0x0101, data, 8);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_read_16bit_registers (soft_iic_info_struct *soft_iic_obj, const uint16 register_name, uint16 *data, uint32 len)
-{
+void soft_iic_read_16bit_registers(soft_iic_info_struct *soft_iic_obj, const uint16 register_name, uint16 *data,
+                                   uint32 len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    soft_iic_send_data(soft_iic_obj, (uint8)((register_name & 0xFF00) >> 8));
-    soft_iic_send_data(soft_iic_obj, (uint8)(register_name & 0x00FF));
+    soft_iic_send_data(soft_iic_obj, (uint8) ((register_name & 0xFF00) >> 8));
+    soft_iic_send_data(soft_iic_obj, (uint8) (register_name & 0x00FF));
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-    while(len --)
-    {
+    while (len--) {
         *data = soft_iic_read_data(soft_iic_obj, 0);
-        *data = ((*data << 8)| soft_iic_read_data(soft_iic_obj, len == 0));
-        data ++;
+        *data = ((*data << 8) | soft_iic_read_data(soft_iic_obj, len == 0));
+        data++;
     }
     soft_iic_stop(soft_iic_obj);
 }
@@ -583,25 +551,22 @@ void soft_iic_read_16bit_registers (soft_iic_info_struct *soft_iic_obj, const ui
 // 使用示例     iic_transfer_8bit_array(IIC_1, addr, data, 64, data, 64);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_transfer_8bit_array (soft_iic_info_struct *soft_iic_obj, const uint8 *write_data, uint32 write_len, uint8 *read_data, uint32 read_len)
-{
+void soft_iic_transfer_8bit_array(soft_iic_info_struct *soft_iic_obj, const uint8 *write_data, uint32 write_len,
+                                  uint8 *read_data, uint32 read_len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(write_data != NULL);
     zf_assert(read_data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    while(write_len --)
-    {
-        soft_iic_send_data(soft_iic_obj, *write_data ++);
+    while (write_len--) {
+        soft_iic_send_data(soft_iic_obj, *write_data++);
     }
 
-    if(read_len)
-    {
+    if (read_len) {
         soft_iic_start(soft_iic_obj);
         soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-        while(read_len --)
-        {
-            *read_data ++ = soft_iic_read_data(soft_iic_obj, read_len == 0);
+        while (read_len--) {
+            *read_data++ = soft_iic_read_data(soft_iic_obj, read_len == 0);
         }
     }
     soft_iic_stop(soft_iic_obj);
@@ -618,27 +583,24 @@ void soft_iic_transfer_8bit_array (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     iic_transfer_16bit_array(IIC_1, addr, data, 64, data, 64);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_transfer_16bit_array (soft_iic_info_struct *soft_iic_obj, const uint16 *write_data, uint32 write_len, uint16 *read_data, uint32 read_len)
-{
+void soft_iic_transfer_16bit_array(soft_iic_info_struct *soft_iic_obj, const uint16 *write_data, uint32 write_len,
+                                   uint16 *read_data, uint32 read_len) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(write_data != NULL);
     zf_assert(read_data != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
-    while(write_len--)
-    {
-        soft_iic_send_data(soft_iic_obj, (uint8)((*write_data & 0xFF00) >> 8));
-        soft_iic_send_data(soft_iic_obj, (uint8)(*write_data ++ & 0x00FF));
+    while (write_len--) {
+        soft_iic_send_data(soft_iic_obj, (uint8) ((*write_data & 0xFF00) >> 8));
+        soft_iic_send_data(soft_iic_obj, (uint8) (*write_data++ & 0x00FF));
     }
-    if(read_len)
-    {
+    if (read_len) {
         soft_iic_start(soft_iic_obj);
         soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1 | 0x01);
-        while(read_len --)
-        {
+        while (read_len--) {
             *read_data = soft_iic_read_data(soft_iic_obj, 0);
-            *read_data = ((*read_data << 8)| soft_iic_read_data(soft_iic_obj, read_len == 0));
-            read_data ++;
+            *read_data = ((*read_data << 8) | soft_iic_read_data(soft_iic_obj, read_len == 0));
+            read_data++;
         }
     }
     soft_iic_stop(soft_iic_obj);
@@ -653,8 +615,7 @@ void soft_iic_transfer_16bit_array (soft_iic_info_struct *soft_iic_obj, const ui
 // 使用示例     soft_iic_sccb_write_register(soft_iic_obj, 0x01, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_sccb_write_register (soft_iic_info_struct *soft_iic_obj, const uint8 register_name, uint8 data)
-{
+void soft_iic_sccb_write_register(soft_iic_info_struct *soft_iic_obj, const uint8 register_name, uint8 data) {
     zf_assert(soft_iic_obj != NULL);
     soft_iic_start(soft_iic_obj);
     soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
@@ -671,8 +632,7 @@ void soft_iic_sccb_write_register (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     soft_iic_sccb_read_register(soft_iic_obj, 0x01);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 soft_iic_sccb_read_register (soft_iic_info_struct *soft_iic_obj, const uint8 register_name)
-{
+uint8 soft_iic_sccb_read_register(soft_iic_info_struct *soft_iic_obj, const uint8 register_name) {
     zf_assert(soft_iic_obj != NULL);
     uint8 temp = 0;
     soft_iic_start(soft_iic_obj);
@@ -698,8 +658,8 @@ uint8 soft_iic_sccb_read_register (soft_iic_info_struct *soft_iic_obj, const uin
 // 使用示例     soft_iic_init(&soft_iic_obj, addr, 100, B6, B7);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void soft_iic_init (soft_iic_info_struct *soft_iic_obj, uint8 addr, uint32 delay, gpio_pin_enum scl_pin, gpio_pin_enum sda_pin)
-{
+void soft_iic_init(soft_iic_info_struct *soft_iic_obj, uint8 addr, uint32 delay, gpio_pin_enum scl_pin,
+                   gpio_pin_enum sda_pin) {
     zf_assert(soft_iic_obj != NULL);
     zf_assert(scl_pin != sda_pin);                                              // 醒醒！ scl_pin 与 sda_pin 怎么能填同一个引脚？
     soft_iic_obj->scl_pin = scl_pin;

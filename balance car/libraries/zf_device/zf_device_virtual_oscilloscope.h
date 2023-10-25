@@ -40,6 +40,6 @@
 
 extern uint8_t virtual_oscilloscope_data[10];
 
-void  virtual_oscilloscope_data_conversion    (const int16 data1, const int16 data2, const int16 data3, const int16 data4);
+void virtual_oscilloscope_data_conversion(const int16 data1, const int16 data2, const int16 data3, const int16 data4);
 
 #endif

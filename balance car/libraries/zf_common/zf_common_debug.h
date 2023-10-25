@@ -37,6 +37,7 @@
 #define _zf_common_debug_h_
 
 #include "zf_common_typedef.h"
+
 #define PRINTF_ENABLE               (1)                                          // 使能printf
 
 // 如果修改串口并开启了 debug UART 的中断接收 需要同步更换 debug_interrupr_handler 函数到对应的中断服务函数
@@ -73,8 +74,7 @@
 #define zf_log(x, str)              (debug_log_handler((x), (str), __FILE__, __LINE__))
 
 
-typedef struct
-{
+typedef struct {
     uint16 type_index;
 
     uint16 display_x_max;
@@ -83,24 +83,36 @@ typedef struct
     uint8 font_x_size;
     uint8 font_y_size;
 
-    void (*output_uart)             (const char *str);
-    void (*output_screen)           (uint16 x, uint16 y, const char *str);
-    void (*output_screen_clear)     (void);
-}debug_output_struct;
+    void (*output_uart)(const char *str);
 
-uint32      debug_send_buffer(const uint8 *buff, uint32 len);
+    void (*output_screen)(uint16 x, uint16 y, const char *str);
+
+    void (*output_screen_clear)(void);
+} debug_output_struct;
+
+uint32 debug_send_buffer(const uint8 *buff, uint32 len);
+
 #if DEBUG_UART_USE_INTERRUPT                                                    // 如果启用 debug uart 接收中断
 #define     DEBUG_RING_BUFFER_LEN   (64)                                        // 定义环形缓冲区大小 默认 64byte
-void        debug_interrupr_handler (void);
-uint32      debug_read_ring_buffer(uint8 *buff, uint32 len);
+
+void debug_interrupr_handler(void);
+
+uint32 debug_read_ring_buffer(uint8 *buff, uint32 len);
+
 #endif
 
-void        debug_assert_enable         (void);
-void        debug_assert_disable        (void);
-void        debug_assert_handler        (uint8 pass, char *file, int line);
-void        debug_log_handler           (uint8 pass, char *str, char *file, int line);
-void        debug_output_struct_init    (debug_output_struct *info);
-void        debug_output_init           (debug_output_struct *info);
-void        debug_init                  (void);
+void debug_assert_enable(void);
+
+void debug_assert_disable(void);
+
+void debug_assert_handler(uint8 pass, char *file, int line);
+
+void debug_log_handler(uint8 pass, char *str, char *file, int line);
+
+void debug_output_struct_init(debug_output_struct *info);
+
+void debug_output_init(debug_output_struct *info);
+
+void debug_init(void);
 
 #endif

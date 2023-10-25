@@ -12,7 +12,9 @@
 #include "Ourcode_headfile.h"
 
 void Servo_Init(void);
+
 void Servo_Set(float duty);
+
 void ServoPidSetAngle(void);
 
 extern float g_PID_Out;

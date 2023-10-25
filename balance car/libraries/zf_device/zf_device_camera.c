@@ -52,7 +52,6 @@ uint8 camera_receiver_buffer[CAMERA_RECEIVER_BUFFER_SIZE];
 uint8 camera_send_image_frame_header[4] = {0x00, 0xFF, 0x01, 0x01};
 
 
-
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     摄像头二进制图像数据解压为十六进制八位数据 小钻风用
 // 参数说明     *data1          摄像头图像数组
@@ -62,20 +61,17 @@ uint8 camera_send_image_frame_header[4] = {0x00, 0xFF, 0x01, 0x01};
 // 使用示例     camera_binary_image_decompression(&ov7725_image_binary[0][0], &data_buffer[0][0], OV7725_SIZE);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32 image_size)
-{
+void camera_binary_image_decompression(const uint8 *data1, uint8 *data2, uint32 image_size) {
     zf_assert(data1 != NULL);
     zf_assert(data2 != NULL);
-    uint8  i = 8;
+    uint8 i = 8;
 
-    while(image_size --)
-    {
+    while (image_size--) {
         i = 8;
-        while(i --)
-        {
-            *data2 ++ = (((*data1 >> i) & 0x01) ? 255 : 0);
+        while (i--) {
+            *data2++ = (((*data1 >> i) & 0x01) ? 255 : 0);
         }
-        data1 ++;
+        data1++;
     }
 }
 
@@ -88,14 +84,13 @@ void camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32
 // 使用示例     camera_send_image(DEBUG_UART_INDEX, &mt9v03x_image[0][0], MT9V03X_IMAGE_SIZE);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void camera_send_image (uart_index_enum uartn, const uint8 *image_addr, uint32 image_size)
-{
+void camera_send_image(uart_index_enum uartn, const uint8 *image_addr, uint32 image_size) {
     zf_assert(image_addr != NULL);
     // 发送命令
     uart_write_buffer(uartn, camera_send_image_frame_header, 4);
 
     // 发送图像
-    uart_write_buffer(uartn, (uint8 *)image_addr, image_size);
+    uart_write_buffer(uartn, (uint8 *) image_addr, image_size);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -105,8 +100,7 @@ void camera_send_image (uart_index_enum uartn, const uint8 *image_addr, uint32 i
 // 使用示例     camera_fifo_init();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void camera_fifo_init (void)
-{
+void camera_fifo_init(void) {
     fifo_init(&camera_receiver_fifo, FIFO_DATA_8BIT, camera_receiver_buffer, CAMERA_RECEIVER_BUFFER_SIZE);
 }
 

@@ -84,41 +84,56 @@
 #define IPS114_CS(x)                    ((x) ? (gpio_high(IPS114_CS_PIN)) : (gpio_low(IPS114_CS_PIN)))
 #define IPS114_BLK(x)                   ((x) ? (gpio_high(IPS114_BLK_PIN)) : (gpio_low(IPS114_BLK_PIN)))
 
-typedef enum
-{
-    IPS114_PORTAIT                      = 0,                                    // 竖屏模式
-    IPS114_PORTAIT_180                  = 1,                                    // 竖屏模式  旋转180
-    IPS114_CROSSWISE                    = 2,                                    // 横屏模式
-    IPS114_CROSSWISE_180                = 3,                                    // 横屏模式  旋转180
-}ips114_dir_enum;
+typedef enum {
+    IPS114_PORTAIT = 0,                                    // 竖屏模式
+    IPS114_PORTAIT_180 = 1,                                    // 竖屏模式  旋转180
+    IPS114_CROSSWISE = 2,                                    // 横屏模式
+    IPS114_CROSSWISE_180 = 3,                                    // 横屏模式  旋转180
+} ips114_dir_enum;
 
-typedef enum
-{
-    IPS114_6X8_FONT                     = 0,                                    // 6x8      字体
-    IPS114_8X16_FONT                    = 1,                                    // 8x16     字体
-    IPS114_16X16_FONT                   = 2,                                    // 16x16    字体 目前不支持
-}ips114_font_size_enum;
+typedef enum {
+    IPS114_6X8_FONT = 0,                                    // 6x8      字体
+    IPS114_8X16_FONT = 1,                                    // 8x16     字体
+    IPS114_16X16_FONT = 2,                                    // 16x16    字体 目前不支持
+} ips114_font_size_enum;
 
-void    ips114_clear                    (void);
-void    ips114_full                     (const uint16 color);
-void    ips114_set_dir                  (ips114_dir_enum dir);
-void    ips114_set_font                 (ips114_font_size_enum font);
-void    ips114_set_color                (const uint16 pen, const  uint16 bgcolor);
-void    ips114_draw_point               (uint16 x, uint16 y, const uint16 color);
-void    ips114_draw_line                (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+void ips114_clear(void);
 
-void    ips114_show_char                (uint16 x, uint16 y, const char dat);
-void    ips114_show_string              (uint16 x, uint16 y, const char dat[]);
-void    ips114_show_int                 (uint16 x,uint16 y, const int32 dat, uint8 num);
-void    ips114_show_uint                (uint16 x,uint16 y, const uint32 dat, uint8 num);
-void    ips114_show_float               (uint16 x,uint16 y, const double dat, uint8 num, uint8 pointnum);
+void ips114_full(const uint16 color);
 
-void    ips114_show_binary_image        (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
-void    ips114_show_gray_image          (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
-void    ips114_show_rgb565_image        (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 color_mode);
+void ips114_set_dir(ips114_dir_enum dir);
 
-void    ips114_show_wave                (uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);
-void    ips114_show_chinese             (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
+void ips114_set_font(ips114_font_size_enum font);
+
+void ips114_set_color(const uint16 pen, const uint16 bgcolor);
+
+void ips114_draw_point(uint16 x, uint16 y, const uint16 color);
+
+void ips114_draw_line(uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color);
+
+void ips114_show_char(uint16 x, uint16 y, const char dat);
+
+void ips114_show_string(uint16 x, uint16 y, const char dat[]);
+
+void ips114_show_int(uint16 x, uint16 y, const int32 dat, uint8 num);
+
+void ips114_show_uint(uint16 x, uint16 y, const uint32 dat, uint8 num);
+
+void ips114_show_float(uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
+
+void ips114_show_binary_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height);
+
+void ips114_show_gray_image(uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width,
+                            uint16 dis_height, uint8 threshold);
+
+void ips114_show_rgb565_image(uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width,
+                              uint16 dis_height, uint8 color_mode);
+
+void ips114_show_wave(uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width,
+                      uint16 dis_value_max);
+
+void ips114_show_chinese(uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color);
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -154,6 +169,6 @@ void    ips114_show_chinese             (uint16 x, uint16 y, uint8 size, const u
 //-------------------------------------------------------------------------------------------------------------------
 #define ips114_displayimage8660(p, width, height)       (ips114_show_rgb565_image(0, 0, (p), SCC8660_W, SCC8660_H, (width), (height), 1))
 
-void    ips114_init                     (void);
+void ips114_init(void);
 
 #endif

@@ -89,14 +89,12 @@ static soft_iic_info_struct dl1a_iic_struct;
 // 使用示例     dl1a_get_spad_info(index, type_is_aperture);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 dl1a_get_spad_info (uint8 *index, uint8 *type_is_aperture)
-{
+static uint8 dl1a_get_spad_info(uint8 *index, uint8 *type_is_aperture) {
     uint8 tmp = 0;
     uint8 return_state = 0;
     volatile uint16 loop_count = 0;
 
-    do
-    {
+    do {
         dl1a_write_register(0x80, 0x01);
         dl1a_write_register(0xFF, 0x01);
         dl1a_write_register(0x00, 0x00);
@@ -113,19 +111,16 @@ static uint8 dl1a_get_spad_info (uint8 *index, uint8 *type_is_aperture)
         dl1a_write_register(0x83, 0x00);
 
         tmp = 0x00;
-        while(0x00 == tmp || 0xFF == tmp)
-        {
+        while (0x00 == tmp || 0xFF == tmp) {
             system_delay_ms(1);
             dl1a_read_registers(0x83, &tmp, 1);
-            if(DL1A_TIMEOUT_COUNT < loop_count ++)
-            {
+            if (DL1A_TIMEOUT_COUNT < loop_count++) {
                 return_state = 1;
                 break;
             }
 
         }
-        if(return_state)
-        {
+        if (return_state) {
             break;
         }
         dl1a_write_register(0x83, 0x01);
@@ -143,7 +138,7 @@ static uint8 dl1a_get_spad_info (uint8 *index, uint8 *type_is_aperture)
 
         dl1a_write_register(0xFF, 0x00);
         dl1a_write_register(0x80, 0x00);
-    }while(0);
+    } while (0);
 
     return return_state;
 }
@@ -156,8 +151,7 @@ static uint8 dl1a_get_spad_info (uint8 *index, uint8 *type_is_aperture)
 // 使用示例     dl1a_timeout_mclks_to_microseconds(timeout_period_mclks, vcsel_period_pclks);
 // 备注信息     将序列步骤超时从具有给定 VCSEL 周期的 MCLK (以 PCLK 为单位)转换为微秒
 //-------------------------------------------------------------------------------------------------------------------
-static uint32 dl1a_timeout_mclks_to_microseconds (uint16 timeout_period_mclks, uint8 vcsel_period_pclks)
-{
+static uint32 dl1a_timeout_mclks_to_microseconds(uint16 timeout_period_mclks, uint8 vcsel_period_pclks) {
     uint32 macro_period_ns = calc_macro_period(vcsel_period_pclks);
 
     return ((timeout_period_mclks * macro_period_ns) + (macro_period_ns / 2)) / 1000;
@@ -171,8 +165,7 @@ static uint32 dl1a_timeout_mclks_to_microseconds (uint16 timeout_period_mclks, u
 // 使用示例     dl1a_timeout_microseconds_to_mclks(timeout_period_us, vcsel_period_pclks);
 // 备注信息     将序列步骤超时从微秒转换为具有给定 VCSEL 周期的 MCLK (以 PCLK 为单位)
 //-------------------------------------------------------------------------------------------------------------------
-static uint32 dl1a_timeout_microseconds_to_mclks (uint32 timeout_period_us, uint8 vcsel_period_pclks)
-{
+static uint32 dl1a_timeout_microseconds_to_mclks(uint32 timeout_period_us, uint8 vcsel_period_pclks) {
     uint32 macro_period_ns = calc_macro_period(vcsel_period_pclks);
 
     return (((timeout_period_us * 1000) + (macro_period_ns / 2)) / macro_period_ns);
@@ -185,11 +178,10 @@ static uint32 dl1a_timeout_microseconds_to_mclks (uint32 timeout_period_us, uint
 // 使用示例     dl1a_decode_timeout(reg_val);
 // 备注信息     从寄存器值解码 MCLK 中的序列步骤超时
 //-------------------------------------------------------------------------------------------------------------------
-static uint16 dl1a_decode_timeout (uint16 reg_val)
-{
-  // 格式: (LSByte * 2 ^ MSByte) + 1
-    return  (uint16)((reg_val & 0x00FF) <<
-            (uint16)((reg_val & 0xFF00) >> 8)) + 1;
+static uint16 dl1a_decode_timeout(uint16 reg_val) {
+    // 格式: (LSByte * 2 ^ MSByte) + 1
+    return (uint16) ((reg_val & 0x00FF) <<
+                                        (uint16) ((reg_val & 0xFF00) >> 8)) + 1;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -199,22 +191,19 @@ static uint16 dl1a_decode_timeout (uint16 reg_val)
 // 使用示例     dl1a_encode_timeout(timeout_mclks);
 // 备注信息     在 MCLK 中对超时的序列步骤超时寄存器值进行编码
 //-------------------------------------------------------------------------------------------------------------------
-static uint16 dl1a_encode_timeout (uint16 timeout_mclks)
-{
+static uint16 dl1a_encode_timeout(uint16 timeout_mclks) {
     uint32 ls_byte = 0;
     uint16 ms_byte = 0;
     uint16 return_data = 0;
 
-    if(0 < timeout_mclks)
-    {
+    if (0 < timeout_mclks) {
         // 格式: (LSByte * 2 ^ MSByte) + 1
         ls_byte = timeout_mclks - 1;
-        while(0 < (ls_byte & 0xFFFFFF00))
-        {
+        while (0 < (ls_byte & 0xFFFFFF00)) {
             ls_byte >>= 1;
             ms_byte++;
         }
-        return_data = (ms_byte << 8) | ((uint16)ls_byte & 0xFF);
+        return_data = (ms_byte << 8) | ((uint16) ls_byte & 0xFF);
     }
     return return_data;
 }
@@ -226,16 +215,15 @@ static uint16 dl1a_encode_timeout (uint16 timeout_mclks)
 // 使用示例     dl1a_get_sequence_step_enables(enables);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-static void dl1a_get_sequence_step_enables(dl1a_sequence_enables_step_struct *enables)
-{
+static void dl1a_get_sequence_step_enables(dl1a_sequence_enables_step_struct *enables) {
     uint8 sequence_config = 0;
     dl1a_read_registers(DL1A_SYSTEM_SEQUENCE_CONFIG, &sequence_config, 1);
 
-    enables->tcc          = (sequence_config >> 4) & 0x1;
-    enables->dss          = (sequence_config >> 3) & 0x1;
-    enables->msrc         = (sequence_config >> 2) & 0x1;
-    enables->pre_range    = (sequence_config >> 6) & 0x1;
-    enables->final_range  = (sequence_config >> 7) & 0x1;
+    enables->tcc = (sequence_config >> 4) & 0x1;
+    enables->dss = (sequence_config >> 3) & 0x1;
+    enables->msrc = (sequence_config >> 2) & 0x1;
+    enables->pre_range = (sequence_config >> 6) & 0x1;
+    enables->final_range = (sequence_config >> 7) & 0x1;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -245,21 +233,15 @@ static void dl1a_get_sequence_step_enables(dl1a_sequence_enables_step_struct *en
 // 使用示例     dl1a_get_vcsel_pulse_period(DL1A_VCSEL_PERIOD_PER_RANGE);
 // 备注信息     在 PCLKs 中获取给定周期类型的 VCSEL 脉冲周期
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 dl1a_get_vcsel_pulse_period (dl1a_vcsel_period_type_enum type)
-{
+static uint8 dl1a_get_vcsel_pulse_period(dl1a_vcsel_period_type_enum type) {
     uint8 data_buffer = 0;
-    if(DL1A_VCSEL_PERIOD_PER_RANGE == type)
-    {
+    if (DL1A_VCSEL_PERIOD_PER_RANGE == type) {
         dl1a_read_registers(DL1A_PRE_RANGE_CONFIG_VCSEL_PERIOD, &data_buffer, 1);
         data_buffer = decode_vcsel_period(data_buffer);
-    }
-    else if(DL1A_VCSEL_PERIOD_FINAL_RANGE == type)
-    {
+    } else if (DL1A_VCSEL_PERIOD_FINAL_RANGE == type) {
         dl1a_read_registers(DL1A_FINAL_RANGE_CONFIG_VCSEL_PERIOD, &data_buffer, 1);
         data_buffer = decode_vcsel_period(data_buffer);
-    }
-    else
-    {
+    } else {
         data_buffer = 255;
     }
     return data_buffer;
@@ -273,8 +255,8 @@ static uint8 dl1a_get_vcsel_pulse_period (dl1a_vcsel_period_type_enum type)
 // 使用示例     dl1a_get_sequence_step_timeouts(enables, timeouts);
 // 备注信息     获取所有超时而不仅仅是请求的超时 并且还存储中间值
 //-------------------------------------------------------------------------------------------------------------------
-static void dl1a_get_sequence_step_timeouts (dl1a_sequence_enables_step_struct const *enables, dl1a_sequence_timeout_step_struct *timeouts)
-{
+static void dl1a_get_sequence_step_timeouts(dl1a_sequence_enables_step_struct const *enables,
+                                            dl1a_sequence_timeout_step_struct *timeouts) {
     uint8 reg_buffer[2];
     uint16 reg16_buffer = 0;
 
@@ -282,12 +264,14 @@ static void dl1a_get_sequence_step_timeouts (dl1a_sequence_enables_step_struct c
 
     dl1a_read_registers(DL1A_MSRC_CONFIG_TIMEOUT_MACROP, reg_buffer, 1);
     timeouts->msrc_dss_tcc_mclks = reg_buffer[0] + 1;
-    timeouts->msrc_dss_tcc_us = dl1a_timeout_mclks_to_microseconds(timeouts->msrc_dss_tcc_mclks, (uint8)timeouts->pre_range_vcsel_period_pclks);
+    timeouts->msrc_dss_tcc_us = dl1a_timeout_mclks_to_microseconds(timeouts->msrc_dss_tcc_mclks,
+                                                                   (uint8) timeouts->pre_range_vcsel_period_pclks);
 
     dl1a_read_registers(DL1A_PRE_RANGE_CONFIG_TIMEOUT_MACROP_HI, reg_buffer, 2);
     reg16_buffer = ((uint16) reg_buffer[0] << 8) | reg_buffer[1];
     timeouts->pre_range_mclks = dl1a_decode_timeout(reg16_buffer);
-    timeouts->pre_range_us = dl1a_timeout_mclks_to_microseconds(timeouts->pre_range_mclks, (uint8)timeouts->pre_range_vcsel_period_pclks);
+    timeouts->pre_range_us = dl1a_timeout_mclks_to_microseconds(timeouts->pre_range_mclks,
+                                                                (uint8) timeouts->pre_range_vcsel_period_pclks);
 
     timeouts->final_range_vcsel_period_pclks = dl1a_get_vcsel_pulse_period(DL1A_VCSEL_PERIOD_FINAL_RANGE);
 
@@ -295,12 +279,12 @@ static void dl1a_get_sequence_step_timeouts (dl1a_sequence_enables_step_struct c
     reg16_buffer = ((uint16) reg_buffer[0] << 8) | reg_buffer[1];
     timeouts->final_range_mclks = dl1a_decode_timeout(reg16_buffer);
 
-    if(enables->pre_range)
-    {
+    if (enables->pre_range) {
         timeouts->final_range_mclks -= timeouts->pre_range_mclks;
     }
 
-    timeouts->final_range_us = dl1a_timeout_mclks_to_microseconds(timeouts->final_range_mclks, (uint8)timeouts->final_range_vcsel_period_pclks);
+    timeouts->final_range_us = dl1a_timeout_mclks_to_microseconds(timeouts->final_range_mclks,
+                                                                  (uint8) timeouts->final_range_vcsel_period_pclks);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -310,32 +294,27 @@ static void dl1a_get_sequence_step_timeouts (dl1a_sequence_enables_step_struct c
 // 使用示例     dl1a_get_vcsel_pulse_period(DL1A_VCSEL_PERIOD_PER_RANGE);
 // 备注信息     在 PCLKs 中获取给定周期类型的 VCSEL 脉冲周期
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 dl1a_perform_single_ref_calibration (uint8 vhv_init_byte)
-{
+static uint8 dl1a_perform_single_ref_calibration(uint8 vhv_init_byte) {
     uint8 return_state = 0;
     uint8 data_buffer = 0;
     volatile uint16 loop_count = 0;
-    do
-    {
+    do {
         dl1a_write_register(DL1A_SYSRANGE_START, 0x01 | vhv_init_byte);
         dl1a_read_registers(DL1A_MSRC_CONFIG_TIMEOUT_MACROP, &data_buffer, 1);
-        while(0 == (data_buffer & 0x07))
-        {
+        while (0 == (data_buffer & 0x07)) {
             system_delay_ms(1);
             dl1a_read_registers(DL1A_MSRC_CONFIG_TIMEOUT_MACROP, &data_buffer, 1);
-            if(DL1A_TIMEOUT_COUNT < loop_count ++)
-            {
+            if (DL1A_TIMEOUT_COUNT < loop_count++) {
                 return_state = 1;
                 break;
             }
         }
-        if(return_state)
-        {
+        if (return_state) {
             break;
         }
         dl1a_write_register(DL1A_SYSTEM_INTERRUPT_CLEAR, 0x01);
         dl1a_write_register(DL1A_SYSRANGE_START, 0x00);
-    }while(0);
+    } while (0);
 
     return return_state;
 }
@@ -351,8 +330,7 @@ static uint8 dl1a_perform_single_ref_calibration (uint8 vhv_init_byte)
 //              增加一个N倍的预算可以减少一个sqrt(N)倍的范围测量标准偏差
 //              默认为33毫秒 最小值为20 ms
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
-{
+static uint8 dl1a_set_measurement_timing_budget(uint32 budget_us) {
     uint8 return_state = 0;
     uint8 data_buffer[3];
     uint16 data = 0;
@@ -360,10 +338,8 @@ static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
     dl1a_sequence_enables_step_struct enables;
     dl1a_sequence_timeout_step_struct timeouts;
 
-    do
-    {
-        if(DL1A_MIN_TIMING_BUDGET > budget_us)
-        {
+    do {
+        if (DL1A_MIN_TIMING_BUDGET > budget_us) {
             return_state = 1;
             break;
         }
@@ -372,33 +348,26 @@ static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
         dl1a_get_sequence_step_enables(&enables);
         dl1a_get_sequence_step_timeouts(&enables, &timeouts);
 
-        if(enables.tcc)
-        {
+        if (enables.tcc) {
             used_budget_us += (timeouts.msrc_dss_tcc_us + DL1A_TCC_OVERHEAD);
         }
 
-        if(enables.dss)
-        {
+        if (enables.dss) {
             used_budget_us += 2 * (timeouts.msrc_dss_tcc_us + DL1A_DSS_OVERHEAD);
-        }
-        else if(enables.msrc)
-        {
+        } else if (enables.msrc) {
             used_budget_us += (timeouts.msrc_dss_tcc_us + DL1A_MSRC_OVERHEAD);
         }
 
-        if(enables.pre_range)
-        {
+        if (enables.pre_range) {
             used_budget_us += (timeouts.pre_range_us + DL1A_PRERANGE_OVERHEAD);
         }
 
-        if(enables.final_range)
-        {
+        if (enables.final_range) {
             // 请注意 最终范围超时由计时预算和序列中所有其他超时的总和决定
             // 如果没有空间用于最终范围超时 则将设置错误
             // 否则 剩余时间将应用于最终范围
             used_budget_us += DL1A_FINALlRANGE_OVERHEAD;
-            if(used_budget_us > budget_us)
-            {
+            if (used_budget_us > budget_us) {
                 // 请求的超时太大
                 return_state = 1;
                 break;
@@ -409,11 +378,10 @@ static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
             // 因为它们具有不同的 VCSEL 周期
             uint32 final_range_timeout_us = budget_us - used_budget_us;
             uint16 final_range_timeout_mclks =
-            (uint16)dl1a_timeout_microseconds_to_mclks(final_range_timeout_us,
-                     (uint8)timeouts.final_range_vcsel_period_pclks);
+                    (uint16) dl1a_timeout_microseconds_to_mclks(final_range_timeout_us,
+                                                                (uint8) timeouts.final_range_vcsel_period_pclks);
 
-            if(enables.pre_range)
-            {
+            if (enables.pre_range) {
                 final_range_timeout_mclks += timeouts.pre_range_mclks;
             }
 
@@ -423,7 +391,7 @@ static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
             data_buffer[2] = (data & 0xFF);
             dl1a_write_array(data_buffer, 3);
         }
-    }while(0);
+    } while (0);
     return return_state;
 }
 
@@ -434,8 +402,7 @@ static uint8 dl1a_set_measurement_timing_budget (uint32 budget_us)
 // 使用示例     dl1a_get_measurement_timing_budget();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-static uint32 dl1a_get_measurement_timing_budget (void)
-{
+static uint32 dl1a_get_measurement_timing_budget(void) {
     dl1a_sequence_enables_step_struct enables;
     dl1a_sequence_timeout_step_struct timeouts;
 
@@ -445,27 +412,21 @@ static uint32 dl1a_get_measurement_timing_budget (void)
     dl1a_get_sequence_step_enables(&enables);
     dl1a_get_sequence_step_timeouts(&enables, &timeouts);
 
-    if(enables.tcc)
-    {
+    if (enables.tcc) {
         budget_us += (timeouts.msrc_dss_tcc_us + DL1A_TCC_OVERHEAD);
     }
 
-    if(enables.dss)
-    {
+    if (enables.dss) {
         budget_us += 2 * (timeouts.msrc_dss_tcc_us + DL1A_DSS_OVERHEAD);
-    }
-    else if(enables.msrc)
-    {
+    } else if (enables.msrc) {
         budget_us += (timeouts.msrc_dss_tcc_us + DL1A_MSRC_OVERHEAD);
     }
 
-    if(enables.pre_range)
-    {
+    if (enables.pre_range) {
         budget_us += (timeouts.pre_range_us + DL1A_PRERANGE_OVERHEAD);
     }
 
-    if(enables.final_range)
-    {
+    if (enables.final_range) {
         budget_us += (timeouts.final_range_us + DL1A_FINALlRANGE_OVERHEAD);
     }
 
@@ -483,11 +444,10 @@ static uint32 dl1a_get_measurement_timing_budget (void)
 //              但似乎也增加了 <由于来自目标以外的物体的不需要的反射导致> 得到不准确读数的可能性
 //              默认为 0.25 MCPS 可预设范围为 0 - 511.99
 //-------------------------------------------------------------------------------------------------------------------
-static void dl1a_set_signal_rate_limit (float limit_mcps)
-{
+static void dl1a_set_signal_rate_limit(float limit_mcps) {
     zf_assert(0 <= limit_mcps || 511.99 >= limit_mcps);
     uint8 data_buffer[3];
-    uint16 limit_mcps_16bit = (uint16)(limit_mcps * (1 << 7));
+    uint16 limit_mcps_16bit = (uint16) (limit_mcps * (1 << 7));
 
     data_buffer[0] = DL1A_FINAL_RANGE_CONFIG_MIN_COUNT_RATE_RTN_LIMIT;
     data_buffer[1] = ((limit_mcps_16bit >> 8) & 0xFF);
@@ -503,23 +463,20 @@ static void dl1a_set_signal_rate_limit (float limit_mcps)
 // 使用示例     dl1a_get_distance();
 // 备注信息     在开始单次射程测量后也调用此函数
 //-------------------------------------------------------------------------------------------------------------------
-void dl1a_get_distance (void)
-{
+void dl1a_get_distance(void) {
     uint8 reg_databuffer[3];
 
     dl1a_read_registers(DL1A_RESULT_INTERRUPT_STATUS, reg_databuffer, 1);
-    if(0 != (reg_databuffer[0] & 0x07))
-    {
+    if (0 != (reg_databuffer[0] & 0x07)) {
         // 假设线性度校正增益为默认值 1000 且未启用分数范围
         dl1a_read_registers(DL1A_RESULT_RANGE_STATUS + 10, reg_databuffer, 2);
-        dl1a_distance_mm = ((uint16_t)reg_databuffer[0] << 8);
+        dl1a_distance_mm = ((uint16_t) reg_databuffer[0] << 8);
         dl1a_distance_mm |= reg_databuffer[1];
 
         dl1a_write_register(DL1A_SYSTEM_INTERRUPT_CLEAR, 0x01);
         dl1a_finsh_flag = 1;
     }
-    if(reg_databuffer[0] & 0x10)
-    {
+    if (reg_databuffer[0] & 0x10) {
         dl1a_read_registers(DL1A_RESULT_RANGE_STATUS + 10, reg_databuffer, 2);
         dl1a_write_register(DL1A_SYSTEM_INTERRUPT_CLEAR, 0x01);
     }
@@ -532,20 +489,19 @@ void dl1a_get_distance (void)
 // 使用示例     dl1a_int_handler();
 // 备注信息     本函数需要在 DL1A_INT_PIN 对应的外部中断处理函数中调用
 //-------------------------------------------------------------------------------------------------------------------
-void dl1a_int_handler (void)
-{
+void dl1a_int_handler(void) {
 #if DL1A_INT_ENABLE
     dl1a_get_distance();
 #endif
 }
+
 // 函数简介     初始化 DL1A
 // 参数说明     void
 // 返回参数     uint8           1-初始化失败 0-初始化成功
 // 使用示例     dl1a_init();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-uint8 dl1a_init (void)
-{
+uint8 dl1a_init(void) {
     uint32 measurement_timing_budget_us;
     uint8 stop_variable = 0;
     uint8 return_state = 0;
@@ -564,8 +520,7 @@ uint8 dl1a_init (void)
 #endif
     gpio_init(DL1A_XS_PIN, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 
-    do
-    {
+    do {
         system_delay_ms(100);
         gpio_low(DL1A_XS_PIN);
         system_delay_ms(50);
@@ -582,7 +537,7 @@ uint8 dl1a_init (void)
         dl1a_write_register(0xFF, 0x01);
         dl1a_write_register(0x00, 0x00);
 
-        dl1a_read_registers(0x91, &stop_variable , 1);
+        dl1a_read_registers(0x91, &stop_variable, 1);
 
         dl1a_write_register(0x00, 0x01);
         dl1a_write_register(0xFF, 0x00);
@@ -597,8 +552,7 @@ uint8 dl1a_init (void)
         // -------------------------------- DL1A 启动初始化 --------------------------------
 
         // -------------------------------- DL1A 配置初始化 --------------------------------
-        if(dl1a_get_spad_info(&data_buffer[0], &data_buffer[1]))
-        {
+        if (dl1a_get_spad_info(&data_buffer[0], &data_buffer[1])) {
             return_state = 1;
             zf_log(0, "DL1A self check error.");
             break;
@@ -614,24 +568,19 @@ uint8 dl1a_init (void)
         dl1a_write_register(DL1A_GLOBAL_CONFIG_REF_EN_START_SELECT, 0xB4);
 
         data_buffer[2] = data_buffer[1] ? 12 : 0; // 12 is the first aperture spad
-        for(i = 0; 48 > i; i ++)
-        {
-            if(i < data_buffer[2] || data_buffer[3] == data_buffer[0])
-            {
+        for (i = 0; 48 > i; i++) {
+            if (i < data_buffer[2] || data_buffer[3] == data_buffer[0]) {
                 // 此位低于应启用的第一个位
                 // 或者 (eference_spad_count) 位已启用
                 // 因此此位为零
                 ref_spad_map[i / 8] &= ~(1 << (i % 8));
-            }
-            else if((ref_spad_map[i / 8] >> (i % 8)) & 0x1)
-            {
-                data_buffer[3] ++;
+            } else if ((ref_spad_map[i / 8] >> (i % 8)) & 0x1) {
+                data_buffer[3]++;
             }
         }
 
         data_buffer[0] = DL1A_GLOBAL_CONFIG_SPAD_ENABLES_REF_0;
-        for(i = 1; 7 > i; i ++)
-        {
+        for (i = 1; 7 > i; i++) {
             data_buffer[1] = ref_spad_map[i - 1];
         }
         dl1a_write_array(data_buffer, 7);
@@ -724,7 +673,7 @@ uint8 dl1a_init (void)
         dl1a_write_register(DL1A_GPIO_HV_MUX_ACTIVE_HIGH, reg_data_buffer & ~0x10);
         dl1a_write_register(DL1A_SYSTEM_INTERRUPT_CLEAR, 0x01);
 
-        measurement_timing_budget_us  = dl1a_get_measurement_timing_budget();
+        measurement_timing_budget_us = dl1a_get_measurement_timing_budget();
 
         // 默认情况下禁用 MSRC 和 TCC
         // MSRC = Minimum Signal Rate Check
@@ -734,15 +683,13 @@ uint8 dl1a_init (void)
         // -------------------------------- DL1A 配置初始化 --------------------------------
 
         dl1a_write_register(DL1A_SYSTEM_SEQUENCE_CONFIG, 0x01);
-        if(dl1a_perform_single_ref_calibration(0x40))
-        {
+        if (dl1a_perform_single_ref_calibration(0x40)) {
             return_state = 1;
             zf_log(0, "DL1A perform single reference calibration error.");
             break;
         }
         dl1a_write_register(DL1A_SYSTEM_SEQUENCE_CONFIG, 0x02);
-        if(dl1a_perform_single_ref_calibration(0x00))
-        {
+        if (dl1a_perform_single_ref_calibration(0x00)) {
             return_state = 1;
             zf_log(0, "DL1A perform single reference calibration error.");
             break;
@@ -760,7 +707,7 @@ uint8 dl1a_init (void)
         dl1a_write_register(0x80, 0x00);
 
         dl1a_write_register(DL1A_SYSRANGE_START, 0x02);
-    }while(0);
+    } while (0);
 
 #if DL1A_INT_ENABLE
     exti_init(DL1A_INT_PIN, EXTI_TRIGGER_FALLING);

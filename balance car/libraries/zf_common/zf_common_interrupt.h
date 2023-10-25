@@ -40,12 +40,16 @@
 #include "zf_common_typedef.h"
 
 
+void interrupt_init(void);
 
-void        interrupt_init              (void);
-void        interrupt_global_enable     (uint32 primask);
-uint32      interrupt_global_disable    (void);
-void        interrupt_enable            (IRQn_Type irqn);
-void        interrupt_disable           (IRQn_Type irqn);
-void        interrupt_set_priority      (IRQn_Type irqn, uint8 priority);
+void interrupt_global_enable(uint32 primask);
+
+uint32 interrupt_global_disable(void);
+
+void interrupt_enable(IRQn_Type irqn);
+
+void interrupt_disable(IRQn_Type irqn);
+
+void interrupt_set_priority(IRQn_Type irqn, uint8 priority);
 
 #endif

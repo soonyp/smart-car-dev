@@ -70,18 +70,15 @@ static soft_iic_info_struct mpu6050_iic_struct;
 // 使用示例     if(mpu6050_self1_check())
 // 备注信息     内部调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 mpu6050_self1_check (void)
-{
+static uint8 mpu6050_self1_check(void) {
     uint8 dat = 0, return_state = 0;
     uint16 timeout_count = 0;
 
     mpu6050_write_register(MPU6050_PWR_MGMT_1, 0x00);                           // 解除休眠状态
     mpu6050_write_register(MPU6050_SMPLRT_DIV, 0x07);                           // 125HZ采样率
-    while(0x07 != dat)
-    {
-        if(timeout_count ++ > MPU6050_TIMEOUT_COUNT)
-        {
-            return_state =  1;
+    while (0x07 != dat) {
+        if (timeout_count++ > MPU6050_TIMEOUT_COUNT) {
+            return_state = 1;
             break;
         }
         dat = mpu6050_read_register(MPU6050_SMPLRT_DIV);
@@ -97,14 +94,13 @@ static uint8 mpu6050_self1_check (void)
 // 使用示例     mpu6050_get_acc();                                              // 执行该函数后，直接查看对应的变量即可
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void mpu6050_get_acc (void)
-{
+void mpu6050_get_acc(void) {
     uint8 dat[6];
 
-    mpu6050_read_registers(MPU6050_ACCEL_XOUT_H, dat, 6);  
-    mpu6050_acc_x = (int16)(((uint16)dat[0] << 8 | dat[1]));
-    mpu6050_acc_y = (int16)(((uint16)dat[2] << 8 | dat[3]));
-    mpu6050_acc_z = (int16)(((uint16)dat[4] << 8 | dat[5]));
+    mpu6050_read_registers(MPU6050_ACCEL_XOUT_H, dat, 6);
+    mpu6050_acc_x = (int16) (((uint16) dat[0] << 8 | dat[1]));
+    mpu6050_acc_y = (int16) (((uint16) dat[2] << 8 | dat[3]));
+    mpu6050_acc_z = (int16) (((uint16) dat[4] << 8 | dat[5]));
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -114,14 +110,13 @@ void mpu6050_get_acc (void)
 // 使用示例     mpu6050_get_gyro();                                             // 执行该函数后，直接查看对应的变量即可
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void mpu6050_get_gyro (void)
-{
+void mpu6050_get_gyro(void) {
     uint8 dat[6];
 
-    mpu6050_read_registers(MPU6050_GYRO_XOUT_H, dat, 6);  
-    mpu6050_gyro_x = (int16)(((uint16)dat[0] << 8 | dat[1]));
-    mpu6050_gyro_y = (int16)(((uint16)dat[2] << 8 | dat[3]));
-    mpu6050_gyro_z = (int16)(((uint16)dat[4] << 8 | dat[5]));
+    mpu6050_read_registers(MPU6050_GYRO_XOUT_H, dat, 6);
+    mpu6050_gyro_x = (int16) (((uint16) dat[0] << 8 | dat[1]));
+    mpu6050_gyro_y = (int16) (((uint16) dat[2] << 8 | dat[3]));
+    mpu6050_gyro_z = (int16) (((uint16) dat[4] << 8 | dat[5]));
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -131,16 +126,23 @@ void mpu6050_get_gyro (void)
 // 使用示例     float data = mpu6050_acc_transition(mpu6050_acc_x);                // 单位为 g(m/s^2)
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-float mpu6050_acc_transition (int16 acc_value)
-{
+float mpu6050_acc_transition(int16 acc_value) {
     float acc_data = 0;
-    switch(MPU6050_ACC_SAMPLE)
-    {
-        case 0x00: acc_data = (float)acc_value / 16384; break;                  // 0x00 加速度计量程为:±2g     获取到的加速度计数据 除以 16384      可以转化为带物理单位的数据，单位：g(m/s^2)
-        case 0x08: acc_data = (float)acc_value / 8192; break;                   // 0x08 加速度计量程为:±4g     获取到的加速度计数据 除以 8192       可以转化为带物理单位的数据，单位：g(m/s^2)
-        case 0x10: acc_data = (float)acc_value / 4096; break;                   // 0x10 加速度计量程为:±8g     获取到的加速度计数据 除以 4096       可以转化为带物理单位的数据，单位：g(m/s^2)
-        case 0x18: acc_data = (float)acc_value / 2048; break;                   // 0x18 加速度计量程为:±16g    获取到的加速度计数据 除以 2048       可以转化为带物理单位的数据，单位：g(m/s^2)
-        default: break;
+    switch (MPU6050_ACC_SAMPLE) {
+        case 0x00:
+            acc_data = (float) acc_value / 16384;
+            break;                  // 0x00 加速度计量程为:±2g     获取到的加速度计数据 除以 16384      可以转化为带物理单位的数据，单位：g(m/s^2)
+        case 0x08:
+            acc_data = (float) acc_value / 8192;
+            break;                   // 0x08 加速度计量程为:±4g     获取到的加速度计数据 除以 8192       可以转化为带物理单位的数据，单位：g(m/s^2)
+        case 0x10:
+            acc_data = (float) acc_value / 4096;
+            break;                   // 0x10 加速度计量程为:±8g     获取到的加速度计数据 除以 4096       可以转化为带物理单位的数据，单位：g(m/s^2)
+        case 0x18:
+            acc_data = (float) acc_value / 2048;
+            break;                   // 0x18 加速度计量程为:±16g    获取到的加速度计数据 除以 2048       可以转化为带物理单位的数据，单位：g(m/s^2)
+        default:
+            break;
     }
     return acc_data;
 }
@@ -152,16 +154,23 @@ float mpu6050_acc_transition (int16 acc_value)
 // 使用示例     float data = mpu6050_gyro_transition(mpu6050_gyro_x);           // 单位为°/s
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-float mpu6050_gyro_transition (int16 gyro_value)
-{
+float mpu6050_gyro_transition(int16 gyro_value) {
     float gyro_data = 0;
-    switch(MPU6050_GYR_SAMPLE)
-    {
-        case 0x00: gyro_data = (float)gyro_value / 131.0f;  break;              // 0x00 陀螺仪量程为:±250 dps     获取到的陀螺仪数据除以 131           可以转化为带物理单位的数据，单位为：°/s
-        case 0x08: gyro_data = (float)gyro_value / 65.5f;   break;              // 0x08 陀螺仪量程为:±500 dps     获取到的陀螺仪数据除以 65.5          可以转化为带物理单位的数据，单位为：°/s
-        case 0x10: gyro_data = (float)gyro_value / 32.8f;   break;              // 0x10 陀螺仪量程为:±1000dps     获取到的陀螺仪数据除以 32.8          可以转化为带物理单位的数据，单位为：°/s
-        case 0x18: gyro_data = (float)gyro_value / 16.4f;   break;              // 0x18 陀螺仪量程为:±2000dps     获取到的陀螺仪数据除以 16.4          可以转化为带物理单位的数据，单位为：°/s
-        default: break;
+    switch (MPU6050_GYR_SAMPLE) {
+        case 0x00:
+            gyro_data = (float) gyro_value / 131.0f;
+            break;              // 0x00 陀螺仪量程为:±250 dps     获取到的陀螺仪数据除以 131           可以转化为带物理单位的数据，单位为：°/s
+        case 0x08:
+            gyro_data = (float) gyro_value / 65.5f;
+            break;              // 0x08 陀螺仪量程为:±500 dps     获取到的陀螺仪数据除以 65.5          可以转化为带物理单位的数据，单位为：°/s
+        case 0x10:
+            gyro_data = (float) gyro_value / 32.8f;
+            break;              // 0x10 陀螺仪量程为:±1000dps     获取到的陀螺仪数据除以 32.8          可以转化为带物理单位的数据，单位为：°/s
+        case 0x18:
+            gyro_data = (float) gyro_value / 16.4f;
+            break;              // 0x18 陀螺仪量程为:±2000dps     获取到的陀螺仪数据除以 16.4          可以转化为带物理单位的数据，单位为：°/s
+        default:
+            break;
     }
     return gyro_data;
 }
@@ -173,8 +182,7 @@ float mpu6050_gyro_transition (int16 gyro_value)
 // 使用示例     mpu6050_init();
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 mpu6050_init (void)
-{
+uint8 mpu6050_init(void) {
     uint8 return_state = 0;
 #if MPU6050_USE_SOFT_IIC
     soft_iic_init(&mpu6050_iic_struct, MPU6050_DEV_ADDR, MPU6050_SOFT_IIC_DELAY, MPU6050_SCL_PIN, MPU6050_SDA_PIN);
@@ -183,10 +191,8 @@ uint8 mpu6050_init (void)
 #endif
     system_delay_ms(100);                                                       // 上电延时
 
-    do
-    {
-        if(mpu6050_self1_check())
-        {
+    do {
+        if (mpu6050_self1_check()) {
             // 如果程序在输出了断言信息 并且提示出错位置在这里
             // 那么就是 MPU6050 自检出错并超时退出了
             // 检查一下接线有没有问题 如果没问题可能就是坏了
@@ -214,6 +220,6 @@ uint8 mpu6050_init (void)
 
         mpu6050_write_register(MPU6050_USER_CONTROL, 0x00);
         mpu6050_write_register(MPU6050_INT_PIN_CFG, 0x02);
-    }while(0);
+    } while (0);
     return return_state;
 }

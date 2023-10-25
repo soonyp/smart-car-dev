@@ -54,7 +54,7 @@
 #define WIFI_UART_RX_PIN        (UART7_MAP3_TX_E12)                             // 连接 WIFI 模块 RX
 #define WIFI_UART_TX_PIN        (UART7_MAP3_RX_E13)                             // 连接 WIFI 模块 TX
 #define WIFI_UART_BAUD          (115200)                                        // 模块工作波特率
-  
+
 #define WIFI_UART_RTS_PIN       (E8)                                            // 定义流控位引脚  指示当前模块是否可以接受数据  0-可以继续接收  1-不可以继续接收
 #define WIFI_UART_HARDWARE_RST  (0)                                             // 定义是否使用硬件复位引脚 0-使用软件复位 1-使用硬件 RST
 #if WIFI_UART_HARDWARE_RST                                                      // 建议使用硬件复位引脚 否则容易出现单片机复位后无法正常初始化模块
@@ -73,75 +73,80 @@
 #define WIFI_UART_LOCAL_PORT    "8080"                                          // 本机端口
 #endif
 
-typedef enum
-{
+typedef enum {
     WIFI_UART_STATION,                                                          // 设备模式
     WIFI_UART_SOFTAP,                                                           // AP模式
-}wifi_uart_mode_enum;
+} wifi_uart_mode_enum;
 
-typedef enum
-{
+typedef enum {
     WIFI_UART_COMMAND,                                                          // 使用命令的方式发送数据
     WIFI_UART_SERIANET,                                                         // 使用透传的方式发送数据
-}wifi_uart_transfer_mode_enum;
+} wifi_uart_transfer_mode_enum;
 
-typedef enum
-{
+typedef enum {
     WIFI_UART_TCP_CLIENT,                                                       // 模块连接TCP服务器
     WIFI_UART_TCP_SERVER,                                                       // 模块作为TCP服务器
     WIFI_UART_UDP_CLIENT,                                                       // 模块启用UDP连接
-}wifi_uart_connect_mode_enum;
+} wifi_uart_connect_mode_enum;
 
-typedef enum
-{
+typedef enum {
     WIFI_UART_SERVER_OFF,                                                       // 模块未连接服务器
     WIFI_UART_SERVER_ON,                                                        // 模块已经连接服务器
-}wifi_uart_connect_state_enum;
+} wifi_uart_connect_state_enum;
 
-typedef enum
-{
+typedef enum {
     WIFI_UART_LINK_0,                                                           // 模块当前链接 0
     WIFI_UART_LINK_1,                                                           // 模块当前链接 1
     WIFI_UART_LINK_2,                                                           // 模块当前链接 2
     WIFI_UART_LINK_3,                                                           // 模块当前链接 3
     WIFI_UART_LINK_4,                                                           // 模块当前链接 4
-}wifi_uart_link_id_enum;
+} wifi_uart_link_id_enum;
 
-typedef struct
-{
-    uint8                           wifi_uart_version[12];                      // 固件版本         字符串形式
-    uint8                           wifi_uart_mac[20];                          // 本机 MAC 地址    字符串形式
-    uint8                           wifi_uart_local_ip[17];                     // 本机 IP 地址     字符串形式
-    uint8                           wifi_uart_local_port[10];                   // 本机端口号       字符串形式
-    uint8                           wifi_uart_remote_ip[5][15];                 // 远端 IP 地址     字符串形式
-    wifi_uart_mode_enum             wifi_uart_mode;                             // WIFI 模式
-    wifi_uart_transfer_mode_enum    wifi_uart_transfer_mode;                    // 当前传输模式
-    wifi_uart_connect_mode_enum     wifi_uart_connect_mode;                     // 网络连接模式
-    wifi_uart_connect_state_enum    wifi_uart_connect_state;                    // 服务器连接情况
-}wifi_uart_information_struct;
+typedef struct {
+    uint8 wifi_uart_version[12];                      // 固件版本         字符串形式
+    uint8 wifi_uart_mac[20];                          // 本机 MAC 地址    字符串形式
+    uint8 wifi_uart_local_ip[17];                     // 本机 IP 地址     字符串形式
+    uint8 wifi_uart_local_port[10];                   // 本机端口号       字符串形式
+    uint8 wifi_uart_remote_ip[5][15];                 // 远端 IP 地址     字符串形式
+    wifi_uart_mode_enum wifi_uart_mode;                             // WIFI 模式
+    wifi_uart_transfer_mode_enum wifi_uart_transfer_mode;                    // 当前传输模式
+    wifi_uart_connect_mode_enum wifi_uart_connect_mode;                     // 网络连接模式
+    wifi_uart_connect_state_enum wifi_uart_connect_state;                    // 服务器连接情况
+} wifi_uart_information_struct;
 
 extern wifi_uart_information_struct wifi_uart_information;
 
 
-uint8   wifi_uart_disconnected_wifi         (void);                                                                         // 断开 WIFI 连接
-uint8   wifi_uart_entry_serianet            (void);                                                                         // 打开透传模式
-uint8   wifi_uart_exit_serianet             (void);                                                                         // 关闭透传模式
+uint8
+wifi_uart_disconnected_wifi(void);                                                                         // 断开 WIFI 连接
+uint8 wifi_uart_entry_serianet(void);                                                                         // 打开透传模式
+uint8 wifi_uart_exit_serianet(void);                                                                         // 关闭透传模式
 
-uint8   wifi_uart_connect_tcp_servers       (char *ip, char *port, wifi_uart_transfer_mode_enum mode);                      // 建立 TCP 连接
-uint8   wifi_uart_connect_udp_client        (char *ip, char *port, char *local_port, wifi_uart_transfer_mode_enum mode);    // 建立 UDP 传输
-uint8   wifi_uart_disconnect_link           (void);                                                                         // 断开连接 TCP Server 使用本接口将会断开所有连接
-uint8   wifi_uart_disconnect_link_with_id   (wifi_uart_link_id_enum link_id);                                               // TCP Server 断开指定连接 TCP/UDP Client 将不会有反应
+uint8 wifi_uart_connect_tcp_servers(char *ip, char *port,
+                                    wifi_uart_transfer_mode_enum mode);                      // 建立 TCP 连接
+uint8
+wifi_uart_connect_udp_client(char *ip, char *port, char *local_port, wifi_uart_transfer_mode_enum mode);    // 建立 UDP 传输
+uint8 wifi_uart_disconnect_link(
+        void);                                                                         // 断开连接 TCP Server 使用本接口将会断开所有连接
+uint8 wifi_uart_disconnect_link_with_id(
+        wifi_uart_link_id_enum link_id);                                               // TCP Server 断开指定连接 TCP/UDP Client 将不会有反应
 
-uint8   wifi_uart_entry_tcp_servers         (char *port);                                                                   // 建立 TCP 服务器
-uint8   wifi_uart_exit_tcp_servers          (void);                                                                         // 关闭 TCP 服务器
-uint8   wifi_uart_tcp_servers_check_link    (void);                                                                         // TCP Server 模式下检查当前链接数量 并获取 IP
+uint8
+wifi_uart_entry_tcp_servers(char *port);                                                                   // 建立 TCP 服务器
+uint8
+wifi_uart_exit_tcp_servers(void);                                                                         // 关闭 TCP 服务器
+uint8 wifi_uart_tcp_servers_check_link(
+        void);                                                                         // TCP Server 模式下检查当前链接数量 并获取 IP
 
-uint32  wifi_uart_send_buffer               (const uint8 *buffer, uint32 len);                                              // WIFI 模块数据发送函数
-uint32  wifi_uart_tcp_servers_send_buffer   (uint8 *buff, uint32 len, wifi_uart_link_id_enum id);                           // WIFI 模块作为 TCP Server 指定目标设备发送函数
-uint32  wifi_uart_read_buffer               (uint8 *buffer, uint32 len);                                                    // WIFI 模块数据接收函数
+uint32
+wifi_uart_send_buffer(const uint8 *buffer, uint32 len);                                              // WIFI 模块数据发送函数
+uint32 wifi_uart_tcp_servers_send_buffer(uint8 *buff, uint32 len,
+                                         wifi_uart_link_id_enum id);                           // WIFI 模块作为 TCP Server 指定目标设备发送函数
+uint32
+wifi_uart_read_buffer(uint8 *buffer, uint32 len);                                                    // WIFI 模块数据接收函数
 
-void    wifi_uart_callback                  (void);                                                                         // WIFI 模块串口回调函数
-uint8   wifi_uart_init                      (char *wifi_ssid, char *pass_word, wifi_uart_mode_enum wifi_mode);              // WIFI 模块初始化函数
+void wifi_uart_callback(void);                                                                         // WIFI 模块串口回调函数
+uint8 wifi_uart_init(char *wifi_ssid, char *pass_word, wifi_uart_mode_enum wifi_mode);              // WIFI 模块初始化函数
 
 
 #endif

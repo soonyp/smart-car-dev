@@ -54,10 +54,10 @@
 #include "zf_device_type.h"
 #include "zf_device_wireless_uart.h"
 
-static  fifo_struct                                     wireless_uart_fifo;
-static  uint8                                           wireless_uart_buffer[WIRELESS_UART_BUFFER_SIZE];
+static fifo_struct wireless_uart_fifo;
+static uint8 wireless_uart_buffer[WIRELESS_UART_BUFFER_SIZE];
 
-static          uint8                                   wireless_uart_data          = 0;
+static uint8 wireless_uart_data = 0;
 #if (1 == WIRELESS_UART_AUTO_BAUD_RATE)
 static volatile wireless_uart_auto_baudrate_state_enum  wireless_auto_baud_flag     = WIRELESS_UART_AUTO_BAUD_RATE_INIT;
 static volatile uint8                                   wireless_auto_baud_data[3]  = {0x00, 0x01, 0x03};
@@ -70,17 +70,14 @@ static volatile uint8                                   wireless_auto_baud_data[
 // 使用示例     wireless_uart_send_byte(data);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_uart_send_byte (const uint8 data)
-{
+uint32 wireless_uart_send_byte(const uint8 data) {
     uint16 time_count = WIRELESS_UART_TIMEOUT_COUNT;
-    while(time_count)
-    {
-        if(!gpio_get_level(WIRELESS_UART_RTS_PIN))
-        {
+    while (time_count) {
+        if (!gpio_get_level(WIRELESS_UART_RTS_PIN)) {
             uart_write_byte(WIRELESS_UART_INDEX, data);                         // 发送数据
             break;
         }
-        time_count --;
+        time_count--;
         system_delay_ms(1);
     }
     return (0 == time_count);
@@ -94,31 +91,27 @@ uint32 wireless_uart_send_byte (const uint8 data)
 // 使用示例     wireless_uart_send_buffer(buff, 64);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_uart_send_buffer (const uint8 *buff, uint32 len)
-{
+uint32 wireless_uart_send_buffer(const uint8 *buff, uint32 len) {
     zf_assert(NULL != buff);
     uint16 time_count = 0;
-    while(0 != len)
-    {
-        if(!gpio_get_level(WIRELESS_UART_RTS_PIN))                              // 如果RTS为低电平 则继续发送数据
+    while (0 != len) {
+        if (!gpio_get_level(WIRELESS_UART_RTS_PIN))                              // 如果RTS为低电平 则继续发送数据
         {
-            if(30 <= len)                                                       // 数据分 30byte 每包发送
+            if (30 <= len)                                                       // 数据分 30byte 每包发送
             {
                 uart_write_buffer(WIRELESS_UART_INDEX, buff, 30);               // 发送数据
                 buff += 30;                                                     // 地址偏移
                 len -= 30;                                                      // 数量
                 time_count = 0;
-            }
-            else                                                                // 不足 30byte 的数据一次性发送完毕
+            } else                                                                // 不足 30byte 的数据一次性发送完毕
             {
                 uart_write_buffer(WIRELESS_UART_INDEX, buff, len);              // 发送数据
                 len = 0;
                 break;
             }
-        }
-        else                                                                    // 如果RTS为高电平 则模块忙
+        } else                                                                    // 如果RTS为高电平 则模块忙
         {
-            if(WIRELESS_UART_TIMEOUT_COUNT <= (++ time_count))                  // 超出了最大等待时间
+            if (WIRELESS_UART_TIMEOUT_COUNT <= (++time_count))                  // 超出了最大等待时间
             {
                 break;                                                          // 退出发送
             }
@@ -135,32 +128,28 @@ uint32 wireless_uart_send_buffer (const uint8 *buff, uint32 len)
 // 使用示例     wireless_uart_send_string("Believe in yourself.");
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_uart_send_string (const char *str)
-{
+uint32 wireless_uart_send_string(const char *str) {
     zf_assert(NULL != str);
     uint16 time_count = 0;
     uint32 len = strlen(str);
-    while(0 != len)
-    {
-        if(!gpio_get_level(WIRELESS_UART_RTS_PIN))                              // 如果RTS为低电平 则继续发送数据
+    while (0 != len) {
+        if (!gpio_get_level(WIRELESS_UART_RTS_PIN))                              // 如果RTS为低电平 则继续发送数据
         {
-            if(30 <= len)                                                       // 数据分 30byte 每包发送
+            if (30 <= len)                                                       // 数据分 30byte 每包发送
             {
-                uart_write_buffer(WIRELESS_UART_INDEX, (const uint8 *)str, 30); // 发送数据
+                uart_write_buffer(WIRELESS_UART_INDEX, (const uint8 *) str, 30); // 发送数据
                 str += 30;                                                      // 地址偏移
                 len -= 30;                                                      // 数量
                 time_count = 0;
-            }
-            else                                                                // 不足 30byte 的数据一次性发送完毕
+            } else                                                                // 不足 30byte 的数据一次性发送完毕
             {
-                uart_write_buffer(WIRELESS_UART_INDEX, (const uint8 *)str, len);// 发送数据
+                uart_write_buffer(WIRELESS_UART_INDEX, (const uint8 *) str, len);// 发送数据
                 len = 0;
                 break;
             }
-        }
-        else                                                                    // 如果RTS为高电平 则模块忙
+        } else                                                                    // 如果RTS为高电平 则模块忙
         {
-            if(WIRELESS_UART_TIMEOUT_COUNT <= (++ time_count))                  // 超出了最大等待时间
+            if (WIRELESS_UART_TIMEOUT_COUNT <= (++time_count))                  // 超出了最大等待时间
             {
                 break;                                                          // 退出发送
             }
@@ -178,12 +167,11 @@ uint32 wireless_uart_send_string (const char *str)
 // 使用示例     wireless_uart_send_image(&mt9v03x_image[0][0], MT9V03X_IMAGE_SIZE);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_uart_send_image (const uint8 *image_addr, uint32 image_size)
-{
+void wireless_uart_send_image(const uint8 *image_addr, uint32 image_size) {
     zf_assert(NULL != image_addr);
     extern uint8 camera_send_image_frame_header[4];
     wireless_uart_send_buffer(camera_send_image_frame_header, 4);
-    wireless_uart_send_buffer((uint8 *)image_addr, image_size);
+    wireless_uart_send_buffer((uint8 *) image_addr, image_size);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -194,8 +182,7 @@ void wireless_uart_send_image (const uint8 *image_addr, uint32 image_size)
 // 使用示例     wireless_uart_read_buffer(buff, 32);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint32 wireless_uart_read_buffer (uint8 *buff, uint32 len)
-{
+uint32 wireless_uart_read_buffer(uint8 *buff, uint32 len) {
     zf_assert(NULL != buff);
     uint32 data_len = len;
     fifo_read_buffer(&wireless_uart_fifo, buff, &data_len, FIFO_READ_AND_CLEAN);
@@ -211,8 +198,7 @@ uint32 wireless_uart_read_buffer (uint8 *buff, uint32 len)
 //              由串口中断服务函数调用 wireless_module_uart_handler() 函数
 //              再由 wireless_module_uart_handler() 函数调用本函数
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_uart_callback (void)
-{
+void wireless_uart_callback(void) {
     uart_query_byte(WIRELESS_UART_INDEX, &wireless_uart_data);
     fifo_write_buffer(&wireless_uart_fifo, &wireless_uart_data, 1);
 #if WIRELESS_UART_AUTO_BAUD_RATE                                                // 开启自动波特率
@@ -232,8 +218,7 @@ void wireless_uart_callback (void)
 // 使用示例     wireless_uart_init();
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 wireless_uart_init (void)
-{
+uint8 wireless_uart_init(void) {
     uint8 return_state = 0;
     set_wireless_type(WIRELESS_UART, wireless_uart_callback);
 
@@ -241,7 +226,7 @@ uint8 wireless_uart_init (void)
     gpio_init(WIRELESS_UART_RTS_PIN, GPI, GPIO_HIGH, GPI_PULL_UP);
 #if(0 == WIRELESS_UART_AUTO_BAUD_RATE)                                          // 关闭自动波特率
     // 本函数使用的波特率为115200 为无线转串口模块的默认波特率 如需其他波特率请自行配置模块并修改串口的波特率
-    uart_init (WIRELESS_UART_INDEX, WIRELESS_UART_BUAD_RATE, WIRELESS_UART_RX_PIN, WIRELESS_UART_TX_PIN);   // 初始化串口
+    uart_init(WIRELESS_UART_INDEX, WIRELESS_UART_BUAD_RATE, WIRELESS_UART_RX_PIN, WIRELESS_UART_TX_PIN);   // 初始化串口
     uart_rx_interrupt(WIRELESS_UART_INDEX, 1);
 #elif(1 == WIRELESS_UART_AUTO_BAUD_RATE)                                        // 开启自动波特率
     uint8 rts_init_status = 0;

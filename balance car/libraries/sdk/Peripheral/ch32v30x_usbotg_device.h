@@ -22,77 +22,77 @@
 #define CONST                   const
 #endif
 #ifndef BOOL
-typedef unsigned char           BOOL;
+typedef unsigned char BOOL;
 #endif
 #ifndef BOOLEAN
-typedef unsigned char           BOOLEAN;
+typedef unsigned char BOOLEAN;
 #endif
 #ifndef CHAR
-typedef char                    CHAR;
+typedef char CHAR;
 #endif
 #ifndef INT8
-typedef char                    INT8;
+typedef char INT8;
 #endif
 #ifndef INT16
-typedef short                   INT16;
+typedef short INT16;
 #endif
 #ifndef INT32
-typedef long                    INT32;
+typedef long INT32;
 #endif
 #ifndef UINT8
-typedef unsigned char           UINT8;
+typedef unsigned char UINT8;
 #endif
 #ifndef UINT16
-typedef unsigned short          UINT16;
+typedef unsigned short UINT16;
 #endif
 #ifndef UINT32
-typedef unsigned long           UINT32;
+typedef unsigned long UINT32;
 #endif
 #ifndef UINT8V
-typedef unsigned char volatile  UINT8V;
+typedef unsigned char volatile UINT8V;
 #endif
 #ifndef UINT16V
 typedef unsigned short volatile UINT16V;
 #endif
 #ifndef UINT32V
-typedef unsigned long volatile  UINT32V;
+typedef unsigned long volatile UINT32V;
 #endif
 
 #ifndef PVOID
-typedef void                    *PVOID;
+typedef void *PVOID;
 #endif
 #ifndef PCHAR
-typedef char                    *PCHAR;
+typedef char *PCHAR;
 #endif
 #ifndef PCHAR
-typedef const char              *PCCHAR;
+typedef const char *PCCHAR;
 #endif
 #ifndef PINT8
-typedef char                    *PINT8;
+typedef char *PINT8;
 #endif
 #ifndef PINT16
-typedef short                   *PINT16;
+typedef short *PINT16;
 #endif
 #ifndef PINT32
-typedef long                    *PINT32;
+typedef long *PINT32;
 #endif
 #ifndef PUINT8
-typedef unsigned char           *PUINT8;
+typedef unsigned char *PUINT8;
 #endif
 #ifndef PUINT16
-typedef unsigned short          *PUINT16;
+typedef unsigned short *PUINT16;
 #endif
 #ifndef PUINT32
-typedef unsigned long           *PUINT32;
+typedef unsigned long *PUINT32;
 #endif
 #ifndef PUINT8V
-typedef volatile unsigned char  *PUINT8V;
+typedef volatile unsigned char *PUINT8V;
 #endif
 #ifndef PUINT16V
 typedef volatile unsigned short *PUINT16V;
 #endif
 #ifndef PUINT32V
-typedef volatile unsigned long  *PUINT32V;
+typedef volatile unsigned long *PUINT32V;
 #endif
 
 
@@ -333,9 +333,9 @@ typedef struct __PACKED _USB_ENDPOINT_DESCR {
 
 
 typedef struct __PACKED _USB_CONFIG_DESCR_LONG {
-    USB_CFG_DESCR   cfg_descr;
-    USB_ITF_DESCR   itf_descr;
-    USB_ENDP_DESCR  endp_descr[1];
+    USB_CFG_DESCR cfg_descr;
+    USB_ITF_DESCR itf_descr;
+    USB_ENDP_DESCR endp_descr[1];
 } USB_CFG_DESCR_LONG, *PUSB_CFG_DESCR_LONG;
 
 
@@ -697,24 +697,24 @@ typedef struct __PACKED _UDISK_BOC_CSW {/* status of BulkOnly USB-FlashDisk */
 
 /******************************************************************************/
 /* 变量外扩 */
-extern PUINT8  pEP0_RAM_Addr;                                                  //ep0(64)
-extern PUINT8  pEP1_RAM_Addr;                                                  //ep1_out(64)+ep1_in(64)
-extern PUINT8  pEP2_RAM_Addr;                                                  //ep2_out(64)+ep2_in(64)
-extern PUINT8  pEP3_RAM_Addr;                                                  //ep3_out(64)+ep3_in(64)
-extern PUINT8  pEP4_RAM_Addr;                                                  //ep4_out(64)+ep4_in(64)
-extern PUINT8  pEP5_RAM_Addr;                                                  //ep5_out(64)+ep5_in(64)
-extern PUINT8  pEP6_RAM_Addr;                                                  //ep6_out(64)+ep6_in(64)
-extern PUINT8  pEP7_RAM_Addr;                                                  //ep7_out(64)+ep7_in(64)
+extern PUINT8 pEP0_RAM_Addr;                                                  //ep0(64)
+extern PUINT8 pEP1_RAM_Addr;                                                  //ep1_out(64)+ep1_in(64)
+extern PUINT8 pEP2_RAM_Addr;                                                  //ep2_out(64)+ep2_in(64)
+extern PUINT8 pEP3_RAM_Addr;                                                  //ep3_out(64)+ep3_in(64)
+extern PUINT8 pEP4_RAM_Addr;                                                  //ep4_out(64)+ep4_in(64)
+extern PUINT8 pEP5_RAM_Addr;                                                  //ep5_out(64)+ep5_in(64)
+extern PUINT8 pEP6_RAM_Addr;                                                  //ep6_out(64)+ep6_in(64)
+extern PUINT8 pEP7_RAM_Addr;                                                  //ep7_out(64)+ep7_in(64)
 
 extern volatile UINT16 USBHD_Endp1_Up_Flag;                                     /* USB2.0高速设备端点1数据上传状态: 0:空闲; 1:正在上传; */
-extern volatile UINT8  USBHD_Endp1_Down_Flag;                                   /* USB2.0高速设备端点1下传成功标志 */
-extern volatile UINT8  USBHD_Endp1_Down_Len;                                    /* USB2.0高速设备端点1下传长度 */
-extern volatile BOOL   USBHD_Endp1_T_Tog;                                       /* USB2.0高速设备端点1发送tog位翻转 */
-extern volatile BOOL   USBHD_Endp1_R_Tog;
+extern volatile UINT8 USBHD_Endp1_Down_Flag;                                   /* USB2.0高速设备端点1下传成功标志 */
+extern volatile UINT8 USBHD_Endp1_Down_Len;                                    /* USB2.0高速设备端点1下传长度 */
+extern volatile BOOL USBHD_Endp1_T_Tog;                                       /* USB2.0高速设备端点1发送tog位翻转 */
+extern volatile BOOL USBHD_Endp1_R_Tog;
 
 extern volatile UINT16 USBHD_Endp2_Up_Flag;                                     /* USB2.0高速设备端点2数据上传状态: 0:空闲; 1:正在上传; */
 extern volatile UINT16 USBHD_Endp2_Up_LoadPtr;                                  /* USB2.0高速设备端点2数据上传装载偏移 */
-extern volatile UINT8  USBHD_Endp2_Down_Flag;                                   /* USB2.0高速设备端点2下传成功标志 */
+extern volatile UINT8 USBHD_Endp2_Down_Flag;                                   /* USB2.0高速设备端点2下传成功标志 */
 
 /******************************************************************************/
 /* DMA地址和缓冲区相关宏定义 */
@@ -737,10 +737,13 @@ extern volatile UINT8  USBHD_Endp2_Down_Flag;                                   
 /******************************************************************************/
 /* 函数声明和外扩 */
 extern UINT8 EP0_DatabufHD[8];      //ep0(64)
-extern UINT8 EP1_DatabufHD[64+64];  //ep1_out(64)+ep1_in(64)
-extern UINT8 EP2_DatabufHD[64+64];  //ep2_out(64)+ep2_in(64) 批量传输端点
+extern UINT8 EP1_DatabufHD[64 + 64];  //ep1_out(64)+ep1_in(64)
+extern UINT8 EP2_DatabufHD[64 + 64];  //ep2_out(64)+ep2_in(64) 批量传输端点
 
-extern void DevEP2_IN_Deal( UINT8 l );
-extern void USBOTG_RCC_Init( void );
-extern void USBDeviceInit( void );
+extern void DevEP2_IN_Deal(UINT8 l);
+
+extern void USBOTG_RCC_Init(void);
+
+extern void USBDeviceInit(void);
+
 #endif

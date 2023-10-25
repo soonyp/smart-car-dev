@@ -6,25 +6,24 @@
 * Description        : This file provides all the RCC firmware functions.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_RCC_H
 #define __CH32V30x_RCC_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
 
 /* RCC_Exported_Types */
-typedef struct
-{
-  uint32_t SYSCLK_Frequency;  /* returns SYSCLK clock frequency expressed in Hz */
-  uint32_t HCLK_Frequency;    /* returns HCLK clock frequency expressed in Hz */
-  uint32_t PCLK1_Frequency;   /* returns PCLK1 clock frequency expressed in Hz */
-  uint32_t PCLK2_Frequency;   /* returns PCLK2 clock frequency expressed in Hz */
-  uint32_t ADCCLK_Frequency;  /* returns ADCCLK clock frequency expressed in Hz */
-}RCC_ClocksTypeDef;
+typedef struct {
+    uint32_t SYSCLK_Frequency;  /* returns SYSCLK clock frequency expressed in Hz */
+    uint32_t HCLK_Frequency;    /* returns HCLK clock frequency expressed in Hz */
+    uint32_t PCLK1_Frequency;   /* returns PCLK1 clock frequency expressed in Hz */
+    uint32_t PCLK2_Frequency;   /* returns PCLK2 clock frequency expressed in Hz */
+    uint32_t ADCCLK_Frequency;  /* returns ADCCLK clock frequency expressed in Hz */
+} RCC_ClocksTypeDef;
 
 /* HSE_configuration */
 #define RCC_HSE_OFF                      ((uint32_t)0x00000000)
@@ -390,56 +389,105 @@ typedef struct
 
 
 void RCC_DeInit(void);
+
 void RCC_HSEConfig(uint32_t RCC_HSE);
+
 ErrorStatus RCC_WaitForHSEStartUp(void);
+
 void RCC_AdjustHSICalibrationValue(uint8_t HSICalibrationValue);
+
 void RCC_HSICmd(FunctionalState NewState);
+
 void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul);
+
 void RCC_PLLCmd(FunctionalState NewState);
+
 void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource);
+
 uint8_t RCC_GetSYSCLKSource(void);
+
 void RCC_HCLKConfig(uint32_t RCC_SYSCLK);
+
 void RCC_PCLK1Config(uint32_t RCC_HCLK);
+
 void RCC_PCLK2Config(uint32_t RCC_HCLK);
+
 void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState);
+
 void RCC_ADCCLKConfig(uint32_t RCC_PCLK2);
+
 void RCC_LSEConfig(uint8_t RCC_LSE);
+
 void RCC_LSICmd(FunctionalState NewState);
+
 void RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource);
+
 void RCC_RTCCLKCmd(FunctionalState NewState);
-void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks);
+
+void RCC_GetClocksFreq(RCC_ClocksTypeDef *RCC_Clocks);
+
 void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
+
 void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
-void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState); 
+
+void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+
 void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
+
 void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+
 void RCC_BackupResetCmd(FunctionalState NewState);
+
 void RCC_ClockSecuritySystemCmd(FunctionalState NewState);
+
 void RCC_MCOConfig(uint8_t RCC_MCO);
+
 FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
+
 void RCC_ClearFlag(void);
+
 ITStatus RCC_GetITStatus(uint8_t RCC_IT);
+
 void RCC_ClearITPendingBit(uint8_t RCC_IT);
+
 void RCC_ADCCLKADJcmd(FunctionalState NewState);
+
 void RCC_OTGFSCLKConfig(uint32_t RCC_OTGFSCLKSource);
+
 void RCC_USBCLK48MConfig(uint32_t RCC_USBCLK48MSource);
 
 #ifdef CH32V30x_D8C
+
 void RCC_PREDIV1Config(uint32_t RCC_PREDIV1_Source, uint32_t RCC_PREDIV1_Div);
+
 void RCC_PREDIV2Config(uint32_t RCC_PREDIV2_Div);
+
 void RCC_PLL2Config(uint32_t RCC_PLL2Mul);
+
 void RCC_PLL2Cmd(FunctionalState NewState);
+
 void RCC_PLL3Config(uint32_t RCC_PLL3Mul);
+
 void RCC_PLL3Cmd(FunctionalState NewState);
+
 void RCC_I2S2CLKConfig(uint32_t RCC_I2S2CLKSource);
+
 void RCC_I2S3CLKConfig(uint32_t RCC_I2S3CLKSource);
+
 void RCC_AHBPeriphResetCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
+
 void RCC_RNGCLKConfig(uint32_t RCC_RNGCLKSource);
+
 void RCC_ETH1GCLKConfig(uint32_t RCC_ETH1GCLKSource);
+
 void RCC_ETH1G_125Mcmd(FunctionalState NewState);
+
 void RCC_USBHSConfig(uint32_t RCC_USBHS);
+
 void RCC_USBHSPLLCLKConfig(uint32_t RCC_USBHSPLLCLKSource);
+
 void RCC_USBHSPLLCKREFCLKConfig(uint32_t RCC_USBHSPLLCKREFCLKSource);
+
 void RCC_USBHSPHYPLLALIVEcmd(FunctionalState NewState);
 
 #endif

@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
 * MM32F527X-E9P Opensourec Library 即（MM32F527X-E9P 开源库）是一个基于官方 SDK 接口的第三方开源库
 * Copyright (c) 2022 SEEKFREE 逐飞科技
 * 
@@ -95,10 +95,11 @@
 extern uint8 dl1b_finsh_flag;
 extern uint16 dl1b_distance_mm;
 
-void   dl1b_get_distance (void);
+void dl1b_get_distance(void);
 
-void   dl1b_int_handler  (void);
-uint8  dl1b_init         (void);
+void dl1b_int_handler(void);
+
+uint8 dl1b_init(void);
 
 #endif
 

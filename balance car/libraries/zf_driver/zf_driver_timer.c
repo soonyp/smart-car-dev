@@ -39,23 +39,23 @@
 
 // 该数组禁止修改，内部使用,用户无需关心
 static timer_function_enum timer_function_state[10] =
-{
-    TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
-    TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
-    TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
-    TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
-    TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT
-};
+        {
+                TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
+                TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
+                TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
+                TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
+                TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT
+        };
 
 // 该数组禁止修改，内部使用,用户无需关心
 static timer_mode_enum timer_mode_state[10] =
-{
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK
-};
+        {
+                TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
+                TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
+                TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
+                TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
+                TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK
+        };
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介      TIMER 外设确认功能状态 库内部调用
@@ -64,19 +64,13 @@ static timer_mode_enum timer_mode_state[10] =
 // 返回参数     uint8           1-可以使用 0-不可以使用
 // 使用示例     zf_assert(timer_funciton_check(TIM_1, TIMER_FUNCTION_PWM);
 //-------------------------------------------------------------------------------------------------------------------
-uint8 timer_funciton_check (timer_index_enum index, timer_function_enum mode)
-{
+uint8 timer_funciton_check(timer_index_enum index, timer_function_enum mode) {
     uint8 return_state = 1;
-    if(TIMER_FUNCTION_INIT == timer_function_state[index])
-    {
+    if (TIMER_FUNCTION_INIT == timer_function_state[index]) {
         timer_function_state[index] = mode;
-    }
-    else if(timer_function_state[index] == mode)
-    {
+    } else if (timer_function_state[index] == mode) {
         return_state = 1;
-    }
-    else
-    {
+    } else {
         return_state = 0;
     }
     return return_state;
@@ -88,20 +82,18 @@ uint8 timer_funciton_check (timer_index_enum index, timer_function_enum mode)
 // 返回参数     void
 // 备注信息          内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
-void timer_clock_enable(timer_index_enum index)
-{
-    if(TIM_1 == index)        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);//使能定时器1的时钟
-    else  if(TIM_2 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);//使能定时器2的时钟
-    else  if(TIM_3 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);//使能定时器3的时钟
-    else  if(TIM_4 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);//使能定时器4的时钟
-    else  if(TIM_5 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//使能定时器5的时钟
-    else  if(TIM_6 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);//使能定时器6的时钟
-    else  if(TIM_7 == index)  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);//使能定时器7的时钟
-    else  if(TIM_8 == index)  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);//使能定时器8的时钟
-    else  if(TIM_9 == index)  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, ENABLE);//使能定时器9的时钟
-    else  if(TIM_10== index)  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10,ENABLE);//使能定时器10的时钟
+void timer_clock_enable(timer_index_enum index) {
+    if (TIM_1 == index) RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);//使能定时器1的时钟
+    else if (TIM_2 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);//使能定时器2的时钟
+    else if (TIM_3 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);//使能定时器3的时钟
+    else if (TIM_4 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);//使能定时器4的时钟
+    else if (TIM_5 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//使能定时器5的时钟
+    else if (TIM_6 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);//使能定时器6的时钟
+    else if (TIM_7 == index) RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);//使能定时器7的时钟
+    else if (TIM_8 == index) RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);//使能定时器8的时钟
+    else if (TIM_9 == index) RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, ENABLE);//使能定时器9的时钟
+    else if (TIM_10 == index) RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10, ENABLE);//使能定时器10的时钟
 }
-
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -110,21 +102,39 @@ void timer_clock_enable(timer_index_enum index)
 // 返回参数     void
 // 使用示例     timer_start(TIM_1, TIMER_US);  //定时器1 开始计数，每一us计数一次
 //-------------------------------------------------------------------------------------------------------------------
-void timer_start(timer_index_enum index)
-{
+void timer_start(timer_index_enum index) {
     TIM_TypeDef *tim_index = TIM1;
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
+    switch (index) {
+        case TIM_1:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM_2:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM_3:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM_4:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM_5:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM_6:
+            tim_index = ((TIM_TypeDef *) TIM6_BASE);
+            break;
+        case TIM_7:
+            tim_index = ((TIM_TypeDef *) TIM7_BASE);
+            break;
+        case TIM_8:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM_9:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM_10:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
     }
     TIM_Cmd(tim_index, ENABLE);                                          // 使能TIMx
 }
@@ -136,22 +146,40 @@ void timer_start(timer_index_enum index)
 // 返回参数     void
 // 备注信息             关闭定时器并清除标志位
 //-------------------------------------------------------------------------------------------------------------------
-void timer_stop(timer_index_enum index)
-{
+void timer_stop(timer_index_enum index) {
     TIM_TypeDef *tim_index = TIM1;
 
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
+    switch (index) {
+        case TIM_1:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM_2:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM_3:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM_4:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM_5:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM_6:
+            tim_index = ((TIM_TypeDef *) TIM6_BASE);
+            break;
+        case TIM_7:
+            tim_index = ((TIM_TypeDef *) TIM7_BASE);
+            break;
+        case TIM_8:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM_9:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM_10:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
     }
 
     TIM_Cmd(tim_index, DISABLE);  //失能TIM
@@ -164,37 +192,51 @@ void timer_stop(timer_index_enum index)
 // 返回参数     uint32      计数值
 // 使用示例     timer_get(TIM_1)  //获取定时器1的计时时间
 //-------------------------------------------------------------------------------------------------------------------
-uint16 timer_get(timer_index_enum index)
-{
+uint16 timer_get(timer_index_enum index) {
     TIM_TypeDef *tim_index = TIM1;
     uint16 return_value = 0;
 
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
+    switch (index) {
+        case TIM_1:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM_2:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM_3:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM_4:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM_5:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM_6:
+            tim_index = ((TIM_TypeDef *) TIM6_BASE);
+            break;
+        case TIM_7:
+            tim_index = ((TIM_TypeDef *) TIM7_BASE);
+            break;
+        case TIM_8:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM_9:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM_10:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
     }
 
 
-    if(timer_mode_state[index] == TIMER_MS)
-    {
-        return_value = tim_index->CNT/3;
-    }
-    else
-    {
+    if (timer_mode_state[index] == TIMER_MS) {
+        return_value = tim_index->CNT / 3;
+    } else {
         return_value = tim_index->CNT;
     }
     return return_value;
 }
-
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -204,22 +246,40 @@ uint16 timer_get(timer_index_enum index)
 // 使用示例     timer_clear(TIM_1);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void timer_clear (timer_index_enum index)
-{
+void timer_clear(timer_index_enum index) {
     TIM_TypeDef *tim_index = TIM1;
 
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
+    switch (index) {
+        case TIM_1:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM_2:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM_3:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM_4:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM_5:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM_6:
+            tim_index = ((TIM_TypeDef *) TIM6_BASE);
+            break;
+        case TIM_7:
+            tim_index = ((TIM_TypeDef *) TIM7_BASE);
+            break;
+        case TIM_8:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM_9:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM_10:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
     }
     tim_index->CNT = 0;
 }
@@ -232,8 +292,7 @@ void timer_clear (timer_index_enum index)
 // 使用示例     timer_init(TIM_1, TIMER_US);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void timer_init(timer_index_enum index, timer_mode_enum mode)
-{
+void timer_init(timer_index_enum index, timer_mode_enum mode) {
 
     // 如果程序在输出了断言信息 并且提示出错位置在这里
     // 就去查看你在什么地方调用这个函数 检查你的传入参数
@@ -243,39 +302,52 @@ void timer_init(timer_index_enum index, timer_mode_enum mode)
     timer_function_state[index] = TIMER_FUNCTION_TIMER;
 
     TIM_TypeDef *tim_index = TIM1;
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
+    switch (index) {
+        case TIM_1:
+            tim_index = ((TIM_TypeDef *) TIM1_BASE);
+            break;
+        case TIM_2:
+            tim_index = ((TIM_TypeDef *) TIM2_BASE);
+            break;
+        case TIM_3:
+            tim_index = ((TIM_TypeDef *) TIM3_BASE);
+            break;
+        case TIM_4:
+            tim_index = ((TIM_TypeDef *) TIM4_BASE);
+            break;
+        case TIM_5:
+            tim_index = ((TIM_TypeDef *) TIM5_BASE);
+            break;
+        case TIM_6:
+            tim_index = ((TIM_TypeDef *) TIM6_BASE);
+            break;
+        case TIM_7:
+            tim_index = ((TIM_TypeDef *) TIM7_BASE);
+            break;
+        case TIM_8:
+            tim_index = ((TIM_TypeDef *) TIM8_BASE);
+            break;
+        case TIM_9:
+            tim_index = ((TIM_TypeDef *) TIM9_BASE);
+            break;
+        case TIM_10:
+            tim_index = ((TIM_TypeDef *) TIM10_BASE);
+            break;
     }
-
 
 
     timer_clock_enable(index);                                                  // 开启时钟总线
 
     timer_mode_state[index] = mode;
 
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure = {0};
-    if(mode == TIMER_US)
-    {
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
+    if (mode == TIMER_US) {
         TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
-        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock/1000000)-1;         // 装载预分频
-    }
-    else if(mode == TIMER_MS)
-    {
+        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock / 1000000) - 1;         // 装载预分频
+    } else if (mode == TIMER_MS) {
         TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
-        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock/1000)/3-1;          // 装载预分频
-    }
-    else
-    {
+        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock / 1000) / 3 - 1;          // 装载预分频
+    } else {
         TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
         TIM_TimeBaseStructure.TIM_Prescaler = 0;                                // 装载预分频
     }

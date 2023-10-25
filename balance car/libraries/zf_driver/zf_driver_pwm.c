@@ -47,24 +47,39 @@
 // 使用示例     pwm_set_duty(TIM10_PWM_CH4_C15, 5000);   //定时器10 通道4 使用引脚C15 占空比为百分之 5000/PWM_DUTY_MAX*100
 //                              PWM_DUTY_MAX在zf_pwm.h文件中 默认为10000
 //-------------------------------------------------------------------------------------------------------------------
-void pwm_set_duty(pwm_channel_enum pin, uint32 duty)
-{
+void pwm_set_duty(pwm_channel_enum pin, uint32 duty) {
     // 如果是这一行报错 那你得去看看最大占空比是限定的多少 占空比写入错误
     zf_assert(PWM_DUTY_MAX >= duty);                            // 占空比写入错误
 
 
 
     TIM_TypeDef *tim_index = TIM1;
-    switch((pin & 0xF0000) >> 16)                               // 获取TIM编号
+    switch ((pin & 0xF0000) >> 16)                               // 获取TIM编号
     {
-        case 0: tim_index = TIM1;    break;
-        case 1: tim_index = TIM2;    break;
-        case 2: tim_index = TIM3;    break;
-        case 3: tim_index = TIM4;    break;
-        case 4: tim_index = TIM5;    break;
-        case 7: tim_index = TIM8;    break;
-        case 8: tim_index = TIM9;    break;
-        case 9: tim_index = TIM10;   break;
+        case 0:
+            tim_index = TIM1;
+            break;
+        case 1:
+            tim_index = TIM2;
+            break;
+        case 2:
+            tim_index = TIM3;
+            break;
+        case 3:
+            tim_index = TIM4;
+            break;
+        case 4:
+            tim_index = TIM5;
+            break;
+        case 7:
+            tim_index = TIM8;
+            break;
+        case 8:
+            tim_index = TIM9;
+            break;
+        case 9:
+            tim_index = TIM10;
+            break;
     }
 
 
@@ -76,19 +91,16 @@ void pwm_set_duty(pwm_channel_enum pin, uint32 duty)
 
 
 
-    if(((pin>>8) & 0x03) == 0x00)                               // 通道选择
+    if (((pin >> 8) & 0x03) == 0x00)                               // 通道选择
     {
         tim_index->CH1CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x01)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x01)                          // 通道选择
     {
         tim_index->CH2CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x02)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x02)                          // 通道选择
     {
         tim_index->CH3CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x03)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x03)                          // 通道选择
     {
         tim_index->CH4CVR = match_temp;
     }
@@ -104,49 +116,59 @@ void pwm_set_duty(pwm_channel_enum pin, uint32 duty)
 // 使用示例     pwm_set_freq(PWM1_CH1_A8, 60, 5000);   //使用引脚A8  输出PWM频率60HZ   占空比为百分之 5000/PWM_DUTY_MAX*100
 //                              PWM_DUTY_MAX在zf_pwm.h文件中 默认为10000
 //-------------------------------------------------------------------------------------------------------------------
-void pwm_set_freq(pwm_channel_enum pin, uint32 freq, uint32 duty)
-{
+void pwm_set_freq(pwm_channel_enum pin, uint32 freq, uint32 duty) {
     uint16 period_temp = 0;                                     // 周期值
     uint16 freq_div = 0;                                        // 分频值
     uint16 match_temp;
 
-    freq_div = (uint16)((system_clock / freq) >> 16);           // 计算多少分频
-    period_temp = (uint16)(system_clock/(freq*(freq_div + 1))); // 计算周期
+    freq_div = (uint16) ((system_clock / freq) >> 16);           // 计算多少分频
+    period_temp = (uint16) (system_clock / (freq * (freq_div + 1))); // 计算周期
 
     // 获取TIM编号
     TIM_TypeDef *tim_index = TIM1;
-    switch((pin & 0xF0000) >> 16)
-    {
-        case 0: tim_index = TIM1;    break;
-        case 1: tim_index = TIM2;    break;
-        case 2: tim_index = TIM3;    break;
-        case 3: tim_index = TIM4;    break;
-        case 4: tim_index = TIM5;    break;
-        case 7: tim_index = TIM8;    break;
-        case 8: tim_index = TIM9;    break;
-        case 9: tim_index = TIM10;   break;
+    switch ((pin & 0xF0000) >> 16) {
+        case 0:
+            tim_index = TIM1;
+            break;
+        case 1:
+            tim_index = TIM2;
+            break;
+        case 2:
+            tim_index = TIM3;
+            break;
+        case 3:
+            tim_index = TIM4;
+            break;
+        case 4:
+            tim_index = TIM5;
+            break;
+        case 7:
+            tim_index = TIM8;
+            break;
+        case 8:
+            tim_index = TIM9;
+            break;
+        case 9:
+            tim_index = TIM10;
+            break;
     }
 
 
-
-    tim_index->ATRLR = period_temp - 1 ;
+    tim_index->ATRLR = period_temp - 1;
     tim_index->PSC = freq_div;
     match_temp = period_temp * duty / PWM_DUTY_MAX;             // 占空比
 
 
-    if(((pin>>8) & 0x03) == 0x00)                               // 通道选择
+    if (((pin >> 8) & 0x03) == 0x00)                               // 通道选择
     {
         tim_index->CH1CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x01)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x01)                          // 通道选择
     {
         tim_index->CH2CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x02)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x02)                          // 通道选择
     {
         tim_index->CH3CVR = match_temp;
-    }
-    else if(((pin>>8) & 0x03) == 0x03)                          // 通道选择
+    } else if (((pin >> 8) & 0x03) == 0x03)                          // 通道选择
     {
         tim_index->CH4CVR = match_temp;
     }
@@ -163,60 +185,74 @@ void pwm_set_freq(pwm_channel_enum pin, uint32 freq, uint32 duty)
 // 使用示例     pwm_init(PWM1_CH1_A8, 50, 5000);   //初始化PWM1 通道1 使用引脚A8  输出PWM频率50HZ   占空比为百分之 5000/PWM_DUTY_MAX*100
 //                              PWM_DUTY_MAX在zf_pwm.h文件中 默认为10000
 //-------------------------------------------------------------------------------------------------------------------
-void pwm_init(pwm_channel_enum pin, uint32 freq, uint32 duty)
-{
+void pwm_init(pwm_channel_enum pin, uint32 freq, uint32 duty) {
 
     // 如果程序在输出了断言信息 并且提示出错位置在这里
     // 就去查看你在什么地方调用这个函数 检查你的传入参数
     // 这里是检查是否有重复使用定时器
     // 比如初始化了 TIM1_PIT 然后又初始化成 TIM1_PWM 这种用法是不允许的
-    zf_assert(timer_funciton_check((timer_index_enum)(pin>>16), TIMER_FUNCTION_PWM));
+    zf_assert(timer_funciton_check((timer_index_enum) (pin >> 16), TIMER_FUNCTION_PWM));
     // 如果是这一行报错 那你得去看看最大占空比是限定的多少 占空比写入错误
     zf_assert(PWM_DUTY_MAX >= duty);
 
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure = {0};
-    TIM_OCInitTypeDef  TIM_OCInitStructure = {0};
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
+    TIM_OCInitTypeDef TIM_OCInitStructure = {0};
     uint16 match_temp;                                                              // 占空比值
     uint16 period_temp;                                                             // 周期值
     uint16 freq_div = 0;                                                            // 分频值
 
     timer_clock_enable((pin & 0xF0000) >> 16);                                      // 定时器时钟使能
 
-    gpio_init((gpio_pin_enum)(pin & 0xFF), GPO, 0, GPO_AF_PUSH_PULL | SPEED_50MHZ); // 初始化引脚
+    gpio_init((gpio_pin_enum) (pin & 0xFF), GPO, 0, GPO_AF_PUSH_PULL | SPEED_50MHZ); // 初始化引脚
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);                            // 使能AFIO复用功能模块时钟
 
     // 获取TIM编号
     TIM_TypeDef *tim_index = TIM1;
-    switch((pin & 0xF0000) >> 16)
-    {
-        case 0: tim_index = TIM1;    break;
-        case 1: tim_index = TIM2;    break;
-        case 2: tim_index = TIM3;    break;
-        case 3: tim_index = TIM4;    break;
-        case 4: tim_index = TIM5;    break;
-        case 7: tim_index = TIM8;    break;
-        case 8: tim_index = TIM9;    break;
-        case 9: tim_index = TIM10;   break;
+    switch ((pin & 0xF0000) >> 16) {
+        case 0:
+            tim_index = TIM1;
+            break;
+        case 1:
+            tim_index = TIM2;
+            break;
+        case 2:
+            tim_index = TIM3;
+            break;
+        case 3:
+            tim_index = TIM4;
+            break;
+        case 4:
+            tim_index = TIM5;
+            break;
+        case 7:
+            tim_index = TIM8;
+            break;
+        case 8:
+            tim_index = TIM9;
+            break;
+        case 9:
+            tim_index = TIM10;
+            break;
     }
 
     // 开启复用功能
-    if((pin >> 12) == 0x03)      GPIO_PinRemapConfig(GPIO_FullRemap_TIM1,        ENABLE);
+    if ((pin >> 12) == 0x03) GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
 
-    else if((pin >> 12) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2,    ENABLE);
-    else if((pin >> 12) == 0x12) GPIO_PinRemapConfig(GPIO_PartialRemap2_TIM2,    ENABLE);
-    else if((pin >> 12) == 0x13) GPIO_PinRemapConfig(GPIO_FullRemap_TIM2,        ENABLE);
+    else if ((pin >> 12) == 0x11) GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
+    else if ((pin >> 12) == 0x12) GPIO_PinRemapConfig(GPIO_PartialRemap2_TIM2, ENABLE);
+    else if ((pin >> 12) == 0x13) GPIO_PinRemapConfig(GPIO_FullRemap_TIM2, ENABLE);
 
-    else if((pin >> 12) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3,     ENABLE);
-    else if((pin >> 12) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3,        ENABLE);
-    else if((pin >> 12) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4,            ENABLE);
-    else if((pin >> 12) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8,            ENABLE);
-    else if((pin >> 12) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9,        ENABLE);
-    else if((pin >> 12) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10,    ENABLE);
-    else if((pin >> 12) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10,       ENABLE);
+    else if ((pin >> 12) == 0x22) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+    else if ((pin >> 12) == 0x23) GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE);
+    else if ((pin >> 12) == 0x31) GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
+    else if ((pin >> 12) == 0x71) GPIO_PinRemapConfig(GPIO_Remap_TIM8, ENABLE);
+    else if ((pin >> 12) == 0x83) GPIO_PinRemapConfig(GPIO_FullRemap_TIM9, ENABLE);
+    else if ((pin >> 12) == 0x91) GPIO_PinRemapConfig(GPIO_PartialRemap_TIM10, ENABLE);
+    else if ((pin >> 12) == 0x93) GPIO_PinRemapConfig(GPIO_FullRemap_TIM10, ENABLE);
 
-    freq_div = (uint16)((system_clock / freq) >> 16);                               // 多少分频
-    period_temp = (uint16)(system_clock/(freq*(freq_div + 1)));                     // 周期
+    freq_div = (uint16) ((system_clock / freq) >> 16);                               // 多少分频
+    period_temp = (uint16) (system_clock / (freq * (freq_div + 1)));                     // 周期
     match_temp = period_temp * duty / PWM_DUTY_MAX;                                 // 占空比
 
     TIM_TimeBaseStructure.TIM_Period = period_temp - 1;                             // 设置在下一个更新事件装入活动的自动重装载寄存器周期的值
@@ -224,7 +260,8 @@ void pwm_init(pwm_channel_enum pin, uint32 freq, uint32 duty)
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;                         // 设置时钟分割:TDTS = Tck_tim
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;                     // TIM向上计数模式
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(tim_index, &TIM_TimeBaseStructure);                            // 根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
+    TIM_TimeBaseInit(tim_index,
+                     &TIM_TimeBaseStructure);                            // 根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;                               // 选择定时器模式:TIM脉冲宽度调制模式2
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;                   // 比较输出使能
@@ -235,31 +272,25 @@ void pwm_init(pwm_channel_enum pin, uint32 freq, uint32 duty)
     TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
     TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 
-    if(((pin>>8) & 0x03) == 0x00)                                                   // 通道选择
+    if (((pin >> 8) & 0x03) == 0x00)                                                   // 通道选择
     {
-        TIM_OC1Init(tim_index, &TIM_OCInitStructure );                              // 定时器通道1初始化
+        TIM_OC1Init(tim_index, &TIM_OCInitStructure);                              // 定时器通道1初始化
         TIM_OC1PreloadConfig(tim_index, TIM_OCPreload_Enable);                      // 定时器预装载配置
         TIM_OC1FastConfig(tim_index, TIM_OC1FE);                                    // 比较捕获通道快速使能
-    }
-    else if(((pin>>8) & 0x03) == 0x01)
-    {
-        TIM_OC2Init(tim_index, &TIM_OCInitStructure );
+    } else if (((pin >> 8) & 0x03) == 0x01) {
+        TIM_OC2Init(tim_index, &TIM_OCInitStructure);
         TIM_OC2PreloadConfig(tim_index, TIM_OCPreload_Enable);
         TIM_OC2FastConfig(tim_index, TIM_OC2FE);
-    }
-    else if(((pin>>8) & 0x03) == 0x02)
-    {
-        TIM_OC3Init(tim_index, &TIM_OCInitStructure );
+    } else if (((pin >> 8) & 0x03) == 0x02) {
+        TIM_OC3Init(tim_index, &TIM_OCInitStructure);
         TIM_OC3PreloadConfig(tim_index, TIM_OCPreload_Enable);
         TIM_OC3FastConfig(tim_index, TIM_OC3FE);
-    }
-    else if(((pin>>8) & 0x03) == 0x03)
-    {
-        TIM_OC4Init(tim_index, &TIM_OCInitStructure );
+    } else if (((pin >> 8) & 0x03) == 0x03) {
+        TIM_OC4Init(tim_index, &TIM_OCInitStructure);
         TIM_OC4PreloadConfig(tim_index, TIM_OCPreload_Enable);
         TIM_OC4FastConfig(tim_index, TIM_OC4FE);
     }
-    TIM_CtrlPWMOutputs(tim_index, ENABLE );                                         // 通道PWM输出使能
+    TIM_CtrlPWMOutputs(tim_index, ENABLE);                                         // 通道PWM输出使能
     TIM_Cmd(tim_index, ENABLE);                                                     // 定时器使能
     //TIM_ARRPreloadConfig( TIM1, ENABLE );
 }

@@ -7,46 +7,43 @@
 *                      EXTI firmware library.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/ 
+*******************************************************************************/
 #ifndef __CH32V30x_EXTI_H
 #define __CH32V30x_EXTI_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #include "ch32v30x.h"
 
 /* EXTI mode enumeration */
-typedef enum
-{
-  EXTI_Mode_Interrupt = 0x00,
-  EXTI_Mode_Event = 0x04
-}EXTIMode_TypeDef;
+typedef enum {
+    EXTI_Mode_Interrupt = 0x00,
+    EXTI_Mode_Event = 0x04
+} EXTIMode_TypeDef;
 
 /* EXTI Trigger enumeration */
-typedef enum
-{
-  EXTI_Trigger_Rising = 0x08,
-  EXTI_Trigger_Falling = 0x0C,  
-  EXTI_Trigger_Rising_Falling = 0x10
-}EXTITrigger_TypeDef;
+typedef enum {
+    EXTI_Trigger_Rising = 0x08,
+    EXTI_Trigger_Falling = 0x0C,
+    EXTI_Trigger_Rising_Falling = 0x10
+} EXTITrigger_TypeDef;
 
 /* EXTI Init Structure definition */
-typedef struct
-{
-  uint32_t EXTI_Line;               /* Specifies the EXTI lines to be enabled or disabled.
+typedef struct {
+    uint32_t EXTI_Line;               /* Specifies the EXTI lines to be enabled or disabled.
                                        This parameter can be any combination of @ref EXTI_Lines */
-   
-  EXTIMode_TypeDef EXTI_Mode;       /* Specifies the mode for the EXTI lines.
+
+    EXTIMode_TypeDef EXTI_Mode;       /* Specifies the mode for the EXTI lines.
                                        This parameter can be a value of @ref EXTIMode_TypeDef */
 
-  EXTITrigger_TypeDef EXTI_Trigger; /* Specifies the trigger signal active edge for the EXTI lines.
+    EXTITrigger_TypeDef EXTI_Trigger; /* Specifies the trigger signal active edge for the EXTI lines.
                                        This parameter can be a value of @ref EXTIMode_TypeDef */
 
-  FunctionalState EXTI_LineCmd;     /* Specifies the new state of the selected EXTI lines.
-                                       This parameter can be set either to ENABLE or DISABLE */ 
-}EXTI_InitTypeDef;
+    FunctionalState EXTI_LineCmd;     /* Specifies the new state of the selected EXTI lines.
+                                       This parameter can be set either to ENABLE or DISABLE */
+} EXTI_InitTypeDef;
 
 
 /* EXTI_Lines */
@@ -69,17 +66,24 @@ typedef struct
 #define EXTI_Line16      ((uint32_t)0x10000)  /* External interrupt line 16 Connected to the PVD Output */
 #define EXTI_Line17      ((uint32_t)0x20000)  /* External interrupt line 17 Connected to the RTC Alarm event */
 #define EXTI_Line18      ((uint32_t)0x40000)  /* External interrupt line 18 Connected to the USBD/USBFS OTG
-                                                 Wakeup from suspend event */                                    
+                                                 Wakeup from suspend event */
 #define EXTI_Line19      ((uint32_t)0x80000)  /* External interrupt line 19 Connected to the Ethernet Wakeup event */
 #define EXTI_Line20      ((uint32_t)0x100000) /* External interrupt line 20 Connected to the USBHS Wakeup event */
 
 void EXTI_DeInit(void);
-void EXTI_Init(EXTI_InitTypeDef* EXTI_InitStruct);
-void EXTI_StructInit(EXTI_InitTypeDef* EXTI_InitStruct);
+
+void EXTI_Init(EXTI_InitTypeDef *EXTI_InitStruct);
+
+void EXTI_StructInit(EXTI_InitTypeDef *EXTI_InitStruct);
+
 void EXTI_GenerateSWInterrupt(uint32_t EXTI_Line);
+
 FlagStatus EXTI_GetFlagStatus(uint32_t EXTI_Line);
+
 void EXTI_ClearFlag(uint32_t EXTI_Line);
+
 ITStatus EXTI_GetITStatus(uint32_t EXTI_Line);
+
 void EXTI_ClearITPendingBit(uint32_t EXTI_Line);
 
 #ifdef __cplusplus

@@ -44,8 +44,7 @@
 #include "zf_common_clock.h"
 
 //此枚举定义不允许用户修改
-typedef enum
-{
+typedef enum {
     TIM_1,
     TIM_2,
     TIM_3,
@@ -56,38 +55,37 @@ typedef enum
     TIM_8,
     TIM_9,
     TIM_10,
-}timer_index_enum;
+} timer_index_enum;
 
-typedef enum
-{
+typedef enum {
     TIMER_SYSTEM_CLOCK,                                                         // 系统频率计时 最大 0xFFFF
     TIMER_US,                                                                   // 微秒计时 最大 0xFFFF
     TIMER_MS,                                                                   // 毫秒计时 最大 0xFFFF/2
-}timer_mode_enum;
+} timer_mode_enum;
 
-typedef enum
-{
+typedef enum {
     TIMER_FUNCTION_INIT = 0,                                                    // 功能未初始化
     TIMER_FUNCTION_TIMER,                                                       // 用作 TIMER 计时
     TIMER_FUNCTION_PIT,                                                         // 用作 PIT
     TIMER_FUNCTION_PWM,                                                         // 用作 PWM
     TIMER_FUNCTION_ENCODER,                                                     // 用作 ENCODER
     TIMER_FUNCTION_CAMERA,                                                      // 用作 CAMERA
-}timer_function_enum;
+} timer_function_enum;
 
 
-uint8       timer_funciton_check    (timer_index_enum index, timer_function_enum mode);
-void        timer_clock_enable      (timer_index_enum index);
+uint8 timer_funciton_check(timer_index_enum index, timer_function_enum mode);
 
-void        timer_start             (timer_index_enum index);
-void        timer_stop              (timer_index_enum index);
-uint16      timer_get               (timer_index_enum index);
-void        timer_clear             (timer_index_enum index);
+void timer_clock_enable(timer_index_enum index);
 
-void        timer_init              (timer_index_enum index, timer_mode_enum mode);
+void timer_start(timer_index_enum index);
 
+void timer_stop(timer_index_enum index);
 
+uint16 timer_get(timer_index_enum index);
 
+void timer_clear(timer_index_enum index);
+
+void timer_init(timer_index_enum index, timer_mode_enum mode);
 
 
 #endif

@@ -41,8 +41,7 @@
 #include "ch32v30x_tim.h"
 #include "zf_common_debug.h"
 
-typedef enum
-{
+typedef enum {
     // MAP0  默认映射
     // MAP1  重映射
     // MAP2  部分映射
@@ -57,14 +56,14 @@ typedef enum
 
     // 以下为TIM1的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM1_PWM_MAP0_CH1_A8  = 0x00000 | A8 ,				// 0x 0[TIM1] 0[MAP0] 0[CH1] 08[A8 ]
-    TIM1_PWM_MAP0_CH2_A9  = 0x00100 | A9 ,				// 0x 0[TIM1] 0[MAP0] 1[CH2] 09[A9 ]
-    TIM1_PWM_MAP0_CH3_A10 = 0x00200 | A10,				// 0x 0[TIM1] 0[MAP0] 2[CH3] 0A[A10]
-    TIM1_PWM_MAP0_CH4_A11 = 0x00300 | A11,				// 0x 0[TIM1] 0[MAP0] 3[CH4] 0B[A11]
+    TIM1_PWM_MAP0_CH1_A8 = 0x00000 | A8,                // 0x 0[TIM1] 0[MAP0] 0[CH1] 08[A8 ]
+    TIM1_PWM_MAP0_CH2_A9 = 0x00100 | A9,                // 0x 0[TIM1] 0[MAP0] 1[CH2] 09[A9 ]
+    TIM1_PWM_MAP0_CH3_A10 = 0x00200 | A10,                // 0x 0[TIM1] 0[MAP0] 2[CH3] 0A[A10]
+    TIM1_PWM_MAP0_CH4_A11 = 0x00300 | A11,                // 0x 0[TIM1] 0[MAP0] 3[CH4] 0B[A11]
 
     // 以下为TIM1的PWM的一组映射引脚，不允许映射引脚混用。
     // 完全映射
-    TIM1_PWM_MAP3_CH1_E9  = 0x03000 | E9 ,				// 0x 0[TIM1] 3[MAP3] 0[CH1] 69[E9 ]
+    TIM1_PWM_MAP3_CH1_E9 = 0x03000 | E9,                // 0x 0[TIM1] 3[MAP3] 0[CH1] 69[E9 ]
     TIM1_PWM_MAP3_CH2_E11 = 0x03100 | E11,              // 0x 0[TIM1] 3[MAP3] 1[CH2] 6B[E11]
     TIM1_PWM_MAP3_CH3_E13 = 0x03200 | E13,              // 0x 0[TIM1] 3[MAP3] 2[CH3] 6D[E13]
     TIM1_PWM_MAP3_CH4_E14 = 0x03300 | E14,              // 0x 0[TIM1] 3[MAP3] 3[CH4] 6E[E14]
@@ -73,29 +72,29 @@ typedef enum
 
     // 以下为TIM2的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM2_PWM_MAP0_CH1_A0  = 0x10000 | A0,
-    TIM2_PWM_MAP0_CH2_A1  = 0x10100 | A1,
-    TIM2_PWM_MAP0_CH3_A2  = 0x10200 | A2,
-    TIM2_PWM_MAP0_CH4_A3  = 0x10300 | A3,
+    TIM2_PWM_MAP0_CH1_A0 = 0x10000 | A0,
+    TIM2_PWM_MAP0_CH2_A1 = 0x10100 | A1,
+    TIM2_PWM_MAP0_CH3_A2 = 0x10200 | A2,
+    TIM2_PWM_MAP0_CH4_A3 = 0x10300 | A3,
 
     // 以下为TIM2的PWM的一组映射引脚，不允许映射引脚混用。
     // 重映射
     TIM2_PWM_MAP1_CH1_A15 = 0x11000 | A15,
-    TIM2_PWM_MAP1_CH2_B3  = 0x11100 | B3 ,
-    TIM2_PWM_MAP1_CH3_A2  = 0x11200 | A2 ,
-    TIM2_PWM_MAP1_CH4_A3  = 0x11300 | A3 ,
+    TIM2_PWM_MAP1_CH2_B3 = 0x11100 | B3,
+    TIM2_PWM_MAP1_CH3_A2 = 0x11200 | A2,
+    TIM2_PWM_MAP1_CH4_A3 = 0x11300 | A3,
 
     // 以下为TIM2的PWM的一组映射引脚，不允许映射引脚混用。
     // 部分映射
-    TIM2_PWM_MAP2_CH1_A0  = 0x12000 | A0 ,
-    TIM2_PWM_MAP2_CH2_A1  = 0x12100 | A1 ,
+    TIM2_PWM_MAP2_CH1_A0 = 0x12000 | A0,
+    TIM2_PWM_MAP2_CH2_A1 = 0x12100 | A1,
     TIM2_PWM_MAP2_CH3_B10 = 0x12200 | B10,              // 下载器默认串口，如果需要使用，则需要屏蔽默认串口初始化
     TIM2_PWM_MAP2_CH4_B11 = 0x12300 | B11,              // 下载器默认串口，如果需要使用，则需要屏蔽默认串口初始化
 
     // 以下为TIM2的PWM的一组映射引脚，不允许映射引脚混用。
     // 完全映射
     TIM2_PWM_MAP3_CH1_A15 = 0x13000 | A15,
-    TIM2_PWM_MAP3_CH2_B3  = 0x13100 | B3 ,
+    TIM2_PWM_MAP3_CH2_B3 = 0x13100 | B3,
     TIM2_PWM_MAP3_CH3_B10 = 0x13200 | B10,              // 下载器默认串口，如果需要使用，则需要屏蔽默认串口初始化
     TIM2_PWM_MAP3_CH4_B11 = 0x13300 | B11,              // 下载器默认串口，如果需要使用，则需要屏蔽默认串口初始化
 
@@ -103,33 +102,33 @@ typedef enum
 
     // 以下为TIM3的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM3_PWM_MAP0_CH1_A6  = 0x20000 | A6,
-    TIM3_PWM_MAP0_CH2_A7  = 0x20100 | A7,
-    TIM3_PWM_MAP0_CH3_B0  = 0x20200 | B0,
-    TIM3_PWM_MAP0_CH4_B1  = 0x20300 | B1,
+    TIM3_PWM_MAP0_CH1_A6 = 0x20000 | A6,
+    TIM3_PWM_MAP0_CH2_A7 = 0x20100 | A7,
+    TIM3_PWM_MAP0_CH3_B0 = 0x20200 | B0,
+    TIM3_PWM_MAP0_CH4_B1 = 0x20300 | B1,
 
     // 以下为TIM3的PWM的一组映射引脚，不允许映射引脚混用。
     // 部分映射
-    TIM3_PWM_MAP2_CH1_B4  = 0x22000 | B4,
-    TIM3_PWM_MAP2_CH2_B5  = 0x22100 | B5,
-    TIM3_PWM_MAP2_CH3_B0  = 0x22200 | B0,
-    TIM3_PWM_MAP2_CH4_B1  = 0x22300 | B1,
+    TIM3_PWM_MAP2_CH1_B4 = 0x22000 | B4,
+    TIM3_PWM_MAP2_CH2_B5 = 0x22100 | B5,
+    TIM3_PWM_MAP2_CH3_B0 = 0x22200 | B0,
+    TIM3_PWM_MAP2_CH4_B1 = 0x22300 | B1,
 
     // 以下为TIM3的PWM的一组映射引脚，不允许映射引脚混用。
     // 完全映射
-    TIM3_PWM_MAP3_CH1_C6  = 0x23000 | C6,
-    TIM3_PWM_MAP3_CH2_C7  = 0x23100 | C7,
-    TIM3_PWM_MAP3_CH3_C8  = 0x23200 | C8,
-    TIM3_PWM_MAP3_CH4_C9  = 0x23300 | C9,
+    TIM3_PWM_MAP3_CH1_C6 = 0x23000 | C6,
+    TIM3_PWM_MAP3_CH2_C7 = 0x23100 | C7,
+    TIM3_PWM_MAP3_CH3_C8 = 0x23200 | C8,
+    TIM3_PWM_MAP3_CH4_C9 = 0x23300 | C9,
 
     //----------------定时器4----------------
 
     // 以下为TIM4的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM4_PWM_MAP0_CH1_B6  = 0x30000 | B6,
-    TIM4_PWM_MAP0_CH2_B7  = 0x30100 | B7,
-    TIM4_PWM_MAP0_CH3_B8  = 0x30200 | B8,
-    TIM4_PWM_MAP0_CH4_B9  = 0x30300 | B9,
+    TIM4_PWM_MAP0_CH1_B6 = 0x30000 | B6,
+    TIM4_PWM_MAP0_CH2_B7 = 0x30100 | B7,
+    TIM4_PWM_MAP0_CH3_B8 = 0x30200 | B8,
+    TIM4_PWM_MAP0_CH4_B9 = 0x30300 | B9,
 
     // 以下为TIM4的PWM的一组映射引脚，不允许映射引脚混用。
     //重映射
@@ -142,39 +141,39 @@ typedef enum
 
     // 以下为TIM5的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM5_PWM_MAP0_CH1_A0  = 0x40000 | A0,
-    TIM5_PWM_MAP0_CH2_A1  = 0x40100 | A1,
-    TIM5_PWM_MAP0_CH3_A2  = 0x40200 | A2,
-    TIM5_PWM_MAP0_CH4_A3  = 0x40300 | A3,
-						  
+    TIM5_PWM_MAP0_CH1_A0 = 0x40000 | A0,
+    TIM5_PWM_MAP0_CH2_A1 = 0x40100 | A1,
+    TIM5_PWM_MAP0_CH3_A2 = 0x40200 | A2,
+    TIM5_PWM_MAP0_CH4_A3 = 0x40300 | A3,
+
     //----------------定时器8----------------
 
     // 以下为TIM8的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM8_PWM_MAP0_CH1_C6  = 0x70000 | C6,
-    TIM8_PWM_MAP0_CH2_C7  = 0x70100 | C7,
-    TIM8_PWM_MAP0_CH3_C8  = 0x70200 | C8,
-    TIM8_PWM_MAP0_CH4_C9  = 0x70300 | C9,
+    TIM8_PWM_MAP0_CH1_C6 = 0x70000 | C6,
+    TIM8_PWM_MAP0_CH2_C7 = 0x70100 | C7,
+    TIM8_PWM_MAP0_CH3_C8 = 0x70200 | C8,
+    TIM8_PWM_MAP0_CH4_C9 = 0x70300 | C9,
 
     // 以下为TIM8的PWM的一组映射引脚，不允许映射引脚混用。
     //重映射
-    TIM8_PWM_MAP1_CH1_B6  = 0x71000 | B6 ,
-    TIM8_PWM_MAP1_CH2_B7  = 0x71100 | B7 ,
-    TIM8_PWM_MAP1_CH3_B8  = 0x71200 | B8 ,
+    TIM8_PWM_MAP1_CH1_B6 = 0x71000 | B6,
+    TIM8_PWM_MAP1_CH2_B7 = 0x71100 | B7,
+    TIM8_PWM_MAP1_CH3_B8 = 0x71200 | B8,
     TIM8_PWM_MAP1_CH4_C13 = 0x71300 | C13,
 
     //----------------定时器9----------------
 
     // 以下为TIM9的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM9_PWM_MAP0_CH1_A2  = 0x80000 | A2,
-    TIM9_PWM_MAP0_CH2_A3  = 0x80100 | A3,
-    TIM9_PWM_MAP0_CH3_A4  = 0x80200 | A4,
-    TIM9_PWM_MAP0_CH4_C4  = 0x80300 | C4,
+    TIM9_PWM_MAP0_CH1_A2 = 0x80000 | A2,
+    TIM9_PWM_MAP0_CH2_A3 = 0x80100 | A3,
+    TIM9_PWM_MAP0_CH3_A4 = 0x80200 | A4,
+    TIM9_PWM_MAP0_CH4_C4 = 0x80300 | C4,
 
     // 以下为TIM9的PWM的一组映射引脚，不允许映射引脚混用。
     // 完全映射
-    TIM9_PWM_MAP3_CH1_D9  = 0x83000 | D9 ,
+    TIM9_PWM_MAP3_CH1_D9 = 0x83000 | D9,
     TIM9_PWM_MAP3_CH2_D11 = 0x83100 | D11,
     TIM9_PWM_MAP3_CH3_D13 = 0x83200 | D13,
     TIM9_PWM_MAP3_CH4_D15 = 0x83300 | D15,
@@ -183,31 +182,33 @@ typedef enum
 
     // 以下为TIM10的PWM的一组映射引脚，不允许映射引脚混用。
     // 默认映射
-    TIM10_PWM_MAP0_CH1_B8 = 0x90000 | B8 ,
-    TIM10_PWM_MAP0_CH2_B9 = 0x90100 | B9 ,
-    TIM10_PWM_MAP0_CH3_C3 = 0x90200 | C3 ,
-    TIM10_PWM_MAP0_CH4_C11= 0x90300 | C11,
+    TIM10_PWM_MAP0_CH1_B8 = 0x90000 | B8,
+    TIM10_PWM_MAP0_CH2_B9 = 0x90100 | B9,
+    TIM10_PWM_MAP0_CH3_C3 = 0x90200 | C3,
+    TIM10_PWM_MAP0_CH4_C11 = 0x90300 | C11,
 
     // 以下为TIM10的PWM的一组映射引脚，不允许映射引脚混用。
     //部分映射
-    TIM10_PWM_MAP1_CH1_B3 = 0x91000 | B3 ,
-    TIM10_PWM_MAP1_CH2_B4 = 0x91100 | B4 ,
-    TIM10_PWM_MAP1_CH3_B5 = 0x91200 | B5 ,
-    TIM10_PWM_MAP1_CH4_C15= 0x91300 | C15,
-	
+    TIM10_PWM_MAP1_CH1_B3 = 0x91000 | B3,
+    TIM10_PWM_MAP1_CH2_B4 = 0x91100 | B4,
+    TIM10_PWM_MAP1_CH3_B5 = 0x91200 | B5,
+    TIM10_PWM_MAP1_CH4_C15 = 0x91300 | C15,
+
     // 以下为TIM10的PWM的一组映射引脚，不允许映射引脚混用。
-	//完全映射
+    //完全映射
     TIM10_PWM_MAP3_CH1_D1 = 0x93000 | D1,
     TIM10_PWM_MAP3_CH2_D3 = 0x93100 | D3,
     TIM10_PWM_MAP3_CH3_D5 = 0x93200 | D5,
     TIM10_PWM_MAP3_CH4_D7 = 0x93300 | D7,
 
-}pwm_channel_enum;
+} pwm_channel_enum;
 
 #define PWM_DUTY_MAX 10000
 
-void    pwm_set_duty    (pwm_channel_enum pin, uint32 duty);
-void    pwm_set_freq    (pwm_channel_enum pin, uint32 freq, uint32 duty);
-void    pwm_init        (pwm_channel_enum pin, uint32 freq, uint32 duty);
+void pwm_set_duty(pwm_channel_enum pin, uint32 duty);
+
+void pwm_set_freq(pwm_channel_enum pin, uint32 freq, uint32 duty);
+
+void pwm_init(pwm_channel_enum pin, uint32 freq, uint32 duty);
 
 #endif

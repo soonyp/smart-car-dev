@@ -37,7 +37,6 @@
 #include "zf_driver_usb_cdc.h"
 
 
-
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     USB_CDC发送一个 包
 // 参数说明     *p          要发送的数据指针
@@ -45,18 +44,16 @@
 // 返回参数     void
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void cdc_send_pack(const uint8 *p, uint32 length)
-{
+void cdc_send_pack(const uint8 *p, uint32 length) {
     uint32 i = 0;
 
-    for(i=0; i<length; i++)
-    {
-       pEP2_IN_DataBuf[i] = p[i];
+    for (i = 0; i < length; i++) {
+        pEP2_IN_DataBuf[i] = p[i];
     }
     DevEP2_IN_Deal(length);
 
     //等待发送完成
-    while(!(USBOTG_FS->UEP2_TX_CTRL&USBHD_UEP_T_RES1));
+    while (!(USBOTG_FS->UEP2_TX_CTRL & USBHD_UEP_T_RES1));
 
     // bUEP_T_RES1 & bUEP_T_RES0: handshake response type for USB endpoint X transmittal (IN)
     // 00: DATA0 or DATA1 then expecting ACK (ready)
@@ -73,21 +70,16 @@ void cdc_send_pack(const uint8 *p, uint32 length)
 // 返回参数     void
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void camera_send_image_usb_cdc(const uint8 *image, uint32 length)
-{
-    uint8 send_buffer[4] = {0x00,0xff,0x01,0x01};
+void camera_send_image_usb_cdc(const uint8 *image, uint32 length) {
+    uint8 send_buffer[4] = {0x00, 0xff, 0x01, 0x01};
     cdc_send_pack(send_buffer, 4);
 
-    while(length)
-    {
-        if(length >= 63)
-        {
+    while (length) {
+        if (length >= 63) {
             cdc_send_pack(image, 63);
             image += 63;
             length -= 63;
-        }
-        else
-        {
+        } else {
             cdc_send_pack(image, length);
             length = 0;
         }
@@ -101,8 +93,7 @@ void camera_send_image_usb_cdc(const uint8 *image, uint32 length)
 // 返回参数     void
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-void usb_cdc_init( void )
-{
+void usb_cdc_init(void) {
     // 端点缓冲区初始化
     pEP0_RAM_Addr = EP0_DatabufHD;
     pEP1_RAM_Addr = EP1_DatabufHD;

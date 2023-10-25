@@ -43,19 +43,19 @@
 #define BOARD_XTAL_FREQ         8000000                                         // 晶振频率 如果自己用的不是这个频率就修改这里 UM 定义范围为 4-24Mhz
 //#define XTAL_STARTUP_TIMEOUT    0x0800                                          // 晶振就绪等待超时时长
 
-typedef enum
-{
-    SYSTEM_CLOCK_XTAL       = BOARD_XTAL_FREQ,                                  // 使用晶振频率作为时钟频率
-    SYSTEM_CLOCK_24M        = 24000000,                                         // 24Mhz
-    SYSTEM_CLOCK_48M        = 48000000,                                         // 48Mhz
-    SYSTEM_CLOCK_72M        = 72000000,                                         // 72Mhz
-    SYSTEM_CLOCK_96M        = 96000000,                                         // 96Mhz
-    SYSTEM_CLOCK_120M       = 120000000,                                        // 120Mhz
-    SYSTEM_CLOCK_144M       = 144000000,                                        // 144Mhz
-}system_clock_enum;
+typedef enum {
+    SYSTEM_CLOCK_XTAL = BOARD_XTAL_FREQ,                                  // 使用晶振频率作为时钟频率
+    SYSTEM_CLOCK_24M = 24000000,                                         // 24Mhz
+    SYSTEM_CLOCK_48M = 48000000,                                         // 48Mhz
+    SYSTEM_CLOCK_72M = 72000000,                                         // 72Mhz
+    SYSTEM_CLOCK_96M = 96000000,                                         // 96Mhz
+    SYSTEM_CLOCK_120M = 120000000,                                        // 120Mhz
+    SYSTEM_CLOCK_144M = 144000000,                                        // 144Mhz
+} system_clock_enum;
 
 extern uint32 system_clock;                                                   // 全局变量 系统时钟信息
 void clock_reset(void);
-void clock_init (uint32 clock);                                               // 核心时钟初始化
+
+void clock_init(uint32 clock);                                               // 核心时钟初始化
 void clock_set_freq(uint32 clock);                                            // 设置系统频率
 #endif

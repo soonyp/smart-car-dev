@@ -23,8 +23,7 @@
  *
  * @return  none
  */
-void PWR_DeInit(void)
-{
+void PWR_DeInit(void) {
     RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
     RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, DISABLE);
 }
@@ -39,14 +38,10 @@ void PWR_DeInit(void)
  *
  * @return  none
  */
-void PWR_BackupAccessCmd(FunctionalState NewState)
-{
-    if(NewState)
-    {
+void PWR_BackupAccessCmd(FunctionalState NewState) {
+    if (NewState) {
         PWR->CTLR |= (1 << 8);
-    }
-    else
-    {
+    } else {
         PWR->CTLR &= ~(1 << 8);
     }
 }
@@ -60,14 +55,10 @@ void PWR_BackupAccessCmd(FunctionalState NewState)
  *
  * @return  none
  */
-void PWR_PVDCmd(FunctionalState NewState)
-{
-    if(NewState)
-    {
+void PWR_PVDCmd(FunctionalState NewState) {
+    if (NewState) {
         PWR->CTLR |= (1 << 4);
-    }
-    else
-    {
+    } else {
         PWR->CTLR &= ~(1 << 4);
     }
 }
@@ -90,8 +81,7 @@ void PWR_PVDCmd(FunctionalState NewState)
  *
  * @return  none
  */
-void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
-{
+void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
     tmpreg &= CTLR_PLS_MASK;
@@ -109,14 +99,10 @@ void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
  *
  * @return  none
  */
-void PWR_WakeUpPinCmd(FunctionalState NewState)
-{
-    if(NewState)
-    {
+void PWR_WakeUpPinCmd(FunctionalState NewState) {
+    if (NewState) {
         PWR->CSR |= (1 << 8);
-    }
-    else
-    {
+    } else {
         PWR->CSR &= ~(1 << 8);
     }
 }
@@ -135,8 +121,7 @@ void PWR_WakeUpPinCmd(FunctionalState NewState)
  *
  * @return  none
  */
-void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
-{
+void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
     tmpreg &= CTLR_DS_MASK;
@@ -145,12 +130,9 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
 
     NVIC->SCTLR |= (1 << 2);
 
-    if(PWR_STOPEntry == PWR_STOPEntry_WFI)
-    {
+    if (PWR_STOPEntry == PWR_STOPEntry_WFI) {
         __WFI();
-    }
-    else
-    {
+    } else {
         __WFE();
     }
 
@@ -164,8 +146,7 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
  *
  * @return  none
  */
-void PWR_EnterSTANDBYMode(void)
-{
+void PWR_EnterSTANDBYMode(void) {
     PWR->CTLR |= PWR_CTLR_CWUF;
     PWR->CTLR |= PWR_CTLR_PDDS;
     NVIC->SCTLR |= (1 << 2);
@@ -185,16 +166,12 @@ void PWR_EnterSTANDBYMode(void)
  *
  * @return  none
  */
-FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
-{
+FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG) {
     FlagStatus bitstatus = RESET;
 
-    if((PWR->CSR & PWR_FLAG) != (uint32_t)RESET)
-    {
+    if ((PWR->CSR & PWR_FLAG) != (uint32_t) RESET) {
         bitstatus = SET;
-    }
-    else
-    {
+    } else {
         bitstatus = RESET;
     }
     return bitstatus;
@@ -211,8 +188,7 @@ FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
  *
  * @return  none
  */
-void PWR_ClearFlag(uint32_t PWR_FLAG)
-{
+void PWR_ClearFlag(uint32_t PWR_FLAG) {
     PWR->CTLR |= PWR_FLAG << 2;
 }
 
@@ -223,8 +199,7 @@ void PWR_ClearFlag(uint32_t PWR_FLAG)
  *
  * @return  none
  */
-void PWR_EnterSTANDBYMode_RAM(void)
-{
+void PWR_EnterSTANDBYMode_RAM(void) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
 
@@ -248,8 +223,7 @@ void PWR_EnterSTANDBYMode_RAM(void)
  *
  * @return  none
  */
-void PWR_EnterSTANDBYMode_RAM_LV(void)
-{
+void PWR_EnterSTANDBYMode_RAM_LV(void) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
 
@@ -275,8 +249,7 @@ void PWR_EnterSTANDBYMode_RAM_LV(void)
  *
  * @return  none
  */
-void PWR_EnterSTANDBYMode_RAM_VBAT_EN(void)
-{
+void PWR_EnterSTANDBYMode_RAM_VBAT_EN(void) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
 
@@ -300,8 +273,7 @@ void PWR_EnterSTANDBYMode_RAM_VBAT_EN(void)
  *
  * @return  none
  */
-void PWR_EnterSTANDBYMode_RAM_LV_VBAT_EN(void)
-{
+void PWR_EnterSTANDBYMode_RAM_LV_VBAT_EN(void) {
     uint32_t tmpreg = 0;
     tmpreg = PWR->CTLR;
 
