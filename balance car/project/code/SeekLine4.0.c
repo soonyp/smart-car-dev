@@ -275,7 +275,7 @@ void cheku_Detect(void) {
         black_blocks = 0;
         cnt = 0;
         for (int j = 5; j < 55; j++) {
-            if (BinaryImg_CDM[i][j] == 0) {
+            if (binary_img_CDM[i][j] == 0) {
                 cnt++;
             } else {
                 if (cnt >= 2 && cnt <= 10) {

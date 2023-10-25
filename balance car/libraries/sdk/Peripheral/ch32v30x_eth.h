@@ -145,7 +145,7 @@ typedef struct {
     uint32_t ETH_TransmitStoreForward;        /* Enables or disables Transmit store and forward mode
                                                              This parameter can be a value of @ref ETH_Transmit_Store_Forward */
 
-    uint32_t ETH_TransmitThresholdControl;    /* Selects or not the Transmit Threshold Control
+    uint32_t ETH_TransmitThresholdControl;    /* Selects or not the Transmit threshold Control
                                                              This parameter can be a value of @ref ETH_Transmit_Threshold_Control */
 
     uint32_t ETH_ForwardErrorFrames;          /* Selects or not the forward to the DMA of erroneous frames

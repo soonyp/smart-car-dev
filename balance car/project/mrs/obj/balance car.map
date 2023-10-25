@@ -4435,16 +4435,16 @@ END GROUP
                 0x000000000000a824                ServoPidSetAngle
  .text.JumpInit
                 0x000000000000a86a       0xba ./code/cam_preprocess.o
-                0x000000000000a86a                JumpInit
+                0x000000000000a86a                sample_point_init
  .text.ImageCompression
                 0x000000000000a924       0xaa ./code/cam_preprocess.o
-                0x000000000000a924                ImageCompression
+                0x000000000000a924                img_compression
  .text.Automatic_Threshold
                 0x000000000000a9ce      0x208 ./code/cam_preprocess.o
-                0x000000000000a9ce                Automatic_Threshold
+                0x000000000000a9ce                automatic_threshold
  .text.GetBinarizedImage
                 0x000000000000abd6       0xc0 ./code/cam_preprocess.o
-                0x000000000000abd6                GetBinarizedImage
+                0x000000000000abd6                get_binarized_image
  .text.FillRunVectors
                 0x000000000000ac96      0x2ba ./code/cam_preprocess.o
  .text.LabeledConDomain
@@ -4455,10 +4455,10 @@ END GROUP
                 0x000000000000b3c2       0xec ./code/cam_preprocess.o
  .text.Connected_Domain
                 0x000000000000b4ae      0x188 ./code/cam_preprocess.o
-                0x000000000000b4ae                Connected_Domain
+                0x000000000000b4ae                connected_domain
  .text.CDM_Segment
                 0x000000000000b636       0xc4 ./code/cam_preprocess.o
-                0x000000000000b636                CDM_Segment
+                0x000000000000b636                cdm_segment
  .text.ImgPreprocess
                 0x000000000000b6fa       0x82 ./code/cam_preprocess.o
                 0x000000000000b6fa                ImgPreprocess
@@ -4983,8 +4983,8 @@ END GROUP
                 0x00000000200000b0       0x43 ./sdk/Peripheral/ch32v30x_usbotg_device.o
                 0x00000000200000b0                TAB_USB_FS_OSC_DESC
  *fill*         0x00000000200000f3        0x1 
- .data.ImgConf  0x00000000200000f4       0x10 ./code/cam_preprocess.o
-                0x00000000200000f4                ImgConf
+ .data.img_conf  0x00000000200000f4       0x10 ./code/cam_preprocess.o
+                0x00000000200000f4                img_conf
  .data.impure_data
                 0x0000000020000104       0x60 d:/mounriver/mounriver_studio/toolchain/risc-v embedded gcc/bin/../lib/gcc/riscv-none-embed/8.2.0/../../../../riscv-none-embed/lib/rv32imafc/ilp32f\libg_nano.a(lib_a-impure.o)
  .data.__global_locale
@@ -5223,20 +5223,20 @@ END GROUP
                 0x0000000020006be0                Line_L
  .bss.Line_Mid  0x0000000020006c1c       0x3c ./code/SeekLine4.0.o
                 0x0000000020006c1c                Line_Mid
- .bss.CmpressedImg
+ .bss.compressed_img
                 0x0000000020006c58      0xe10 ./code/cam_preprocess.o
-                0x0000000020006c58                CmpressedImg
- .bss.BinaryImg
+                0x0000000020006c58                compressed_img
+ .bss.binary_img
                 0x0000000020007a68      0xe10 ./code/cam_preprocess.o
-                0x0000000020007a68                BinaryImg
- .bss.BinaryImg_CDM
+                0x0000000020007a68                binary_img
+ .bss.binary_img_CDM
                 0x0000000020008878      0xe10 ./code/cam_preprocess.o
-                0x0000000020008878                BinaryImg_CDM
- .bss.JumpRow   0x0000000020009688       0x3c ./code/cam_preprocess.o
-                0x0000000020009688                JumpRow
- .bss.JumpColumn
+                0x0000000020008878                binary_img_CDM
+ .bss.sample_point_row   0x0000000020009688       0x3c ./code/cam_preprocess.o
+                0x0000000020009688                sample_point_row
+ .bss.sample_point_column
                 0x00000000200096c4       0x3c ./code/cam_preprocess.o
-                0x00000000200096c4                JumpColumn
+                0x00000000200096c4                sample_point_column
  .bss.cdm       0x0000000020009700      0xbfa ./code/cam_preprocess.o
                 0x0000000020009700                cdm
  *fill*         0x000000002000a2fa        0x2 

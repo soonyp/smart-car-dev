@@ -7,13 +7,13 @@
 #include "cam_preprocess.h"
 
 //二值化宏定义
-#define CAM_POINT_GRAY(x, y)             (CmpressedImg[y][x])   //获取灰度值
-#define CAM_POINT_BINARY_SET(x, y)       (BinaryImg[y][x] = 1)  //二值化变白点
-#define CAM_POINT_BINARY_RESET(x, y)     (BinaryImg[y][x] = 0)     //二值化变黑点
+#define CAM_POINT_GRAY(x, y)             (compressed_img[y][x])     //获取灰度值
+#define CAM_POINT_BINARY_SET(x, y)       (binary_img[y][x] = 1)     //二值化变白点
+#define CAM_POINT_BINARY_RESET(x, y)     (binary_img[y][x] = 0)     //二值化变黑点
 
 //连通域输入图像宏定义
-#define CDM_POINT_WHITE(x, y)            (BinaryImg[y][x] == 1)
-#define CDM_POINT_BLACK(x, y)            (BinaryImg[y][x] == 0)
+#define CDM_POINT_WHITE(x, y)            (binary_img[y][x] == 1)
+#define CDM_POINT_BLACK(x, y)            (binary_img[y][x] == 0)
 
 
 #define CDM_offset  (0) //用于控制连通区域的最小连接点数(当连通区域在上一行边界时)，取 offset2 > 0
@@ -21,48 +21,46 @@
 
 
 //图像参数配置结构体变量
-Img_Config ImgConf =
+Img_Config img_conf =
         {
-                .Threshold = 0,
-                .minThres = 55,
-                .maxThres = 180,
+                .threshold = 0,
+                .min_thres = 55,
+                .max_thres = 180,
                 .white_threshold = 0.45f,
         };
 
 
 //图像数据定义
-uint8 CmpressedImg[IMG_ROW][IMG_COL];            //压缩图像
-uint8 BinaryImg[IMG_ROW][IMG_COL];                        //原始二值化图像
-uint8 BinaryImg_CDM[IMG_ROW][IMG_COL];                //连通域后输出的二值化图像
-uint8 JumpRow[IMG_ROW], JumpColumn[IMG_COL];        //采样点信息
+uint8 compressed_img[IMG_ROW][IMG_COL];                                         //压缩图像
+uint8 binary_img[IMG_ROW][IMG_COL];                                             //原始二值化图像
+uint8 binary_img_CDM[IMG_ROW][IMG_COL];                                         //连通域后输出的二值化图像
+uint8 sample_point_row[IMG_ROW], sample_point_column[IMG_COL];                  //采样点信息
 
 
 ConDomainNode cdm;  //连通域结构体变量
 
 //采样点初始化
-void JumpInit(void) {
-    float jump_column = 0;
-    float jump_row = 0;
-    uint8_t count = 0;
+void sample_point_init(void) {
+    uint8_t count;
 
-    jump_column = (float) MT9V03X_W / (float) IMG_COL;
-    jump_row = (float) MT9V03X_H / (float) IMG_ROW;
+    float jump_column = (float) MT9V03X_W / (float) IMG_COL;
+    float jump_row = (float) MT9V03X_H / (float) IMG_ROW;
 
     for (count = 0; count < IMG_COL; ++count) {
-        JumpColumn[count] = (int) (jump_column * count);
+        sample_point_column[count] = (int) (jump_column * count);
     }
     for (count = 0; count < IMG_ROW; ++count) {
-        JumpRow[count] = (int) (jump_row * count);
+        sample_point_row[count] = (int) (jump_row * count);
     }
 }
 
 //图像压缩
-void ImageCompression() {
-    uint8_t row, column = 0;
+void img_compression() {
+    uint8_t row, column;
 
     for (row = 0; row < IMG_ROW; ++row) {
         for (column = 0; column < IMG_COL; ++column) {
-            CmpressedImg[row][column] = mt9v03x_image[JumpRow[row]][JumpColumn[column]];
+            compressed_img[row][column] = mt9v03x_image[sample_point_row[row]][sample_point_column[column]];
         }
     }
 }
@@ -80,7 +78,7 @@ void ImageCompression() {
  *               top                输出的最大阈值
  * @return: 	阈值
  */
-uint8_t Automatic_Threshold(const uint8_t thres, const uint8_t deltThres, const int16_t low, const int16_t top) {
+uint8_t automatic_threshold(const uint8_t thres, const uint8_t deltThres, const int16_t low, const int16_t top) {
     uint8_t lastThres;                  // 阈值
     uint8_t newThres = thres;           // 更新后的阈值
     uint32_t countValue_LessThres;       // 保存灰度小于阈值的点的总灰度
@@ -136,15 +134,15 @@ uint8_t Automatic_Threshold(const uint8_t thres, const uint8_t deltThres, const 
             lastaverageValue_MoreThreshold = averageValue_MoreThres;
         }
 
-        newThres = (uint8_t) ((averageValue_LessThres * ImgConf.white_threshold +
-                               averageValue_MoreThres * (1.0f - ImgConf.white_threshold)));
+        newThres = (uint8_t) ((averageValue_LessThres * img_conf.white_threshold +
+                               averageValue_MoreThres * (1.0f - img_conf.white_threshold)));
     } while (_abs(newThres - lastThres) > deltThres);
 
     return _limit(newThres, low, top);
 }
 
 static uint8
-Automatic_Threshold_new(uint8 *ImageCmprsData, uint8 row, uint8 column, uint8 *threshold, uint8 deltThreshold) {
+Automatic_Threshold_new(uint8 *ImageCmprsData, uint8 row, uint8 column, uint8 *threshold, uint8 deltaThreshold) {
     uint8 lastThreshold;                  // 阈值
     uint8 newThreshold = *threshold;      // 更新后的阈值
     uint32 countValue_LessThreshold;       // 保存灰度小于阈值的点的总灰度
@@ -191,16 +189,16 @@ Automatic_Threshold_new(uint8 *ImageCmprsData, uint8 row, uint8 column, uint8 *t
             lastaverageValue_MoreThreshold = averageValue_MoreThreshold;
         }
 
-        newThreshold = (int) (averageValue_LessThreshold * ImgConf.white_threshold +
-                              averageValue_MoreThreshold * (1.0f - ImgConf.white_threshold));
-    } while (_abs(newThreshold - lastThreshold) > deltThreshold);//设置迭代条件
+        newThreshold = (int) (averageValue_LessThreshold * img_conf.white_threshold +
+                              averageValue_MoreThreshold * (1.0f - img_conf.white_threshold));
+    } while (_abs(newThreshold - lastThreshold) > deltaThreshold);//设置迭代条件
     //while(0);//此处仅对每帧图像进行一次迭代
 
-    return *threshold = _limit(newThreshold, ImgConf.minThres, ImgConf.maxThres);
+    return *threshold = _limit(newThreshold, img_conf.min_thres, img_conf.max_thres);
 }
 
 //图像二值化函数
-void GetBinarizedImage(uint8_t Threshold) {
+void get_binarized_image(uint8_t Threshold) {
     int16_t r, c;
 
     for (r = 0; r < IMG_ROW; ++r) {
@@ -389,7 +387,7 @@ static void addEquival_prev(ConDomainNode *cdm, int16_t begin, int16_t cur) {
  *      		memset(cdm->equival, 0, sizeof(int16_t) * MAX_AREA); 初始化顺序上移   ？？？
  *      		修改 cdm->equival[mainRun] = 1 改为 cdm->equival[0] = mainRun
  */
-void Connected_Domain(ConDomainNode *cdm, int16_t find_back) {
+void connected_domain(ConDomainNode *cdm, int16_t find_back) {
     int16_t mainRun = 0; // 主要区域
 
     memset(CDM_TEMP_BINARY, 0, sizeof(char) * IMG_ROW * IMG_COL);
@@ -430,7 +428,7 @@ void Connected_Domain(ConDomainNode *cdm, int16_t find_back) {
  * @param		{ConDomainNode *} cdm   保存连通域算法信息的结构体对象指针
  *          {ELEMENT_SIGN} 		ele   元素类型
  */
-void CDM_Segment(ConDomainNode *cdm) {
+void cdm_segment(ConDomainNode *cdm) {
     for (int16_t i = 0; i <= cdm->lastSign_equival; ++i) {
         if (cdm->equival[i]) {
             // 图像分割二值化
@@ -595,11 +593,11 @@ int16 CDM_MainStreet_Point(ConDomainNode *cdm, MainStreetType mst, _POINT_ *poin
 
 //图像预处理(整合函数)
 void ImgPreprocess(void) {
-    ImageCompression();    //图像压缩
-    ImgConf.Threshold = Automatic_Threshold(ImgConf.Threshold, 1, ImgConf.minThres, ImgConf.maxThres);//获取阈值
-    GetBinarizedImage(ImgConf.Threshold);        //图像二值化
-    Connected_Domain(&cdm, 1);        //连通域算法
-    CDM_Segment(&cdm);        //主道分割
+    img_compression();    //图像压缩
+    img_conf.threshold = automatic_threshold(img_conf.threshold, 1, img_conf.min_thres, img_conf.max_thres);//获取阈值
+    get_binarized_image(img_conf.threshold);        //图像二值化
+    connected_domain(&cdm, 1);        //连通域算法
+    cdm_segment(&cdm);        //主道分割
 
 }
 
