@@ -92,6 +92,19 @@ int main(void) {
         Line right_line = find_right_line(image, find_right_start_point(image));
         Line mid_line = track_left_line(left_line, left_line.length, 45);
 
+        uint8 line_image[60][60] = {0};
+        for (int i = 0; i < left_line.length; i++) {
+            line_image[left_line.points[i].row][left_line.points[i].column] = 1;
+        }
+
+        for (int i = 0; i < mid_line.length; i++) {
+            line_image[mid_line.points[i].row][mid_line.points[i].column] = 2;
+        }
+
+        for (int i = 0; i < right_line.length; i++) {
+            line_image[right_line.points[i].row][right_line.points[i].column] = 3;
+        }
+
 //        MidLine_Cal(image);
         Strait_Detect();
         Cross_Detect();
@@ -125,7 +138,7 @@ int main(void) {
 //                }
 //            }
 //        }
-        tft180_show_gray_image(0, 60, &image[0][0], IMG_COL, IMG_ROW, 60, 60, 5);
+        tft180_show_gray_image(0, 60, &line_image[0][0], IMG_COL, IMG_ROW, 60, 60, 5);
 //        tft180_show_int(60, 0, StraitFlag, 4);
 //        tft180_show_int(90, 0, vari, 4);
 //        tft180_show_int(60, 20, top, 2);
