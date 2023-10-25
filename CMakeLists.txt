@@ -185,4 +185,5 @@ add_executable(smart_car_dev
         "balance car/project/code/Servo.h"
         "balance car/project/user/inc/isr.h"
         "balance car/project/user/src/isr.c"
-        "balance car/project/user/src/main.c")
+        "balance car/project/user/src/main.c"
+        "balance car/project/code/detect_line.c")

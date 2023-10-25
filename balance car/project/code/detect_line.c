@@ -244,8 +244,8 @@ Line track_right_line(Line right_line, int approx_num, float dist) {
     static Line line = {points, 0};
 
     for (int i = 0; i < right_line.length; i++) {
-        float dx = right_line.points[(i + approx_num, 0, right_line.length - 1)][0] - right_line.points[clip(i - approx_num, 0, right_line.length - 1)].row;
-        float dy = right_line.points[clip(i + approx_num, 0, right_line.length - 1)][1] - right_line.points[clip(i - approx_num, 0, right_line.length - 1)].column;
+        float dx = right_line.points[(i + approx_num, 0, right_line.length - 1)].row - right_line.points[clip(i - approx_num, 0, right_line.length - 1)].row;
+        float dy = right_line.points[clip(i + approx_num, 0, right_line.length - 1)].column - right_line.points[clip(i - approx_num, 0, right_line.length - 1)].column;
         float dn = sqrtf(dx * dx + dy * dy);
         dx /= dn;
         dy /= dn;
