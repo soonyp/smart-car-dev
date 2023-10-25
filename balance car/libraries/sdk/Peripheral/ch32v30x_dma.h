@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* DMA Init structure definition */
+/* DMA init structure definition */
 typedef struct {
     uint32_t DMA_PeripheralBaseAddr; /* Specifies the peripheral base address for DMAy Channelx. */
 

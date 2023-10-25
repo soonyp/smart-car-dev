@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* SDIO Init structure definition */
+/* SDIO init structure definition */
 typedef struct {
     uint32_t SDIO_ClockEdge;            /* Specifies the clock transition on which the bit capture is made.
                                          This parameter can be a value of @ref SDIO_Clock_Edge */

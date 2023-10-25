@@ -18,7 +18,7 @@ extern "C" {
 #include "ch32v30x.h"
 
 
-/* USART Init Structure definition */
+/* USART init Structure definition */
 typedef struct {
     uint32_t USART_BaudRate;            /* This member configures the USART communication baud rate.
                                          The baud rate is computed using the following formula:
@@ -46,7 +46,7 @@ typedef struct {
                                          This parameter can be a value of @ref USART_Hardware_Flow_Control */
 } USART_InitTypeDef;
 
-/* USART Clock Init Structure definition */
+/* USART Clock init Structure definition */
 typedef struct {
 
     uint16_t USART_Clock;   /* Specifies whether the USART clock is enabled or disabled.

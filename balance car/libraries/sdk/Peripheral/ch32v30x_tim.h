@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* TIM Time Base Init structure definition */
+/* TIM Time Base init structure definition */
 typedef struct {
     uint16_t TIM_Prescaler;         /* Specifies the prescaler value used to divide the TIM clock.
                                      This parameter can be a number between 0x0000 and 0xFFFF */
@@ -42,7 +42,7 @@ typedef struct {
                                      @note This parameter is valid only for TIM1 and TIM8. */
 } TIM_TimeBaseInitTypeDef;
 
-/* TIM Output Compare Init structure definition */
+/* TIM Output Compare init structure definition */
 typedef struct {
     uint16_t TIM_OCMode;        /* Specifies the TIM mode.
                                  This parameter can be a value of @ref TIM_Output_Compare_and_PWM_modes */
@@ -73,7 +73,7 @@ typedef struct {
                                  @note This parameter is valid only for TIM1 and TIM8. */
 } TIM_OCInitTypeDef;
 
-/* TIM Input Capture Init structure definition */
+/* TIM Input Capture init structure definition */
 typedef struct {
     uint16_t TIM_Channel;      /* Specifies the TIM channel.
                                 This parameter can be a value of @ref TIM_Channel */

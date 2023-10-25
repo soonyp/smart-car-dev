@@ -11,7 +11,7 @@
 #include "zf_common_headfile.h"
 #include "Ourcode_headfile.h"
 
-void Servo_Init(void);
+void servo_init(void);
 
 void Servo_Set(float duty);
 

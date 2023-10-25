@@ -8,7 +8,7 @@
 
 //int swap;
 
-void Motor_Init(void) {
+void motor_init(void) {
 
     gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
     gpio_init(D15, GPO, 0, GPIO_PIN_CONFIG);

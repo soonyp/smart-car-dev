@@ -36,7 +36,7 @@ typedef enum {
     GPIO_Mode_AF_PP = 0x18
 } GPIOMode_TypeDef;
 
-/* GPIO Init structure definition */
+/* GPIO init structure definition */
 typedef struct {
     uint16_t GPIO_Pin;             /* Specifies the GPIO pins to be configured.
                                     This parameter can be any value of @ref GPIO_pins_define */

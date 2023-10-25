@@ -8,7 +8,7 @@
 
 float error, g_PID_Out;
 
-void Servo_Init(void) {
+void servo_init(void) {
     pwm_init(TIM2_PWM_MAP1_CH1_A15, 50, 750);
 }
 

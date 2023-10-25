@@ -30,7 +30,7 @@ typedef enum {
     EXTI_Trigger_Rising_Falling = 0x10
 } EXTITrigger_TypeDef;
 
-/* EXTI Init Structure definition */
+/* EXTI init Structure definition */
 typedef struct {
     uint32_t EXTI_Line;               /* Specifies the EXTI lines to be enabled or disabled.
                                        This parameter can be any combination of @ref EXTI_Lines */

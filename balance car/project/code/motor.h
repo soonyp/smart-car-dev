@@ -11,7 +11,7 @@
 #include "zf_common_headfile.h"
 #include "Ourcode_headfile.h"
 
-void Motor_Init(void);
+void motor_init(void);
 
 void Motor_Set(int motorL, int motorR);
 

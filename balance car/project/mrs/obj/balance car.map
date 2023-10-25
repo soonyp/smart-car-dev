@@ -4193,7 +4193,7 @@ END GROUP
                 0x0000000000006b04        0x8 ./user_c/isr.o
                 0x0000000000006b04                HardFault_Handler
  .text.Init     0x0000000000006b0c       0x24 ./user_c/main.o
-                0x0000000000006b0c                Init
+                0x0000000000006b0c                init
  .text.main     0x0000000000006b30      0x298 ./user_c/main.o
                 0x0000000000006b30                main
  .text.vector_handler
@@ -4426,7 +4426,7 @@ END GROUP
                 0x000000000000a628                cal_error
  .text.Servo_Init
                 0x000000000000a798       0x24 ./code/Servo.o
-                0x000000000000a798                Servo_Init
+                0x000000000000a798                servo_init
  .text.Servo_Set
                 0x000000000000a7bc       0x68 ./code/Servo.o
                 0x000000000000a7bc                Servo_Set
@@ -4461,10 +4461,10 @@ END GROUP
                 0x000000000000b636                cdm_segment
  .text.ImgPreprocess
                 0x000000000000b6fa       0x82 ./code/cam_preprocess.o
-                0x000000000000b6fa                ImgPreprocess
+                0x000000000000b6fa                img_preprocess
  .text.Motor_Init
                 0x000000000000b77c       0x5a ./code/motor.o
-                0x000000000000b77c                Motor_Init
+                0x000000000000b77c                motor_init
  .text.Motor_Set
                 0x000000000000b7d6      0x172 ./code/motor.o
                 0x000000000000b7d6                Motor_Set

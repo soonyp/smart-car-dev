@@ -18,7 +18,7 @@ extern "C" {
 #include "ch32v30x.h"
 
 
-/* ADC Init structure definition */
+/* ADC init structure definition */
 typedef struct {
     uint32_t ADC_Mode;                      /* Configures the ADC to operate in independent or
                                              dual mode. 

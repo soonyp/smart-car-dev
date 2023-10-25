@@ -48,7 +48,7 @@ typedef enum {
     OUT_IO
 } OPA_Mode_TypeDef;
 
-/* OPA Init Structure definition */
+/* OPA init Structure definition */
 typedef struct {
     OPA_Num_TypeDef OPA_NUM;      /* Specifies the members of OPA */
     OPA_PSEL_TypeDef PSEL;         /* Specifies the positive channel of OPA */

@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* SPI Init structure definition */
+/* SPI init structure definition */
 typedef struct {
     uint16_t SPI_Direction;           /* Specifies the SPI unidirectional or bidirectional data mode.
                                        This parameter can be a value of @ref SPI_data_direction */
@@ -50,7 +50,7 @@ typedef struct {
     uint16_t SPI_CRCPolynomial;       /* Specifies the polynomial used for the CRC calculation. */
 } SPI_InitTypeDef;
 
-/* I2S Init structure definition */
+/* I2S init structure definition */
 typedef struct {
 
     uint16_t I2S_Mode;         /* Specifies the I2S operating mode.

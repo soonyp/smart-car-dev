@@ -4231,7 +4231,7 @@ END GROUP
                 0x0000000000006a1e        0x8 ./user_c/isr.o
                 0x0000000000006a1e                HardFault_Handler
  .text.Init     0x0000000000006a26       0x24 ./user_c/main.o
-                0x0000000000006a26                Init
+                0x0000000000006a26                init
  .text.main     0x0000000000006a4a      0x2ca ./user_c/main.o
                 0x0000000000006a4a                main
  .text.vector_handler
@@ -4463,10 +4463,10 @@ END GROUP
                 0x000000000000a6d2                cdm_segment
  .text.ImgPreprocess
                 0x000000000000a796       0x82 ./code/cam_preprocess.o
-                0x000000000000a796                ImgPreprocess
+                0x000000000000a796                img_preprocess
  .text.Motor_Init
                 0x000000000000a818       0x5a ./code/motor.o
-                0x000000000000a818                Motor_Init
+                0x000000000000a818                motor_init
  .text.Motor_Set
                 0x000000000000a872      0x16a ./code/motor.o
                 0x000000000000a872                Motor_Set

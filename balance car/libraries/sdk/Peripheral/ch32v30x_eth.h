@@ -24,7 +24,7 @@ extern "C" {
 #define DMA_TPS_Mask      ((uint32_t)0x00700000)
 #define DMA_RPS_Mask      ((uint32_t)0x000E0000)
 
-/* ETH Init structure definition */
+/* ETH init structure definition */
 typedef struct {
     uint32_t ETH_AutoNegotiation;             /* Selects or not the AutoNegotiation mode for the external PHY
                                                              The AutoNegotiation allows an automatic setting of the Speed (10/100Mbps)

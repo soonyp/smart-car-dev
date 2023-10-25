@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* DAC Init structure definition */
+/* DAC init structure definition */
 typedef struct {
     uint32_t DAC_Trigger;                      /* Specifies the external trigger for the selected DAC channel.
                                                 This parameter can be a value of @ref DAC_trigger_selection */

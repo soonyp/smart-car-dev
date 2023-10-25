@@ -592,7 +592,7 @@ int16 CDM_MainStreet_Point(ConDomainNode *cdm, MainStreetType mst, _POINT_ *poin
 }
 
 //图像预处理(整合函数)
-void ImgPreprocess(void) {
+void img_preprocess(void) {
     img_compression();    //图像压缩
     img_conf.threshold = automatic_threshold(img_conf.threshold, 1, img_conf.min_thres, img_conf.max_thres);//获取阈值
     get_binarized_image(img_conf.threshold);        //图像二值化

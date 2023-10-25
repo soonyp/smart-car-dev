@@ -244,9 +244,9 @@ void MidLine_Cal(uint8 View[][Y]) {
 
 
 void Strait_Detect(void) {
-    int i = 0;
+    int i;
     int sum1 = 0, sum2 = 0;
-    float aver = 0, vari = 0;
+    float aver, vari;
 
     for (i = 40; i > top; i--) {
         sum1 += Line_Mid[i];

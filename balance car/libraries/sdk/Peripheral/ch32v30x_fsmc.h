@@ -19,7 +19,7 @@ extern "C" {
 #include "ch32v30x.h"
 
 
-/* FSMC Init structure definition */
+/* FSMC init structure definition */
 typedef struct {
     uint32_t FSMC_AddressSetupTime;       /* Defines the number of HCLK cycles to configure
                                            the duration of the address setup time.

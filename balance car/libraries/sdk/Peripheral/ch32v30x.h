@@ -1996,24 +1996,24 @@ typedef struct {
 #define  CAN_RXMDH1R_DATA7                   ((uint32_t)0xFF000000)        /* Data byte 7 */
 
 /*******************  Bit definition for CAN_FCTLR register  ********************/
-#define  CAN_FCTLR_FINIT                     ((uint8_t)0x01)               /* Filter Init Mode */
+#define  CAN_FCTLR_FINIT                     ((uint8_t)0x01)               /* Filter init Mode */
 
 /*******************  Bit definition for CAN_FMCFGR register  *******************/
 #define  CAN_FMCFGR_FBM                      ((uint16_t)0x3FFF)            /* Filter Mode */
-#define  CAN_FMCFGR_FBM0                     ((uint16_t)0x0001)            /* Filter Init Mode bit 0 */
-#define  CAN_FMCFGR_FBM1                     ((uint16_t)0x0002)            /* Filter Init Mode bit 1 */
-#define  CAN_FMCFGR_FBM2                     ((uint16_t)0x0004)            /* Filter Init Mode bit 2 */
-#define  CAN_FMCFGR_FBM3                     ((uint16_t)0x0008)            /* Filter Init Mode bit 3 */
-#define  CAN_FMCFGR_FBM4                     ((uint16_t)0x0010)            /* Filter Init Mode bit 4 */
-#define  CAN_FMCFGR_FBM5                     ((uint16_t)0x0020)            /* Filter Init Mode bit 5 */
-#define  CAN_FMCFGR_FBM6                     ((uint16_t)0x0040)            /* Filter Init Mode bit 6 */
-#define  CAN_FMCFGR_FBM7                     ((uint16_t)0x0080)            /* Filter Init Mode bit 7 */
-#define  CAN_FMCFGR_FBM8                     ((uint16_t)0x0100)            /* Filter Init Mode bit 8 */
-#define  CAN_FMCFGR_FBM9                     ((uint16_t)0x0200)            /* Filter Init Mode bit 9 */
-#define  CAN_FMCFGR_FBM10                    ((uint16_t)0x0400)            /* Filter Init Mode bit 10 */
-#define  CAN_FMCFGR_FBM11                    ((uint16_t)0x0800)            /* Filter Init Mode bit 11 */
-#define  CAN_FMCFGR_FBM12                    ((uint16_t)0x1000)            /* Filter Init Mode bit 12 */
-#define  CAN_FMCFGR_FBM13                    ((uint16_t)0x2000)            /* Filter Init Mode bit 13 */
+#define  CAN_FMCFGR_FBM0                     ((uint16_t)0x0001)            /* Filter init Mode bit 0 */
+#define  CAN_FMCFGR_FBM1                     ((uint16_t)0x0002)            /* Filter init Mode bit 1 */
+#define  CAN_FMCFGR_FBM2                     ((uint16_t)0x0004)            /* Filter init Mode bit 2 */
+#define  CAN_FMCFGR_FBM3                     ((uint16_t)0x0008)            /* Filter init Mode bit 3 */
+#define  CAN_FMCFGR_FBM4                     ((uint16_t)0x0010)            /* Filter init Mode bit 4 */
+#define  CAN_FMCFGR_FBM5                     ((uint16_t)0x0020)            /* Filter init Mode bit 5 */
+#define  CAN_FMCFGR_FBM6                     ((uint16_t)0x0040)            /* Filter init Mode bit 6 */
+#define  CAN_FMCFGR_FBM7                     ((uint16_t)0x0080)            /* Filter init Mode bit 7 */
+#define  CAN_FMCFGR_FBM8                     ((uint16_t)0x0100)            /* Filter init Mode bit 8 */
+#define  CAN_FMCFGR_FBM9                     ((uint16_t)0x0200)            /* Filter init Mode bit 9 */
+#define  CAN_FMCFGR_FBM10                    ((uint16_t)0x0400)            /* Filter init Mode bit 10 */
+#define  CAN_FMCFGR_FBM11                    ((uint16_t)0x0800)            /* Filter init Mode bit 11 */
+#define  CAN_FMCFGR_FBM12                    ((uint16_t)0x1000)            /* Filter init Mode bit 12 */
+#define  CAN_FMCFGR_FBM13                    ((uint16_t)0x2000)            /* Filter init Mode bit 13 */
 
 /*******************  Bit definition for CAN_FSCFGR register  *******************/
 #define  CAN_FSCFGR_FSC                      ((uint16_t)0x3FFF)            /* Filter Scale Configuration */

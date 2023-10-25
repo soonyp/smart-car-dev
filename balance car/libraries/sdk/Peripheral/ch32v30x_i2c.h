@@ -17,7 +17,7 @@ extern "C" {
 
 #include "ch32v30x.h"
 
-/* I2C Init structure definition  */
+/* I2C init structure definition  */
 typedef struct {
     uint32_t I2C_ClockSpeed;          /* Specifies the clock frequency.
                                        This parameter must be set to a value lower than 400kHz */

@@ -174,7 +174,7 @@ extern int16 CDM_MainStreet_Point(ConDomainNode *cdm, MainStreetType mst, _POINT
 
 void sample_point_init(void);
 
-void ImgPreprocess(void);
+void img_preprocess(void);
 
 #endif
 
