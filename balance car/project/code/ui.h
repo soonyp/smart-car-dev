@@ -20,10 +20,10 @@ enum ChooseMode {
 };
 enum ChooseMode choose = P;
 
-bool run = false;
+bool running = false;
 bool run_left = false;
 
-bool fork = false;
+bool forking = false;
 bool fork_left = false;
 
 extern uint8 line_image[60][60];

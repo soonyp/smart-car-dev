@@ -68,11 +68,11 @@ void on_left() {
             piderror.Kd -= 0.1f;
             break;
         case RUN:
-            run = true;
+            running = true;
             run_left = true;
             break;
         case FORK:
-            fork = true;
+            forking = true;
             fork_left = true;
             break;
     }
@@ -89,11 +89,11 @@ void on_right() {
             piderror.Kd += 0.1f;
             break;
         case RUN:
-            run = true;
+            running = true;
             run_left = false;
             break;
         case FORK:
-            fork = true;
+            forking = true;
             fork_left = false;
             break;
     }
