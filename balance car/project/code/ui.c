@@ -7,7 +7,9 @@
 #include "cam_preprocess.h"
 
 void show_image() {
+    // 打印二值化图像
     tft180_show_gray_image(0, 0, &binary_img_CDM[0][0], IMG_COL, IMG_ROW, 60, 60, 1);
+    // 打印搜线结果
     tft180_show_binary_image(0, 61, &line_image[0][0], IMG_COL, IMG_ROW, 60, 60);
 }
 
@@ -42,6 +44,7 @@ void show_enum() {
 }
 
 void show_ui() {
+    // 每次打印前清屏
     tft180_clear();
     show_image();
     show_enum();
