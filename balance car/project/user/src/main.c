@@ -39,6 +39,7 @@
 
 double k;
 uint8 image[60][60];
+uint8 line_image[60][60];
 
 void init(void) {
     tft180_set_dir(TFT180_CROSSWISE_180);
@@ -47,6 +48,14 @@ void init(void) {
     mt9v03x_init();
 
     sample_point_init();
+}
+
+void reset_line_image() {
+    for (int i = 0; i < 60; i++) {
+        for (int j = 0; j < 60; j++) {
+            line_image[i][j] = 0;
+        }
+    }
 }
 
 int main(void) {
@@ -92,7 +101,7 @@ int main(void) {
         Line right_line = find_right_line(image, find_right_start_point(image));
         Line mid_line = track_left_line(left_line, left_line.length, 45);
 
-        uint8 line_image[60][60] = {0};
+        reset_line_image();
         for (int i = 0; i < left_line.length; i++) {
             line_image[left_line.points[i].row][left_line.points[i].column] = 1;
         }

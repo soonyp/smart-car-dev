@@ -196,4 +196,7 @@ add_executable(smart_car_dev
         "balance car/project/code/line.h"
         "balance car/project/code/point.c"
         "balance car/project/code/point.h"
-        "balance car/project/code/utils.h")
+        "balance car/project/code/utils.h"
+        "balance car/project/code/ui.c"
+        "balance car/project/code/ui.h"
+)
