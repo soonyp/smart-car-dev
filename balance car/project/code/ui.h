@@ -28,14 +28,40 @@ bool fork_left = false;
 
 extern uint8 line_image[60][60];
 
+/**
+ * 打印图像
+ */
+void show_image();
+
+/**
+ * 打印菜单
+ */
+void show_enum();
+
+/**
+ * 打印整个界面
+ */
+void show_ui();
+
+/**
+ * 当上键按下时
+ */
 void on_up();
 
+/**
+ * 当下键按下时
+ */
 void on_down();
 
+/**
+ * 当左键按下时
+ */
 void on_left();
 
+/**
+ * 当右键按下时
+ */
 void on_right();
 
-void show_default_image();
 
 #endif //SMART_CAR_DEV_UI_H
