@@ -16,23 +16,23 @@ void show_enum() {
     if (choose == 0) {
         sprintf(p, "○ P: %f", piderror.Kp);
         sprintf(d, "D: %f", piderror.Kd);
-        sprintf(run, "发车：%s", run ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
-        sprintf(fork, "Y路：%s", fork ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
+        sprintf(run, "发车：%s", running ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
+        sprintf(fork, "Y路：%s", forking ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
     } else if (choose == 1) {
         sprintf(p, "P: %f", piderror.Kp);
         sprintf(d, "○ D: %f", piderror.Kd);
-        sprintf(run, "发车：%s", run ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
-        sprintf(fork, "Y路：%s", fork ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
+        sprintf(run, "发车：%s", running ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
+        sprintf(fork, "Y路：%s", forking ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
     } else if (choose == 2) {
         sprintf(p, "P: %f", piderror.Kp);
         sprintf(d, "D: %f", piderror.Kd);
-        sprintf(run, "○ 发车：%s", run ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
-        sprintf(fork, "Y路：%s", fork ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
+        sprintf(run, "○ 发车：%s", running ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
+        sprintf(fork, "Y路：%s", forking ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
     } else {
         sprintf(p, "P: %f", piderror.Kp);
         sprintf(d, "D: %f", piderror.Kd);
-        sprintf(run, "发车：%s", run ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
-        sprintf(fork, "○ Y路：%s", fork ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
+        sprintf(run, "发车：%s", running ? (run_left ? "向左发车" : "向右发车") : "未选择方向");
+        sprintf(fork, "○ Y路：%s", forking ? (fork_left ? "向左进入" : "向右进入") : "未选择方向");
     }
 
     tft180_show_string(61, 0, p);
